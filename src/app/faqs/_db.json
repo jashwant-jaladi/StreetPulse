@@ -1,0 +1,115 @@
+{
+    "faqs":[
+        {
+            "id": 1,
+            "title":"RETURN",
+            "question":"I want to return my purchase! What do I do?",
+            "answer": "If you are not 100% satisfied with your purchase from StreetPulse, you can return your item(s) for a full refund within 365 days of purchase. Returns must be unworn, in the state you received them, and in the original packaging. Some items ship with an attached security tag, and merchandise returned without the original security tag attached or a damaged tag may not qualify for a refund. For more information on returns, please see the StreetPulse Shipping, Return, and Exchange Policies. StreetPulse offers a number of easy return options, including shipping box-free and printer-free returns to Whole Foods Market and The UPS Store, as well as UPS Pickups and more (subject to availability). Learn about all Return Options here. Click here to log in to your StreetPulse.com account for a self-service return, and then choose the item(s) you wish to return. If you have received defective, damaged or incorrect merchandise, or you need any assistance with processing your return, please contact us."
+        },
+        {
+            "id": 2,
+            "question": "I would like to return a gift that was sent to me. How do I do that?",
+            "answer":"For assistance with returning a gift you received, please call the StreetPulse Customer Loyalty Team at [1-800-927-7671|tel:18009277671] for assistance returning the item. Please note that in order to assist you, our team will need the phone number, first and last name, or email address of the person who gifted you the item. Typically, a return will be refunded to the original purchaser's method of payment. However, we would be happy to assist you with a gift return, and issue you a gift card for the return."
+
+        },
+        {
+            "id": 3,
+            "question":"Can I exchange my order instead of returning it?",
+            "answer":"Yes, you have the option to exchange an eligible item instead of returning it for a refund. You may be able to process a self-service exchange in your StreetPulse.com account—you will see this option in your account if an item is eligible to exchange via self-service. If a self-service exchange option is not available in your StreetPulse.com account, you can contact usto initiate your exchange. For more terms, please see the StreetPulse.com Shipping Returns & Exchange Policy. As a StreetPulse.com customer you have the option of exchanging an eligible item instead of returning it for a refund. You may be able to process an exchange yourself for certain eligible items in your StreetPulse.com account. If an item is eligible, you will see an option in your account to select an item to exchange, and will be provided the instructions and terms that apply to your exchange. You also always have the option to contact us via phone, chat, or email, and we will gladly assist you with the exchange process. Our Customer Loyalty Team is available 24/7 and more than happy to help! For more information on our exchange process, please see the StreetPulse Shipping and Return Policy."                   
+        },
+        {
+            "id": 4,
+            "question":"I printed out my label and misplaced it. How can I retrieve it again?",
+            "answer":"You can find a link to your return label in the return confirmation email you received, or you can retrieve your return label by logging in to your StreetPulse.com account. Just click hereto log in to your StreetPulse.comaccount. Go to the order that contains the item you are returning, click “Show More” and then you will see an option to “Print Return Label” next to the item you are returning"
+        },
+        {
+            "id": 5,
+            "question":"How long does it take for me to get a refund?",
+            "answer":"It typically takes about 5-10 business days for your return to arrive at our fulfillment center and be processed for refund. Once we receive your qualifying return and approve your refund, StreetPulse will credit your original method of payment. Depending on your financial institution, please allow an additional 2–10 business days for the credit to post to your bank or credit card account. Some customers may qualify for rapid refunds through StreetPulse VIP or other perks."   
+        },
+        {
+            "id": 6,
+            "title":"Shoes/Brands",
+            "question":"How do I know my shoe size?",
+            "answer":"If you are unsure of your shoe size, you can measure your shoe size. Because the foot is three-dimensional, any two-dimensional measuring tool, such as a ruler or Brannock device® can only approximate your true shoe size. Please also keep in mind that manufacturers use different lasts to construct their shoes, and sizing may vary accordingly."   
+        },
+        {
+            "id": 7,
+            "question":"I want to know if you carry a specific brand/color/size/width?",
+            "answer":"Try clicking Brands button located at the top of each page - you will be taken to a page where you can view all brands that we are currently offering. Please check back often since we add new brands on a daily basis! Or if you know what you're looking for - try the search bar as well."   
+        },
+        {
+            "id": 8,
+            "title":"Across the Board",
+            "question":"Are there StreetPulse.com gift certificates and/or gift cards?",
+            "answer":"Yes! If you're looking for the perfect gift or just doing some last minute shopping, Gift Cards are the perfect solution for you! Give one today!"   
+        },
+        {
+            "id": 9,
+            "question":"Do you do back orders?",
+            "answer":"No. We do not do back orders. If an item is out of stock the StreetPulse Customer Loyalty Team will notify you as soon as possible and ask if you would like a replacement item. Out of stock orders will be cancelled unless a replacement item is requested."   
+        },
+        {
+            "id": 10,
+            "question":"Do you have a catalog?",
+            "answer":"No. Currently, we have a 'virtual' catalog. In order to ensure that our customers have access to the most current styles, prices, sizes, and overall selection, we do not publish a catalog that you may purchase directly from us. Plus, with all the styles that we carry, a catalog would be as big as a phone book! If there is a particular shoe or style of shoe that you are interested in, please feel free to contact us and we will be happy to help you locate it."   
+        },
+        {
+            "id": 11,
+            "title":"Suspicious Activity",
+            "question":"I received an email from StreetPulse.com regarding an order I didn’t place. What should I do?",
+            "answer":"If you received correspondence regarding an order you didn’t place, it likely wasn’t from StreetPulse.com. Don't share any personal information, click any links in the email, or respond to the email, and delete it immediately. This type of email is known as a phishing campaign. A phishing campaign is an email scam designed to steal personal information from victims. Cybercriminals use phishing, the fraudulent attempt to obtain sensitive information such as credit card details and login credentials, by disguising themselves as a trustworthy organization or reputable person in an email communication.If you are a StreetPulse.com customer, you can go to your StreetPulse Account and view Your Order History to see if there is an order that matches the details in the correspondence. If you are not a StreetPulse.com customer, feel free to contact us to verify whether the email is associated with an actual order."   
+        },
+        {
+            "id": 12,
+            "question":"How do I identify whether an Email is or is not from StreetPulse?",
+            "answer":"A generic email address with StreetPulse in the email, for example advert@gmail.com or an email address from a non-US country or site not associated with StreetPulse. StreetPulse will never send communications from personal or generic email accounts. Order-related emails typically come from cs-noreply@StreetPulse.com or another StreetPulse.com email address."   
+        },
+        {
+            "id": 13,
+            "question":"What should I do if I believe I’ve received a phishing email or if I responded to what may be a phishing email?",
+            "answer":"If you believe you received a phishing email or responded to what may be a phishing email, StreetPulse recommends you update your online passwords, including the password to your StreetPulse.com Account, and report the email to the Federal Trade Commission (FTC). Visit the FTC website here to report the email and find more information on how to identify and prevent phishing attacks."   
+        },
+        {
+            "id": 14,
+            "title":"Payment Information",
+            "question":"Do you accept international credit cards?",
+            "answer":"Currently StreetPulse.com can accept international credit cards but we can only ship to an address within the United States and its territories. Please note that the credit card must be issued and contain a logo from either Visa, Mastercard, Discover, or American Express. On the checkout page, there will be a billing and shipping section."   
+        },
+        {
+            "id": 15,
+            "question":"Do you allow Cashier's Checks or Money Orders?",
+            "answer":"No. At this time StreetPulse.com does not accept Cashier's Checks or Money Orders."   
+        },
+        {
+            "id": 16,
+            "question":"Can I pay with multiple Visa, Mastercard, American Express, or Discover Pre-Paid Gift Cards?",
+            "answer":"Any pre-paid gift card with a Visa, Mastercard, American Express, or Discover logo / insignia on it will be processed like an actual credit / debit card and only one credit card can be used per order. If a single pre-gift card does not cover the total of your order, we suggest using the balance on the pre-paid gift card to purchase a StreetPulse Gift Certificate. The StreetPulse Gift Certificate can then be used along with a credit card or pre-paid gift card to complete the order. If you have multiple pre-paid gift cards, you will need to purchase a separate StreetPulse Gift Certificate for each. If you need any help with purchasing the StreetPulse Gift Certificates or placing an order, please give our Customer Loyalty Team a call, and we will be happy to help! Please also note that in order to use the pre-paid gift card on StreetPulse, it will need to be registered or activated by following the instructions on the pre-paid gift card itself or on the card’s packaging. Also, some card may not be eligible for online purchases. Please refer to the company that issued the card for more details."   
+        },
+        {
+            "id": 17,
+            "title":"Amazon Pay",
+            "question":"What is Amazon Pay?",
+            "answer":"Amazon Pay is a service that allows Amazon customers to use the payment information already stored in their Amazon account to pay for goods and services on other sites. You can use Amazon Pay wherever you see it - whether that is clicking the Amazon Pay button when checking out on your favorite online stores, managing your payment methods in your account on Amazon.com or using Amazon Pay on Alexa. There are no additional sign-ups or sign-ins. Your transactions are safe and secure, and everything can be tracked in your Amazon account."   
+        },
+        {
+            "id": 18,
+            "question":"How do I open an Amazon Pay account?",
+            "answer":"If you have an Amazon account, you are ready to start using Amazon Pay wherever you see the Amazon Pay button. No additional registration is necessary, which means you don’t need to create a new account or remember old passwords. Amazon Pay simply uses the information and payment methods stored in your Amazon account. That also includes your address book, so you’ll always have Grandmom’s address handy no matter where you shop."   
+        },
+        {
+            "id": 19,
+            "title":"Technology",
+            "question":"What are cookies? Do I need to enable cookies on my browser?",
+            "answer":"A cookie is a small amount of data that is sent to your browser from a web site and is stored on your computer's hard drive. If your browser's preferences allow it (most browsers are installed with cookies enabled), each web site can send its own cookie to your browser. To protect your privacy, cookies do not store personal information but instead use anonymous unique identifiers. Each web site can only access the cookie they have sent to your hard drive, not the cookies sent by other web sites. You need to enable cookies on your browser to enjoy all the shopping features on StreetPulse.com. Cookies need to be enabled on your browser so you can add products to your shopping cart and to access your account information. If you share your computer with others and you do not want them to have access to your account information, be sure to log out before leaving your computer unattended. You can log out by clicking on the Logout link at the top of the page."
+        },
+        {
+            "id": 20,
+            "question":"When placing an order I get an error message stating that there has been an authorization failure. What went wrong?",
+            "answer":"Please double check the credit card number and expiration date on your card. Also, please be aware that StreetPulse.com currently accepts Visa, MasterCard, Discover, and American Express for credit card payment."
+        }
+
+
+    
+    ]
+}

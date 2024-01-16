@@ -4,7 +4,7 @@ import Image from 'next/image'
 const About = () => {
   return (
     <>
-    <div className='bg-[url("/about.jpeg")] h-40 bg-center bg-cover bg-blend-saturation text-white font-bold grid place-content-center text-5xl border-b-2 border-yellow-400'>ABOUT US</div>
+    <div className='bg-[url("/about.jpeg")] h-40 bg-center bg-cover  text-white font-bold grid place-content-center text-5xl border-b-2 border-yellow-400'>ABOUT US</div>
     <div className='p-20 bg-black text-yellow-700'>
     <h3 className='text-3xl font-bold p-5  text-yellow-400'>Our Story</h3>
 
