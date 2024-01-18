@@ -27,7 +27,7 @@ const Header = () => {
     <Link href={''}>Shop</Link>
     </li>
     <li className='list-none hover:text-white'>
-    <Link href={'/'}>Blog</Link>
+    <Link href={'/blogs'}>Blog</Link>
     </li>
     <li className='list-none hover:text-white'>
     <Link href={'/about'}>About</Link>
