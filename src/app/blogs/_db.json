@@ -2,7 +2,7 @@
     "blogs":[
     {
         "id" : 1,
-        "image":"/f1.avif",
+        "image":"/blog/f1.avif",
         "name":"Jashwant Jaladi",
         "date":"17 January 2024",
         "title":"Nigo's HUMAN MADE Taps Longtime Collaborator Pharrell As Official Advisor",
@@ -10,7 +10,7 @@
     },
     {
         "id" : 2,
-        "image":"/f2.avif",
+        "image":"/blog/f2.avif",
         "name":"Jashwant Jaladi",
         "date":"17 January 2024",
         "title":"DIOR Will Bring Its FW24 Collection to New York City's Brooklyn Museum",
@@ -18,7 +18,7 @@
     },
     {
         "id" : 3,
-        "image":"/f3.avif",
+        "image":"/blog/f3.avif",
         "name":"Jashwant Jaladi",
         "date":"17 January 2024",
         "title":"The Difference between Fashion and Style",
@@ -26,7 +26,7 @@
     },
     {
         "id" : 4,
-        "image":"/f4.avif",
+        "image":"/blog/f4.avif",
         "name":"Jashwant Jaladi",
         "date":"17 January 2024",
         "title":"Early Fall Fashion Tips – Back to School Clothes",
@@ -34,7 +34,7 @@
     },
     {
         "id" : 5,
-        "image":"/f5.avif",
+        "image":"/blog/f5.avif",
         "name":"Jashwant Jaladi",
         "date":"17 January 2024",
         "title":"Tips on updating your fashion ideas without spending a lot",
@@ -42,7 +42,7 @@
     },
     {
         "id" : 6,
-        "image":"/f6.avif",
+        "image":"/blog/f6.avif",
         "name":"Jashwant Jaladi",
         "date":"17 January 2024",
         "title":"Celebrity Fashion Expert",
@@ -50,7 +50,7 @@
     },
     {
         "id" : 7,
-        "image":"/f7.avif",
+        "image":"/blog/f7.avif",
         "name":"Jashwant Jaladi",
         "date":"17 January 2024",
         "title":"Dubai Fashion Week showcases fashion in Dubai",
@@ -58,7 +58,7 @@
     },
     {
         "id" : 8,
-        "image":"/f8.avif",
+        "image":"/blog/f8.avif",
         "name":"Jashwant Jaladi",
         "date":"17 January 2024",
         "title":"Fashion Designing Course and Its Benefits",
@@ -66,7 +66,7 @@
     },
     {
         "id" : 9,
-        "image":"/f9.avif",
+        "image":"/blog/f9.avif",
         "name":"Jashwant Jaladi",
         "date":"17 January 2024",
         "title":"How to Become Fashion Designer With Full Information?",
@@ -74,7 +74,7 @@
     },
     {
         "id" : 10,
-        "image":"/f10.avif",
+        "image":"/blog/f10.avif",
         "name":"Jashwant Jaladi",
         "date":"17 January 2024",
         "title":"Catching up with latest Middle East fashion trends",

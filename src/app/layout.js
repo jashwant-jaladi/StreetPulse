@@ -1,11 +1,11 @@
-import { Salsa } from 'next/font/google'
+import { Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
 import Header from './header/page'
 import Footer from './footer/page'
 
 
-const salsa = Salsa({ subsets: ['latin'], weight: '400' })
+const salsa = Space_Grotesk({ subsets: ['latin'], weight: '400' })
 
 export default function RootLayout({ children }) {
   return (

@@ -1,0 +1,225 @@
+{
+    "Shop": [
+        {
+            "id": 1,
+            "image":"/Shop/apparel/men-1.webp",
+            "category":"apparel",
+            "name":"'GARDEN OF CHAOS' SET by Kilogram",
+            "rating":"3.5",
+            "noOfRatings": "50",
+            "prices": "₹ 360",
+            "preOffer":"₹999",
+            "discount":"64% off"
+        },
+        {
+            "id": 2,
+            "image":"/Shop/bags/bag-1.webp",
+            "category":"bags",
+            "name":"GLAD RAGS BLUE BAG by drugstore cowboy",
+            "rating":"3.3",
+            "noOfRatings": "2",
+            "prices": "₹ 1298",
+            "preOffer":"₹ 2595",
+            "discount":"50% off"
+        },
+        {
+            "id": 3,
+            "image":"/Shop/rugs/rug-1.webp",
+            "category":"rugs",
+            "name":"AIR JORDAN 1 CHICAGO CUSTOM RUG",
+            "rating":"3.8",
+            "noOfRatings": "9",
+            "prices": "₹ 990",
+            "preOffer":"₹ 2199",
+            "discount":"55% off"
+        },
+        {
+            "id": 4,
+            "image":"/Shop/skateboards/sb-1.jpg",
+            "category":"skateboards",
+            "name":"SCREAMING HAND FULL 8.00IN X 31.25IN SANTA CRUZ SKATEBOARD COMPLETE",
+            "rating":"4.0",
+            "noOfRatings": "12",
+            "prices": "₹ 3698",
+            "preOffer":"₹ 9995",
+            "discount":"63% off"
+        },
+        {
+            "id": 5,
+            "image":"/Shop/sneakers/shoes-1.webp",
+            "category":"shoes",
+            "name":"JORDAN 1 RETRO HIGH WHITE UNIVERSITY BLUE BLACK UNC",
+            "rating":"3.5",
+            "noOfRatings": "9",
+            "prices": "₹ 2040",
+            "preOffer":"₹ 6799",
+            "discount":"70% off"
+        },
+        {
+            "id": 6,
+            "image":"/Shop/apparel/men-2.webp",
+            "category":"apparel",
+            "name":"GOGH'S CANVAS | OVER BOX SHIRT",
+            "rating":"4.5",
+            "noOfRatings": "52",
+            "prices": "₹ 1980",
+            "preOffer":"₹ 5999",
+            "discount":"67% off"
+        },
+        {
+            "id": 7,
+            "image":"/Shop/bags/bag-2.webp",
+            "category":"bags",
+            "name":"SVENKLAS ARLEN HIP PACK",
+            "rating":"5.0",
+            "noOfRatings": "18",
+            "prices": "₹ 4236",
+            "preOffer":"₹ 5295",
+            "discount":"20% off"
+        },
+        {
+            "id": 8,
+            "image":"/Shop/rugs/rug-2.webp",
+            "category":"rugs",
+            "name":"PLAYSTATION CUSTOM RUG",
+            "rating":"2.5",
+            "noOfRatings": "7",
+            "prices": "₹ 4236",
+            "preOffer":"₹ 5295",
+            "discount":"20% off"
+        },
+        {
+            "id": 9,
+            "image":"/Shop/skateboards/sb-2.jpg",
+            "category":"skateboards",
+            "name":"SCREAMING HAND MID 7.80IN X 31.00IN SANTA CRUZ SKATEBOARD COMPLETE",
+            "rating":"3.2",
+            "noOfRatings": "100",
+            "prices": "₹ 1824",
+            "preOffer":"₹ 2499",
+            "discount":"27% off"
+        },
+        {
+            "id": 10,
+            "image":"/Shop/sneakers/shoes-2.webp",
+            "category":"shoes",
+            "name":"NIKE SB DUNK LOW THE POWERPUFF GIRLS BUBBLES",
+            "rating":"3.5",
+            "noOfRatings": "50",
+            "prices": "₹ 16318",
+            "preOffer":"₹ 20398",
+            "discount":"20% off"
+        },
+        {
+            "id": 11,
+            "image":"/Shop/apparel/men-3.webp",
+            "category":"apparel",
+            "name":"THE PSYCHIC HANDWOVEN - SHIRT",
+            "rating":"3.5",
+            "noOfRatings": "50",
+            "prices": "₹ 3570",
+            "preOffer":"₹ 5950",
+            "discount":"40% off"
+        },
+        {
+            "id": 12,
+            "image":"/Shop/bags/bag-3.webp",
+            "category":"bags",
+            "name":"KILLSHOT BAG - REPTILE GREEN",
+            "rating":"3.7",
+            "noOfRatings": "21",
+            "prices": "₹ 18000",
+            "preOffer":"₹ 22500",
+            "discount":"20% off"
+        },
+        {
+            "id": 13,
+            "image":"/Shop/rugs/rug-3.webp",
+            "category":"rugs",
+            "name":"SWOOSH (FIRE RED) CUSTOM RUG",
+            "rating":"4.8",
+            "noOfRatings": "19",
+            "prices": "₹ 5075",
+            "preOffer":"₹ 7250",
+            "discount":"30% off"
+        },
+        {
+            "id": 14,
+            "image":"/Shop/skateboards/sb-3.webp",
+            "category":"skateboards",
+            "name":"LOGO OUTLINE LARGE 8.25IN X 31.5IN CREATURE SKATEBOARD COMPLETE",
+            "rating":"4.7",
+            "noOfRatings": "2",
+            "prices": "₹ 6997",
+            "preOffer":"₹ 9995",
+            "discount":"30% off"
+        },
+        {
+            "id": 15,
+            "image":"/Shop/sneakers/shoes-3.webp",
+            "category":"apparel",
+            "name":"NIKE SB DUNK LOW THE POWERPUFF GIRLS BLOSSOME",
+            "rating":"2.5",
+            "noOfRatings": "90",
+            "prices": "₹ 22499",
+            "preOffer":"₹ 22499",
+            "discount":"10% off"
+        },
+        {
+            "id": 16,
+            "image":"/Shop/apparel/men-4.webp",
+            "category":"apparel",
+            "name":"FRAILTY SHIRT - by BLACK",
+            "rating":"4.1",
+            "noOfRatings": "2",
+            "prices": "₹ 1995",
+            "preOffer":"₹ 4750",
+            "discount":"58% off"
+        },
+        {
+            "id": 17,
+            "image":"/Shop/bags/bag-4.webp",
+            "category":"bags",
+            "name":"LEATHER CROSSBODY BAG - TAN",
+            "rating":"1.0",
+            "noOfRatings": "28",
+            "prices": "₹ 500",
+            "preOffer":"₹ 1999",
+            "discount":"75% off"
+        },
+        {
+            "id": 18,
+            "image":"/Shop/rugs/rug-4.webp",
+            "category":"rugs",
+            "name":"DRAGON BALL CUSTOM RUG",
+            "rating":"4.5",
+            "noOfRatings": "17",
+            "prices": "₹ 25735",
+            "preOffer":"₹ 25995",
+            "discount":"1% off"
+        },
+        {
+            "id": 19,
+            "image":"/Shop/skateboards/sb-4.webp",
+            "category":"skateboards",
+            "name":"SWINDLER MINI 7.75IN X 30.00IN CREATURE SKATEBOARD COMPLETE",
+            "rating":"2.2",
+            "noOfRatings": "10",
+            "prices": "₹ 9797",
+            "preOffer":"₹ 13995",
+            "discount":"30% off"
+        },
+        {
+            "id": 20,
+            "image":"/Shop/sneakers/shoes-4.webp",
+            "category":"shoes",
+            "name":"NIKE SB DUNK LOW THE POWERPUFF GIRLS BUTTERCUP",
+            "rating":"3.9",
+            "noOfRatings": "80",
+            "prices": "₹ 10796",
+            "preOffer":"₹ 11995",
+            "discount":"10% off"
+        }
+        
+    ]
+}
