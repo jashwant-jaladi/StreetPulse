@@ -3,16 +3,19 @@ import React from 'react'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { StarIcon } from '@chakra-ui/icons'
-import Shopnav from './shopnav'
+import Shopnav from '../shop/shopnav'
 
 
-const Shop = () => {
+const Shoes = () => {
 
-const [products,setProducts]=useState([])
+const [shoe,setShoes]=useState([])
+
+
 useEffect(() => {
   axios.get('http://localhost:4000/Shop').then((res) => {
-    setProducts(res.data);
+    setShoes(res.data);
   }),[]
 })
 
@@ -21,8 +24,9 @@ useEffect(() => {
     <div>
     <Shopnav/>
     <div className='bg-black text-slate-300 p-14 pt-10 grid grid-cols-4 gap-14 place-items-center'>
-    {products.map((item)=>
+    {shoe.map((item)=>
     (
+      item.category=="shoes"&&
       <div key={item.id} className='border-2 border-yellow-700 w-[320px] p-3 rounded-xl overflow-hidden'>
       <Image src={item.image} width={300} height={300} className='w-[300px] h-[300px] object-center object-cover transition-transform ease-linear duration-300 hover:scale-105'/>
       
@@ -57,4 +61,4 @@ useEffect(() => {
   )
 }
 
-export default Shop
+export default Shoes

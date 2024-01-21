@@ -19,24 +19,16 @@ const Header = () => {
     <div className='border-b-2 border-yellow-400'>
     <div className='flex flex-row bg-black p-3'>
     <Image src={'/street-pulse-logo.png'} width={300} height={300}/>
-    <div className='flex flex-row gap-5 m-auto  bg-black text-yellow-400'> 
-    <li className='list-none hover:text-white'>
-    <Link href={'/'}>Home</Link>
-    </li>
-    <li className='list-none hover:text-white'>
-    <Link href={'/shop'}>Shop</Link>
-    </li>
-    <li className='list-none hover:text-white'>
-    <Link href={'/blogs'}>Blog</Link>
-    </li>
-    <li className='list-none hover:text-white'>
-    <Link href={'/about'}>About</Link>
-    </li>
-    <li className='list-none hover:text-white'>
-    <Link href={'/contact'}>Contact</Link>
-    </li>
+    <div className='flex flex-row gap-5  bg-black text-yellow-400'> 
+    <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
+      <Link class="mr-5 hover:text-gray-900" href={"/"}>Home</Link>
+      <Link class="mr-5 hover:text-gray-900" href={"/shop"}>Shop</Link>
+      <Link class="mr-5 hover:text-gray-900" href={"/blogs"}>Blog</Link>
+      <Link class="mr-5 hover:text-gray-900" href={"/about"}>About</Link>
+      <Link class="mr-5 hover:text-gray-900" href={"/contact"}>Contact</Link>
+    </nav>
     </div>
-    <div className='flex flex-row gap-5 my-auto mr-8 bg-black text-yellow-400'>
+    <div className='flex flex-row gap-5 my-auto mx-auto mr-8 bg-black text-yellow-400'>
     <li className='list-none hover:text-white'>
     <Link href={'/'}><Image src={'/search.svg'} width={30} height={30}/></Link>
     </li>

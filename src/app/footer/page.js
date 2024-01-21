@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Footer = () =>{
   return (
@@ -7,11 +8,11 @@ const Footer = () =>{
     <div className='flex flex-row gap-10 p-20 align-middle justify-between bg-black text-yellow-400 border-t-2 border-yellow-400'>
         <div className='list-none flex flex-col gap-5'>
         <li className='font-bold'>CATEGORIES</li>
-        <li>Women</li>
-        <li>Men</li>
-        <li>Bags</li>
-        <li>Footwears</li>
-        <li>Watches</li>
+        <Link href={'/apparel'}>Apparel</Link>
+        <Link href={'/bags'}>Bags</Link>
+        <Link href={'/rugs'}>Rugs</Link>
+        <Link href={'/skateboards'}>Skateboards</Link>
+        <Link href={'/sneakers'}>Sneakers</Link>
         </div>
         <div className='list-none flex flex-col gap-5'>
             <li className='font-bold'>HELP</li>
