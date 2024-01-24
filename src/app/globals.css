@@ -2,3 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+.glass
+{
+    
+background: rgba(27, 26, 26, 0.21);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5.2px);
+-webkit-backdrop-filter: blur(5.2px);
+border: 2px solid rgba(27, 26, 26, 1);
+}
+
+.makegrid
+{
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+}
