@@ -4,6 +4,7 @@ import Carousel from "./homeComponents/Carousel"
 import CategoryGrid from "./homeComponents/CategoryGrid"
 import Blogdisplay from "./homeComponents/Blogdisplay"
 import StoreOverview from "./homeComponents/StoreOverview"
+import Testimonials from "./homeComponents/Testimonials"
 
 
 export default function Home() {
@@ -13,7 +14,7 @@ export default function Home() {
     <CategoryGrid/>
     <StoreOverview/>
     <Blogdisplay/>
-    
+    <Testimonials/>
    </> 
   )
 }

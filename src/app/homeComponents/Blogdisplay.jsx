@@ -13,11 +13,13 @@ useEffect(() => {
 
     })},[])
   return (
+    <>
+    <h3 className='text-5xl font-bold pt-5 text-center bg-black text-yellow-500'>Our Blogs</h3>
     <div className='bg-black flex flex-row w-[100vw] justify-center gap-20'>
     {perPage.map((item) =>
         (
         <div key={item.id} className='w-[25vw] '>
-        <div className='pt-20 '>
+        <div className='pt-16 '>
         <div className='border-2 border-yellow-600 rounded-lg overflow-hidden cursor-pointer grow shrink aspect-[2/1]  '>
         <img src={item.image} className='object-top object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg '/>
         </div>
@@ -31,6 +33,7 @@ useEffect(() => {
         )
         )}
         </div>
+        </>
   )
 }
 

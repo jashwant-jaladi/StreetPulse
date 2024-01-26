@@ -3,34 +3,78 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { StarIcon } from "@chakra-ui/icons";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 const StoreOverview = () => {
   const [getdata, setData] = useState([]);
-  const[display,setDisplay]=useState([]);
+  const [display, setDisplay] = useState([]);
+  const [activeSort, setActiveSort] = useState(""); 
+
   useEffect(() => {
-    axios.get("http://localhost:4000/Shop").then((res) => {
-      setData(res.data);
-      setDisplay(res.data.slice(0, 8));
-    }),
-      [];
-  });
+    axios.get("http://localhost:4000/Shop")
+      .then((res) => {
+        const sortedData = res.data
+        setData(sortedData);
+        setDisplay(sortedData);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  const handleSort = (sortingOption) => {
+    let sortedData;
+
+    switch (sortingOption) {
+      case "Best Seller":
+        sortedData = getdata.filter(item => item.bestSeller == true)
+        break;
+      case "Newest":
+        sortedData = [...getdata].filter(item=>item.newest==true);
+        break;
+      case "Discount":
+        sortedData = [...getdata].sort((a, b) => b.discount - a.discount);
+        break;
+      case "Top Rated":
+        sortedData = [...getdata].sort((a, b) => b.rating - a.rating);
+        break;
+      default:
+        sortedData = [...getdata]; 
+        break;
+    }
+
+    setDisplay(sortedData.slice(0, 8));
+    setActiveSort(sortingOption);
+    
+  };
+  var settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 3,
+  };
 
   return (
     <div className="bg-black">
-      <h1 className="text-yellow-500 grid place-content-center bg-black text-5xl font-bold pt-10">
-        Featured Store
-      </h1>
+      <h3 className="text-5xl font-bold text-yellow-500 pt-28 flex justify-center">Store Overview</h3>
+     
       <div className="flex flex-row justify-center gap-10 pt-10 bg-black text-yellow-500 font-semibold">
-        <button className="hover:underline">Best Seller</button>
-        <button className="hover:underline">Newest</button>
-        <button className="hover:underline">Discount</button>
-        <button className="hover:underline">Top Rated</button>
+        <button className={`hover:underline ${activeSort === "Best Seller" ? 'active' : ''}`} onClick={() => handleSort("Best Seller")}>Best Seller</button>
+        <button className={`hover:underline ${activeSort === "Newest" ? 'active' : ''}`} onClick={() => handleSort("Newest")}>Newest</button>
+        <button className={`hover:underline ${activeSort === "Discount" ? 'active' : ''}`} onClick={() => handleSort("Discount")}>Discount</button>
+        <button className={`hover:underline ${activeSort === "Top Rated" ? 'active' : ''}`} onClick={() => handleSort("Top Rated")}>Top Rated</button>
       </div>
-      <div className="bg-black text-slate-300 p-14 pt-10 grid grid-cols-4 gap-14 place-items-center">
+
+      
+      <div className='bg-black text-slate-300 pb-10'>
+      <Slider {...settings} className="w-[1200px] mx-auto mt-10">
         {display.map((item) => (
           <div
             key={item.id}
-            className="border-2 border-yellow-700 w-[320px] p-3 rounded-xl overflow-hidden"
+            className="border-2 border-yellow-700 w-[320px] p-3 rounded-xl overflow-hidden cursor-pointer"
           >
             <Image
               src={item.image}
@@ -71,12 +115,17 @@ const StoreOverview = () => {
               <span className="line-through text-slate-500">
                 {item.preOffer}
               </span>
-              <span className="text-green-500">{item.discount}</span>
+              <span className="text-green-500">{item.discount}% off</span>
             </div>
           </div>
+          
         ))}
+        </Slider>
+        </div>
+        
       </div>
-    </div>
+      
+    
   );
 };
 

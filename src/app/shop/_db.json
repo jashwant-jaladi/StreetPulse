@@ -9,7 +9,7 @@
             "noOfRatings": "50",
             "prices": "₹ 360",
             "preOffer":"₹999",
-            "discount":"64% off"
+            "discount":"64"
         },
         {
             "id": 2,
@@ -20,7 +20,7 @@
             "noOfRatings": "2",
             "prices": "₹ 1298",
             "preOffer":"₹ 2595",
-            "discount":"50% off"
+            "discount":"50"
         },
         {
             "id": 3,
@@ -31,7 +31,7 @@
             "noOfRatings": "9",
             "prices": "₹ 990",
             "preOffer":"₹ 2199",
-            "discount":"55% off"
+            "discount":"55"
         },
         {
             "id": 4,
@@ -42,7 +42,8 @@
             "noOfRatings": "12",
             "prices": "₹ 3698",
             "preOffer":"₹ 9995",
-            "discount":"63% off"
+            "discount":"63",
+            "newest":true
         },
         {
             "id": 5,
@@ -53,7 +54,8 @@
             "noOfRatings": "9",
             "prices": "₹ 2040",
             "preOffer":"₹ 6799",
-            "discount":"70% off"
+            "discount":"70",
+            "newest":true
         },
         {
             "id": 6,
@@ -64,7 +66,8 @@
             "noOfRatings": "52",
             "prices": "₹ 1980",
             "preOffer":"₹ 5999",
-            "discount":"67% off"
+            "discount":"67",
+            "bestSeller":  true
         },
         {
             "id": 7,
@@ -75,7 +78,8 @@
             "noOfRatings": "18",
             "prices": "₹ 4236",
             "preOffer":"₹ 5295",
-            "discount":"20% off"
+            "discount":"20",
+            "newest":true
         },
         {
             "id": 8,
@@ -86,7 +90,8 @@
             "noOfRatings": "7",
             "prices": "₹ 4236",
             "preOffer":"₹ 5295",
-            "discount":"20% off"
+            "discount":"20",
+            "bestSeller":  true
         },
         {
             "id": 9,
@@ -97,7 +102,8 @@
             "noOfRatings": "100",
             "prices": "₹ 1824",
             "preOffer":"₹ 2499",
-            "discount":"27% off"
+            "discount":"27",
+            "bestSeller":  true
         },
         {
             "id": 10,
@@ -108,7 +114,8 @@
             "noOfRatings": "50",
             "prices": "₹ 16318",
             "preOffer":"₹ 20398",
-            "discount":"20% off"
+            "discount":"20",
+            "newest":true
         },
         {
             "id": 11,
@@ -119,7 +126,8 @@
             "noOfRatings": "50",
             "prices": "₹ 3570",
             "preOffer":"₹ 5950",
-            "discount":"40% off"
+            "discount":"40",
+            "bestSeller":  true
         },
         {
             "id": 12,
@@ -130,7 +138,8 @@
             "noOfRatings": "21",
             "prices": "₹ 18000",
             "preOffer":"₹ 22500",
-            "discount":"20% off"
+            "discount":"20",
+            "newest":true
         },
         {
             "id": 13,
@@ -141,7 +150,9 @@
             "noOfRatings": "19",
             "prices": "₹ 5075",
             "preOffer":"₹ 7250",
-            "discount":"30% off"
+            "discount":"30",
+            "bestSeller":  true,
+            "newest":true
         },
         {
             "id": 14,
@@ -152,7 +163,7 @@
             "noOfRatings": "2",
             "prices": "₹ 6997",
             "preOffer":"₹ 9995",
-            "discount":"30% off"
+            "discount":"30"
         },
         {
             "id": 15,
@@ -163,7 +174,8 @@
             "noOfRatings": "90",
             "prices": "₹ 22499",
             "preOffer":"₹ 22499",
-            "discount":"10% off"
+            "discount":"10",
+            "bestSeller":  true
         },
         {
             "id": 16,
@@ -174,7 +186,8 @@
             "noOfRatings": "2",
             "prices": "₹ 1995",
             "preOffer":"₹ 4750",
-            "discount":"58% off"
+            "discount":"58",
+            "newest":true
         },
         {
             "id": 17,
@@ -185,7 +198,8 @@
             "noOfRatings": "28",
             "prices": "₹ 500",
             "preOffer":"₹ 1999",
-            "discount":"75% off"
+            "discount":"75",
+            "bestSeller":  true
         },
         {
             "id": 18,
@@ -196,7 +210,8 @@
             "noOfRatings": "17",
             "prices": "₹ 25735",
             "preOffer":"₹ 25995",
-            "discount":"1% off"
+            "discount":"1",
+            "newest":true
         },
         {
             "id": 19,
@@ -207,7 +222,7 @@
             "noOfRatings": "10",
             "prices": "₹ 9797",
             "preOffer":"₹ 13995",
-            "discount":"30% off"
+            "discount":"30"
         },
         {
             "id": 20,
@@ -218,7 +233,8 @@
             "noOfRatings": "80",
             "prices": "₹ 10796",
             "preOffer":"₹ 11995",
-            "discount":"10% off"
+            "discount":"10",
+            "bestSeller":  true
         }
         
     ]
