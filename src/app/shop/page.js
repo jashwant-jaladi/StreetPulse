@@ -18,7 +18,7 @@ const handleHeartClick = (index) => {
 };
 
 useEffect(() => {
-  axios.get('http://localhost:4000/Shop').then((res) => {
+  axios.get('http://localhost:3000/api/shop').then((res) => {
     setProducts(res.data);
   }),[]
 })
@@ -31,7 +31,7 @@ useEffect(() => {
     <div className='bg-black text-slate-300 p-14 pt-10 grid grid-cols-4 gap-14 place-items-center'>
     {products.map((item, index)=>
     (
-      <div key={item.id} className='border-2 border-yellow-700 w-[320px] p-3 rounded-xl overflow-hidden'>
+      <div key={item._id} className='border-2 border-yellow-700 w-[320px] p-3 rounded-xl overflow-hidden'>
       <Image src={item.image} width={300} height={300} className='w-[300px] h-[300px] object-center object-cover transition-transform ease-linear duration-300 hover:scale-105'/>
       
       <div className='flex justify-between gap-4'>

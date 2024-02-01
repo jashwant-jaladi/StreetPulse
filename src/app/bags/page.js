@@ -13,7 +13,7 @@ const [bags,setBags]=useState([])
 
 
 useEffect(() => {
-  axios.get('http://localhost:4000/Shop').then((res) => {
+  axios.get('http://localhost:3000/api/shop').then((res) => {
     setBags(res.data);
   }),[]
 })
@@ -43,7 +43,7 @@ useEffect(() => {
     {bags.map((item)=>
     (
       item.category=="bags"&&
-      <div key={item.id} className='border-2 border-yellow-700 w-[320px] p-3 rounded-xl overflow-hidden'>
+      <div key={item._id} className='border-2 border-yellow-700 w-[320px] p-3 rounded-xl overflow-hidden'>
       <Image src={item.image} width={300} height={300} className='w-[300px] h-[300px] object-center object-cover transition-transform ease-linear duration-300 hover:scale-105'/>
       
       <div className='flex justify-between gap-4'>

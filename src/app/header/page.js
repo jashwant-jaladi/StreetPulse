@@ -52,7 +52,7 @@ const Header = () => {
               </Link>
             </li>
             <li className="list-none hover:text-white">
-              <Link href={"/"}>
+              <Link href={"/header/wishlist"}>
                 <Image src={"/heart.svg"} width={30} height={30} />
               </Link>
             </li>

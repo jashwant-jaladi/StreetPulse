@@ -13,7 +13,7 @@ const StoreOverview = () => {
   const [activeSort, setActiveSort] = useState(""); 
 
   useEffect(() => {
-    axios.get("http://localhost:4000/Shop")
+    axios.get("http://localhost:3000/api/shop")
       .then((res) => {
         const sortedData = res.data
         setData(sortedData);

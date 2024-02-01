@@ -8,7 +8,7 @@ import Link from 'next/link'
 const Blogdisplay = () => {
 const [perPage,setPerPage]=useState([])
 useEffect(() => {
-    axios.get('http://localhost:8080/blogs').then((res) => {
+    axios.get('http://localhost:3000/api/blogs').then((res) => {
         setPerPage(res.data.slice(0,3));
 
     })},[])
@@ -18,7 +18,7 @@ useEffect(() => {
     <div className='bg-black flex flex-row w-[100vw] justify-center gap-20'>
     {perPage.map((item) =>
         (
-        <div key={item.id} className='w-[25vw] '>
+        <div key={item._id} className='w-[25vw] '>
         <div className='pt-16 '>
         <div className='border-2 border-yellow-600 rounded-lg overflow-hidden cursor-pointer grow shrink aspect-[2/1]  '>
         <img src={item.image} className='object-top object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg '/>

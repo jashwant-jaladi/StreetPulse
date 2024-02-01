@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 
 async function getData() {
-  const res = await fetch('http://localhost:8000/faqs', {next:{revalidate:36000}})
+  const res = await fetch('http://localhost:3000/api/faqs', {cache: 'no-store'}, { next: { revalidate: 3600 } })
   
  
   if (!res.ok) {

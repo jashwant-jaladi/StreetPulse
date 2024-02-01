@@ -12,7 +12,7 @@ const Blog = () => {
   const [perPage, setPerPage] = useState([]);
 
 useEffect(() => {
-    axios.get('http://localhost:8080/blogs').then((res) => {
+    axios.get('http://localhost:3000/api/blogs').then((res) => {
         setBlogData(res.data);
         setPerPage(res.data.slice(0,3));
 
@@ -33,10 +33,10 @@ const pageHandler = (page) => {
         <div>
         {perPage.map((item) =>
         (
-        <div key={item.id} className='w-[50vw] ml-20'>
+        <div key={item._id} className='w-[50vw] ml-20'>
         <div className='pt-20 '>
         <div className='border-2 border-yellow-600 rounded-lg overflow-hidden cursor-pointer grow shrink aspect-[2/1]  '>
-        {item.id==5 ? <img src={item.image} className='w-full h-full object-center object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg '/> : <img src={item.image} className='w-full h-full object-top object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg '/>}
+        {item._id=="65bb821ed99f677359eb1ba2" ? <img src={item.image} className='w-full h-full object-center object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg '/> : <img src={item.image} className='w-full h-full object-top object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg '/>}
         </div>
         </div>
         <div className='w-[700px]'>

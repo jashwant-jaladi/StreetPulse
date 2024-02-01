@@ -3,14 +3,14 @@ import React from 'react'
 
 
 const BlogDetails = async({params}) => {
-    const posts = await fetch(`http://localhost:8080/blogs/${params.slug}`, { next: { revalidate: 0 } }).then((res) => res.json())
+    const posts = await fetch(`http://localhost:3000/api/blogs/${params._id}`).then((res) => res.json())
     return(
         <div className='flex flex-row bg-black text-yellow-400'>
         <div className='bg-black text-yellow-600 p-10 pb-20'>
-        <div key={posts.id} className='w-[50vw] ml-20'>
+        <div key={posts._id} className='w-[50vw] ml-20'>
         <div className='pt-20 '>
         <div className='border-2 border-yellow-600 rounded-lg overflow-hidden cursor-pointer grow shrink aspect-[2/1]  '>
-        {posts.id==5 ? <img src={`/blog/${posts.image}`} className='w-full h-full object-center object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg '/> : <img src={posts.image} className='w-full h-full object-top object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg '/>}
+        {posts._id==5 ? <img src={`/blog/${posts.image}`} className='w-full h-full object-center object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg '/> : <img src={posts.image} className='w-full h-full object-top object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg '/>}
         </div>
         </div>
         <div className='w-[700px]'>
