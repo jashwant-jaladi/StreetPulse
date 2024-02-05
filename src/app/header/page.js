@@ -1,6 +1,8 @@
+"use client"
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
 
 const Header = () => {
   return (
@@ -15,6 +17,9 @@ const Header = () => {
           </button>
           <button className="hover:text-yellow-400">
             <Link href={"/myAccount"}>My Account</Link>
+          </button>
+          <button className="hover:text-yellow-400" onClick={()=>signOut()}>
+            Logout!!
           </button>
         </div>
       </div>

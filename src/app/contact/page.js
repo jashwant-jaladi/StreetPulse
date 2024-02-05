@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { submitContact } from "./actions";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Contact = () => {
+  const[toastText, setToastText]=useState("")
   async function handleSubmit(event) {
     event.preventDefault();
     try {
@@ -16,30 +18,43 @@ const Contact = () => {
         email: formData.get("email"),
         opinion: formData.get("opinion"),
       });
-
-      if (response.status === 200) {
-        toast.success("message sent successfully", {
+      const showToast = (errorMessage) => {
+        toast.error(errorMessage, {
           position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+      };
+      const showSuccessToast = (errorMessage) => {
+        toast.success(errorMessage, {
+          position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+      };
+      if (!formData.get("firstName") || !formData.get("lastName") || !formData.get("email") || !formData.get("opinion")) {
+        setToastText("Please fill all the fields");
+        setToastText((prevError) => {
+          showToast(prevError); // Using a callback to access the updated state
+          return prevError;
         });
       } else {
-        toast.error("message is not sent successfully!! Please try again", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
+        setToastText("Message sent successfully!! Thank you!!");
+        showSuccessToast(toastText);
+        event.target.reset();
+        
       }
+     
     } catch (e) {
       console.error(e);
     }

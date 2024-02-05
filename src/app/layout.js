@@ -3,6 +3,7 @@ import './globals.css'
 import { Providers } from './providers'
 import Header from './header/page'
 import Footer from './footer/page'
+import { AuthProvider } from './NextProviders'
 
 
 const salsa = Space_Grotesk({ subsets: ['latin'], weight: '400' })
@@ -16,7 +17,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={salsa.className}>
         <Header/>
-        <Providers>{children}</Providers>
+       <AuthProvider><Providers>{children}</Providers></AuthProvider>
         <Footer/>
         </body>
     </html>
