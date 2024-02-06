@@ -3,8 +3,20 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
+import { useState } from "react";
+import {Box, Button } from '@chakra-ui/react';
+import SearchDialog from "../searchComponents/page";
 
 const Header = () => {
+  const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
+
+  const openSearchDialog = () => {
+    setIsSearchDialogOpen(true);
+  };
+
+  const closeSearchDialog = () => {
+    setIsSearchDialogOpen(false);
+  };
   return (
     <div>
       <div className="flex flex-row align-middle p-3 bg-black text-white text-xs border-b-2 border-white">
@@ -47,9 +59,14 @@ const Header = () => {
           </div>
           <div className="flex flex-row gap-5 my-auto mx-auto mr-8 bg-black text-yellow-400">
             <li className="list-none hover:text-white">
-              <Link href={"/"}>
-                <Image src={"/search.svg"} width={30} height={30} />
-              </Link>
+            <Box>
+            <li className="list-none hover:text-white">
+            <Button onClick={openSearchDialog}>
+            <Image src={"/search.svg"} width={30} height={30} />
+           </Button>
+          </li>
+          <SearchDialog isOpen={isSearchDialogOpen} onClose={closeSearchDialog} />
+          </Box>
             </li>
             <li className="list-none hover:text-white">
               <Link href={"/"}>
