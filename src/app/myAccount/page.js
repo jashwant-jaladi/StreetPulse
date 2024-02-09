@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import ModalPassword from "./forgotPassword";
 
 const MyAccount = () => {
   const [name, setName] = useState("");
@@ -125,9 +126,7 @@ const MyAccount = () => {
                 className="p-2 border-2 border-yellow-400 rounded-lg  bg-black"
                 onChange={(e) => setLoginPassword(e.target.value)}
               />
-              <a className="text-right text-sm text-gray-200 cursor-pointer underline hover:text-yellow-400">
-                Forgot Password?
-              </a>
+              <ModalPassword/>
               <button className="m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black  text-white hover:bg-yellow-700">
                   Submit
                 </button>

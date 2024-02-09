@@ -16,7 +16,7 @@ const handleHeartClick = (index) => {
   newHeartStates[index] = !newHeartStates[index];
   setHeartStates(newHeartStates);
 };
-
+console.log(heartStates)
 useEffect(() => {
   axios.get('http://localhost:3000/api/shop').then((res) => {
     setProducts(res.data);
