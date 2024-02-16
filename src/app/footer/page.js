@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-
+import Newsletter from './Newsletter'
 const Footer = () =>{
   return (
     <>
@@ -37,8 +37,8 @@ const Footer = () =>{
         </div>
         <div className='list-none flex flex-col gap-5'>
             <li className='font-bold flex align-middle justify-center'>NEWSLETTER</li>
-            <input type="text" placeholder='Enter your email' className='border-2 border-yellow-400 px-3 py-2 bg-black text-yellow-400'/>
-            <button className="border-2 border-yellow-400 p-2 w-auto rounded-lg hover:bg-yellow-500 hover:text-black hover:font-bold">Subscibe</button>
+            <Newsletter/>
+            
         </div>
     </div>
     <div className='flex flex-row gap-5 justify-center align-middle bg-black pb-8'>
