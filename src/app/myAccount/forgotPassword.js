@@ -25,7 +25,7 @@ function ModalPassword() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = React.useState("");
 
-  const handleSend = () => {
+  const handleSend = (e) => {
     if (email.trim() === "") {
       toast.error("Please enter your email.", {
         theme: "dark",
@@ -36,7 +36,9 @@ function ModalPassword() {
       });
       setTimeout(() => {
         onClose();
+        setEmail("")
       },1000)
+    
       
     }
     

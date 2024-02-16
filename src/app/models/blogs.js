@@ -28,6 +28,6 @@ const {Schema}= mongoose
         required:true
     },
 
-}, {timeStamps:true})
+}, {timestamps:true})
 
 export default mongoose.models.blog||mongoose.model("blog",blogSchema)

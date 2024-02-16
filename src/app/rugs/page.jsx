@@ -53,7 +53,7 @@ useEffect(() => {
       <div className='flex gap-3 mt-1'>
       <span className='font-semibold'>{item.prices}</span>
       <span className='line-through text-slate-500'>{item.preOffer}</span>
-      <span className='text-green-500'>{item.discount}</span>
+      <span className='text-green-500'>{item.discount}% off</span>
       </div>
       </div>
     ))} 

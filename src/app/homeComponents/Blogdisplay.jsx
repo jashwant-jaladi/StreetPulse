@@ -26,8 +26,8 @@ useEffect(() => {
         </div>
         <div>
         <p className='pt-3 pl-3 text-gray-500'>By {item.name} on {item.date}</p>
-        <h2 className='pt-3 pl-3 text-2xl font-bold text-yellow-400 cursor-pointer'><Link href={'/blogs/'+item.id} rel="noopener noreferrer" target="_blank">{item.title}</Link></h2>
-        <p className='pt-3 pl-3 text-white'>{item.content.slice(0,310)}...<Link href={'/blogs/'+item.id} className='text-blue-500 underline hover:text-blue-300'rel="noopener noreferrer" target="_blank">Read More</Link></p>
+        <h2 className='pt-3 pl-3 text-2xl font-bold text-yellow-400 cursor-pointer'><Link href={'/blogs/'+item._id} rel="noopener noreferrer" target="_blank">{item.title}</Link></h2>
+        <p className='pt-3 pl-3 text-white'>{item.content.slice(0,310)}...<Link href={'/blogs/'+item._id} className='text-blue-500 underline hover:text-blue-300'rel="noopener noreferrer" target="_blank">Read More</Link></p>
         </div>
         </div>
         )
