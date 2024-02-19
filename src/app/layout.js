@@ -4,6 +4,8 @@ import { Providers } from './providers'
 import Header from './header/page'
 import Footer from './footer/page'
 import { AuthProvider } from './NextProviders'
+import { AppProvider } from './context/productContext'
+import { WishlistProvider } from './context/wishlistContext'
 
 
 const salsa = Space_Grotesk({ subsets: ['latin'], weight: '400' })
@@ -17,7 +19,15 @@ export default function RootLayout({ children }) {
       </head>
       <body className={salsa.className}>
         <Header/>
-       <AuthProvider><Providers>{children}</Providers></AuthProvider>
+      <AppProvider>
+        <WishlistProvider>
+        <AuthProvider>
+          <Providers>
+            {children}
+            </Providers>
+            </AuthProvider>
+            </WishlistProvider>
+            </AppProvider>
         <Footer/>
         </body>
     </html>

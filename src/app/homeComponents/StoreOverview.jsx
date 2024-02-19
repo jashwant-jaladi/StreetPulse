@@ -1,28 +1,25 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import {  useState, useEffect } from "react";
+
 import Image from "next/image";
 import { StarIcon } from "@chakra-ui/icons";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import { useProductContext } from "../context/productContext";
+
 
 const StoreOverview = () => {
+  const products=useProductContext()
   const [getdata, setData] = useState([]);
   const [display, setDisplay] = useState([]);
   const [activeSort, setActiveSort] = useState(""); 
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/shop")
-      .then((res) => {
-        const sortedData = res.data
-        setData(sortedData);
-        setDisplay(sortedData);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+    setData(products);
+    setDisplay(products);
   }, []);
+
 
   const handleSort = (sortingOption) => {
     let sortedData;
@@ -49,6 +46,9 @@ const StoreOverview = () => {
     setActiveSort(sortingOption);
     
   };
+
+
+
   var settings = {
     dots: true,
     infinite: false,

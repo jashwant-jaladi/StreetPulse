@@ -1,31 +1,32 @@
 "use client"
 import React from 'react'
-import axios from 'axios'
-import { useState, useEffect } from 'react'
+import { useState} from 'react'
 import Image from 'next/image'
 import { StarIcon } from '@chakra-ui/icons'
 import Shopnav from './shopnav'
+import Link from 'next/link'
+import { useWishlist } from '../context/wishlistContext'
+import { useProductContext } from '../context/productContext'
 
 
 const Shop = () => {
-
-const [products,setProducts]=useState([])
+  const products=useProductContext()
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
 const [heartStates, setHeartStates] = useState(products.map(() => false));
-const handleHeartClick = (index) => {
+const handleHeartClick = (index, productId) => {
   const newHeartStates = [...heartStates];
   newHeartStates[index] = !newHeartStates[index];
   setHeartStates(newHeartStates);
+
+  if (newHeartStates[index]) {
+    addToWishlist(productId);
+  } else {
+    removeFromWishlist(productId);
+  }
 };
-console.log(heartStates)
-useEffect(() => {
-  axios.get('http://localhost:3000/api/shop').then((res) => {
-    setProducts(res.data);
-  }),[]
-})
+
 
   return (
-    
-   
     <div>
     <Shopnav/>
     <div className='bg-black text-slate-300 p-14 pt-10 grid grid-cols-4 gap-14 place-items-center'>
@@ -35,8 +36,8 @@ useEffect(() => {
       <Image src={item.image} width={300} height={300} className='w-[300px] h-[300px] object-center object-cover transition-transform ease-linear duration-300 hover:scale-105'/>
       
       <div className='flex justify-between gap-4'>
-      <div className='line-clamp-1 pt-3 mb-1 font-semibold text-md w-[270px] cursor-pointer'>{item.name}</div>
-      <button className='pt-2 flex items-center' onClick={() => handleHeartClick(index)}><Image src={heartStates[index] ? "/heart-clicked.png" : "/heart.svg"} width={25} height={25}/></button>
+      <div className='line-clamp-1 pt-3 mb-1 font-semibold text-md w-[270px] cursor-pointer'><Link href={'/shop/'+item._id}>{item.name}</Link></div>
+      <button className='pt-2 flex items-center' onClick={() => handleHeartClick(index, item._id)}><Image src={heartStates[index] ? "/heart-clicked.png" : "/heart.svg"} width={25} height={25}/></button>
       </div>
      
      {item.rating<=3? <span className='inline bg-red-600 p-1 font-semibold'>

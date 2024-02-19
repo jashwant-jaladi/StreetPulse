@@ -1,5 +1,4 @@
 "use server"
-import { revalidateTag } from 'next/cache'
 import React from 'react'
 
 import {
@@ -50,6 +49,7 @@ const Faq = async() => {
       ))}
       </div>
     </>
+    
   )
 }
 
