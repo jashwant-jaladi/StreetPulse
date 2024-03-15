@@ -21,7 +21,7 @@ const Newsletter = () => {
   }
     return (
     <>
-    <input type="text" onChange={(e) => setEmail(e.target.value)} value={email} placeholder='Enter your email' className='border-2 border-yellow-400 px-3 py-2 bg-black text-yellow-400'/>
+    <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} placeholder='Enter your email' className='border-2 border-yellow-400 px-3 py-2 bg-black text-yellow-400'/>
     <button className="border-2 border-yellow-400 p-2 w-auto rounded-lg hover:bg-yellow-500 hover:text-black hover:font-bold" onClick={handleClick}>Subscibe</button>
     <ToastContainer/>
     </>
