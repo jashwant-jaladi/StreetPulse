@@ -13,11 +13,11 @@ const About = () => {
     <div className='w-1/2'>
     <p className='p-5'>Street Pulse emerged from the vibrant energy of urban landscapes, where creativity, individuality, and self-expression collide. Born out of a desire to capture the heartbeat of street culture, the brand seamlessly blends fashion, art, and the raw spirit of the streets to create a unique identity.</p>
     <p className='px-5 pb-5'>Founded by a group of passionate designers and street enthusiasts, Street Pulse began as a small, underground project, fueled by the shared love for the eclectic styles and diverse influences found in urban environments. The founders aimed to break away from mainstream fashion norms and offer a platform for individuals who embrace authenticity and street authenticity.</p>
-    <p className='px-5 pb-5'>Street Pulse's design philosophy revolves around the concept of constant evolution. Inspired by the ever-changing dynamics of street culture, the brand introduces fresh, edgy designs that resonate with the pulse of the streets. From graphic tees that tell stories to cutting-edge accessories that redefine urban fashion, each piece is a statement of rebellion and individuality.</p>
+    <p className='px-5 pb-5'>Street Pulses design philosophy revolves around the concept of constant evolution. Inspired by the ever-changing dynamics of street culture, the brand introduces fresh, edgy designs that resonate with the pulse of the streets. From graphic tees that tell stories to cutting-edge accessories that redefine urban fashion, each piece is a statement of rebellion and individuality.</p>
     </div>
     <div>
         <div className='p-5 mx-40 border-2 border-yellow-400 rounded-lg'>
-        <Image src={'/about-2.avif'} width={250} height={250} />
+        <Image src={'/about-2.avif'} width={250} height={250} alt='about Image' />
         </div>
     </div>
     </div>
@@ -25,7 +25,7 @@ const About = () => {
 
     <div className='flex flex-row pt-20'>
     <div className='p-5 mx-40 border-2 border-yellow-400 rounded-lg w-1/2'>
-        <Image src={'/about-3.avif'} width={250} height={250} />
+        <Image src={'/about-3.avif'} width={250} height={250} alt='about Image' />
         </div>
     
     <div>

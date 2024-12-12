@@ -1,25 +1,52 @@
-import React from 'react'
+"use client";
+import React from "react";
+import { useRouter } from "next/navigation"; // To use Next.js router
 
-const Pagination = ({data, pageHandler}) => {
-    let pages=[]
-    for(let i=1;i< Math.ceil(data.length/3);i++)
-    {
-        pages.push(i)   
+const Pagination = ({ currentPage, totalPages }) => {
+  const router = useRouter();
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      router.push(`?page=${page}`); // Update the URL with the new page number
     }
-    console.log(pages)
-    return (
-        <div>
-            <center className='flex flex-row justify-center content-center p-20 text-lg gap-4 '>
-            <div className=' hover:text-white border-2 border-yellow-600 p-3 rounded-lg cursor-pointer'>previous</div>
-            {pages.map((item) =>
-            (
-                <button key={item} onClick={()=>pageHandler(item)} className="bg-black text-yellow-600  hover:text-white border-2 border-yellow-600 p-3 flex flex-row justify-center content-center rounded-lg">{item} &nbsp; </button>
-            )
-            )}
-            <div className=' hover:text-white border-2 border-yellow-600 p-3 rounded-lg cursor-pointer'>next</div>
-            </center>
-        </div>
-    )
-}
-   
-export default Pagination
+  };
+
+  return (
+    <div className="flex justify-center space-x-4 mt-10">
+      {/* Previous Button */}
+      <button
+        onClick={() => handlePageChange(currentPage - 1)}
+        className={`border-2 border-yellow-600 p-3 rounded-lg cursor-pointer ${
+          currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+      >
+        Previous
+      </button>
+
+      {/* Page Numbers */}
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <button
+          key={page}
+          onClick={() => handlePageChange(page)}
+          className={`bg-black text-yellow-600 hover:text-white border-2 border-yellow-600 p-3 flex flex-row justify-center content-center rounded-lg ${
+            page === currentPage ? "font-bold" : ""
+          }`}
+        >
+          {page}
+        </button>
+      ))}
+
+      {/* Next Button */}
+      <button
+        onClick={() => handlePageChange(currentPage + 1)}
+        className={`border-2 border-yellow-600 p-3 rounded-lg cursor-pointer ${
+          currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+      >
+        Next
+      </button>
+    </div>
+  );
+};
+
+export default Pagination;

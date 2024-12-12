@@ -1,36 +1,80 @@
-import React from 'react'
+import React from 'react';
+import { PrismaClient } from '@prisma/client';
+import Image from 'next/image';
 
+const prisma = new PrismaClient();
 
-const BlogDetails = async({params}) => {
-  const data = await fetch(`http://localhost:3000/api/blogs/${params.id}`, {cache: 'no-store'}, { next: { revalidate: 3600 } })
-  const posts = await data.json()
-  return ( 
-    <div className='flex flex-row bg-black text-yellow-400'>
-      <div className='bg-black text-yellow-600 p-10 pb-20'>
-        <div key={posts._id} className='w-[50vw] ml-20'>
-          <div className='pt-20 '>
-            <div className='border-2 border-yellow-600 rounded-lg overflow-hidden cursor-pointer grow shrink aspect-[2/1]  '>
-              {posts._id == 5 ? <img src={`/blog/${posts.image}`} className='w-full h-full object-center object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg ' /> : <img src={posts.image} className='w-full h-full object-top object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg ' />}
+const BlogDetails = async ({ params }) => {
+  // Fetch blog post by ID from the database
+  const post = await prisma.blogs.findUnique({
+    where: { id: parseInt(params.id, 10) }, // Assuming the ID is a number
+  });
+
+  // If no post is found, handle it gracefully
+  if (!post) {
+    return (
+      <div className="bg-black text-yellow-400 h-screen flex items-center justify-center">
+        <h1 className="text-3xl font-bold">Post Not Found</h1>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-row bg-black text-yellow-400">
+      {/* Blog Content */}
+      <div className="bg-black text-yellow-600 p-10 pb-20">
+        <div className="w-[50vw] ml-20">
+          {/* Blog Image */}
+          <div className="pt-20">
+            <div className="border-2 border-yellow-600 rounded-lg overflow-hidden cursor-pointer grow shrink aspect-[2/1]">
+              <Image
+                src={post.image}
+                alt={post.title}
+                width={800}
+                height={500}
+                className="w-full h-full object-center object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg"
+              />
             </div>
           </div>
-          <div className='w-[700px]'>
-            <p className='pt-5 pl-3 text-gray-500'>By {posts.name} on {posts.date}</p>
-            <h2 className='pt-5 pl-3 text-2xl font-bold'>{posts.title}</h2>
-            <p className='pt-5 pl-3 text-white'>{posts.content}</p>
+
+          {/* Blog Details */}
+          <div className="w-[700px]">
+            <p className="pt-5 pl-3 text-gray-500">
+              By {post.name} on {new Date(post.date).toLocaleDateString()}
+            </p>
+            <h2 className="pt-5 pl-3 text-2xl font-bold">{post.title}</h2>
+            <p className="pt-5 pl-3 text-white">{post.content}</p>
           </div>
-          <h3 className='mt-10 mb-5 text-xl'>Comments :</h3>
-          <div className='p-10 border-2 border-yellow-600 w-[700px]'></div>
-          <div className='flex flex-col'>
-            <h3 className='mt-10 mb-5 text-xl'>Leave a comment :</h3>
-            <textarea className='bg-black p-2 border-2 border-yellow-600 w-[700px]' placeholder="Enter your comment here!!"></textarea>
-            <button className='w-40 border-2 border-yellow-600 rounded-2xl p-2 mt-10'>Submit</button>
+
+          {/* Comments Section */}
+          <h3 className="mt-10 mb-5 text-xl">Comments :</h3>
+          <div className="p-10 border-2 border-yellow-600 w-[700px]">
+            {/* Placeholder for Comments */}
+          </div>
+
+          {/* Leave a Comment */}
+          <div className="flex flex-col">
+            <h3 className="mt-10 mb-5 text-xl">Leave a comment :</h3>
+            <textarea
+              className="bg-black p-2 border-2 border-yellow-600 w-[700px]"
+              placeholder="Enter your comment here!!"
+            ></textarea>
+            <button className="w-40 border-2 border-yellow-600 rounded-2xl p-2 mt-10">
+              Submit
+            </button>
           </div>
         </div>
       </div>
-      <div className='w-1/2'>
-        <input type="text" placeholder='search' className='p-3 m-auto mt-20 flex justify-center content-center border-2 border-yellow-400 rounded-lg bg-black text-yellow-400' />
-        <div className='grid place-content-center list-none mt-10 gap-4 text-xl'>
-          <h3 className='text-3xl font-bold p-5'>Categories</h3>
+
+      {/* Sidebar */}
+      <div className="w-1/2">
+        <input
+          type="text"
+          placeholder="Search"
+          className="p-3 m-auto mt-20 flex justify-center content-center border-2 border-yellow-400 rounded-lg bg-black text-yellow-400"
+        />
+        <div className="grid place-content-center list-none mt-10 gap-4 text-xl">
+          <h3 className="text-3xl font-bold p-5">Categories</h3>
           <li>Fashion</li>
           <hr />
           <li>StreetStyle</li>
@@ -40,24 +84,21 @@ const BlogDetails = async({params}) => {
           <li>Life Style</li>
           <hr />
           <li>DIY & Crafts</li>
-          <h3 className='text-3xl font-bold p-5 mt-10'>Featured Products</h3>
-          <h3 className='text-3xl font-bold p-5 mt-10'>Tags</h3>
-          <div className='grid grid-rows-4 grid-flow-col gap-4 text-sm '>
-            <button className='border-2 border-yellow-700 rounded-3xl p-2'>Men</button>
-            <button className='border-2 border-yellow-700 rounded-3xl p-2'>Women</button>
-            <button className='border-2 border-yellow-700 rounded-3xl p-2'>Fashion</button>
-            <button className='border-2 border-yellow-700 rounded-3xl p-2'>LifeStyle</button>
-            <button className='border-2 border-yellow-700 rounded-3xl p-2'>Denim</button>
-            <button className='border-2 border-yellow-700 rounded-3xl p-2'>StreetStyle</button>
-            <button className='border-2 border-yellow-700 rounded-3xl p-2'>Crafts</button>
-
+          <h3 className="text-3xl font-bold p-5 mt-10">Featured Products</h3>
+          <h3 className="text-3xl font-bold p-5 mt-10">Tags</h3>
+          <div className="grid grid-rows-4 grid-flow-col gap-4 text-sm">
+            <button className="border-2 border-yellow-700 rounded-3xl p-2">Men</button>
+            <button className="border-2 border-yellow-700 rounded-3xl p-2">Women</button>
+            <button className="border-2 border-yellow-700 rounded-3xl p-2">Fashion</button>
+            <button className="border-2 border-yellow-700 rounded-3xl p-2">LifeStyle</button>
+            <button className="border-2 border-yellow-700 rounded-3xl p-2">Denim</button>
+            <button className="border-2 border-yellow-700 rounded-3xl p-2">StreetStyle</button>
+            <button className="border-2 border-yellow-700 rounded-3xl p-2">Crafts</button>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
+};
 
-}
-
-
- export default BlogDetails
+export default BlogDetails;

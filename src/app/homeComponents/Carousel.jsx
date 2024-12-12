@@ -1,6 +1,6 @@
+"use client"
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import CircleIcon from "../Icons/CircleIcon";
