@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import Pagination from './pagination';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/libs/db';
 import Image from 'next/image';
 import { notFound } from 'next/navigation'; // For handling 404 pages
 
-const prisma = new PrismaClient();
+
 
 const ITEMS_PER_PAGE = 3;
 

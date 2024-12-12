@@ -31,51 +31,45 @@ const MyAccount = () => {
         theme: "dark",
     });
   };
-  const handleSubmit = async (e) => {
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    setError("")
+    setError("");
+  
+    // Ensure all fields are filled
     if (!name || !email || !password || !confirmPassword) {
-      setError("Please fill all the fields");
-      setError((prevError) => {
-        showToast(prevError); // Using a callback to access the updated state
-        return prevError;
-      });
+      showToast("Please fill all the fields");
       return;
     }
+  
+    // Ensure the passwords match
+    if (password !== confirmPassword) {
+      showToast("Passwords do not match");
+      return;
+    }
+  
     try {
-      const resUser = await fetch("api/userExists", {
+      // Send the request with only the necessary fields (without confirmPassword)
+      const res = await fetch("/api/register", { // Correct path
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ name, email, password }), // Do not send confirmPassword here
       });
-      const { user } = await resUser.json();
-      if (user) {
-        setError("User already exists try with different email address");
-        setError((prevError) => {
-          showToast(prevError); 
-          return prevError;
-        });
-        return;
-      }
-      const res = await fetch("api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password, confirmPassword }),
-      });
+  
       if (res.ok) {
-        const form = e.target;
-        form.reset();
+        e.target.reset(); // Reset form on success
+        toast.success("Registration successful!");
       } else {
-        console.log("user registration failed");
+        const errorData = await res.json();
+        showToast(errorData.message || "Registration failed");
       }
     } catch (error) {
-      console.log("error occurred while registering the user", error);
+      console.error("Error occurred while registering the user:", error);
+      showToast("An unexpected error occurred");
     }
   };
+  
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -134,7 +128,7 @@ const MyAccount = () => {
             </TabPanel>
 
             <TabPanel>
-              <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+              <form className="flex flex-col gap-5" onSubmit={handleRegisterSubmit}>
                 <input
                   type="text"
                   placeholder="Username"

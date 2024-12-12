@@ -1,8 +1,8 @@
 import React from 'react';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/libs/db';
 import Image from 'next/image';
 
-const prisma = new PrismaClient();
+
 
 const BlogDetails = async ({ params }) => {
   // Fetch blog post by ID from the database
