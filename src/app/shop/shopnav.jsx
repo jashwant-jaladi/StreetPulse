@@ -10,10 +10,12 @@ const Shopnav = () => {
 
   return (
     <div>
-      <div className='bg-[url("/about-2.avif")] h-40 bg-bottom bg-cover border-b-2 border-yellow-400'></div>
-      <div className='text-white font-bold grid place-content-center text-5xl absolute top-[190px] left-[610px]'>
-        {currentCategory ? currentCategory.toUpperCase() : 'Shop'}
-      </div>
+      <div className="bg-[url('/about-2.avif')] h-40 bg-bottom bg-cover border-b-2 border-yellow-400 flex items-center justify-center relative">
+  <div className="text-white font-bold text-5xl">
+    {currentCategory ? currentCategory.toUpperCase() : 'STREET PULSE STORE'}
+  </div>
+</div>
+
       <div className='flex flex-row bg-black text-yellow-400'>
         <nav className='bg-black text-yellow-400 flex flex-row gap-4 pt-8 px-16'>
           <Link href="/shop" className='hover:text-white'>All Products</Link>

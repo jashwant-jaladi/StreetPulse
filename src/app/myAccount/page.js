@@ -1,5 +1,5 @@
 "use client";
-import { useState} from "react";
+import { useState } from "react";
 import React from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,51 +14,57 @@ const MyAccount = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [loginEmail, setLoginEmail] = useState("")
-  const [loginPassword, setLoginPassword] = useState("")
-  const [loginError, setLoginError] = useState("")
+  const [loginEmail, setLoginEmail] = useState(""); // Updated: Use this for login email
+  const [loginPassword, setLoginPassword] = useState(""); // Updated: Use this for login password
+  
+  const router = useRouter();
 
-  const router=useRouter()
-   const showToast = (errorMessage) => {
+  // Function to show error toast notifications
+  const showToast = (errorMessage) => {
     toast.error(errorMessage, {
       position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
     });
   };
+
+  // Handle Registration Form Submission
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setError("");
-  
+
     // Ensure all fields are filled
     if (!name || !email || !password || !confirmPassword) {
       showToast("Please fill all the fields");
       return;
     }
-  
+
     // Ensure the passwords match
     if (password !== confirmPassword) {
       showToast("Passwords do not match");
       return;
     }
-  
+
     try {
-      // Send the request with only the necessary fields (without confirmPassword)
-      const res = await fetch("/api/register", { // Correct path
+      const res = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password }), // Do not send confirmPassword here
+        body: JSON.stringify({ name, email, password }),
       });
-  
+
       if (res.ok) {
-        e.target.reset(); // Reset form on success
+        // Reset form state after success
+        setName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
         toast.success("Registration successful!");
       } else {
         const errorData = await res.json();
@@ -69,30 +75,29 @@ const MyAccount = () => {
       showToast("An unexpected error occurred");
     }
   };
-  
 
+  // Handle Login Form Submission
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const res=await signIn("credentials", {
-        email, password, redirect:false
-      })
-      if(res.error)
-      {
-        setLoginError("Invalid credentials")
-        setLoginError((prevError) => {
-          showToast(prevError); 
-          return prevError;
-        });
+    try {
+      const res = await signIn("credentials", {
+        email: loginEmail, // Use loginEmail from state
+        password: loginPassword, // Use loginPassword from state
+        redirect: false,
+      });
+
+      if (res?.error) {
+        const errorMessage = "Invalid credentials";
+        showToast(errorMessage);
         return;
       }
-      router.replace("/")
+
+      router.replace("/"); // Redirect after successful login
+    } catch (error) {
+      console.error(error);
     }
-    catch(error)
-    {
-      console.log(error)
-    }
-  }
+  };
+
   return (
     <div className="h-screen bg-black text-yellow-400">
       <div className="flex flex-row justify-center align-middle">
@@ -106,42 +111,44 @@ const MyAccount = () => {
             <Tab _selected={{ color: "black", bg: "yellow.400" }}>REGISTER</Tab>
           </TabList>
           <TabPanels className="py-10 px-5">
-            <TabPanel >
+            <TabPanel>
+              {/* Login Form */}
               <form className="flex flex-col gap-5" onSubmit={handleLoginSubmit}>
-              <input
-                type="email"
-                placeholder="Email"
-                className="p-2 border-2 border-yellow-400 bg-black text-yellow-400 rounded-lg "
-                onChange={(e) => setLoginEmail(e.target.value)}
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                className="p-2 border-2 border-yellow-400 rounded-lg  bg-black"
-                onChange={(e) => setLoginPassword(e.target.value)}
-              />
-              <ModalPassword/>
-              <button className="m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black  text-white hover:bg-yellow-700">
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className="p-2 border-2 border-yellow-400 bg-black text-yellow-400 rounded-lg"
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="p-2 border-2 border-yellow-400 rounded-lg bg-black"
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                />
+                <ModalPassword /> {/* Modal for forgotten password */}
+                <button className="m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black text-white hover:bg-yellow-700">
                   Submit
                 </button>
-                </form>
+              </form>
             </TabPanel>
 
             <TabPanel>
+              {/* Registration Form */}
               <form className="flex flex-col gap-5" onSubmit={handleRegisterSubmit}>
                 <input
                   type="text"
                   placeholder="Username"
                   name="name"
                   onChange={(e) => setName(e.target.value)}
-                  className="p-2 border-2 border-yellow-400 rounded-lg  bg-black"
+                  className="p-2 border-2 border-yellow-400 rounded-lg bg-black"
                 />
                 <input
                   type="email"
                   placeholder="User email"
                   name="email"
                   onChange={(e) => setEmail(e.target.value)}
-                  className="p-2 border-2 border-yellow-400 rounded-lg  bg-black"
+                  className="p-2 border-2 border-yellow-400 rounded-lg bg-black"
                 />
                 <input
                   type="password"
@@ -159,7 +166,7 @@ const MyAccount = () => {
                     password !== confirmPassword ? "border-red-500" : ""
                   }`}
                 />
-                <button className="m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black  text-white hover:bg-yellow-700">
+                <button className="m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black text-white hover:bg-yellow-700">
                   Register
                 </button>
               </form>
@@ -172,8 +179,8 @@ const MyAccount = () => {
           </TabPanels>
         </Tabs>
       </div>
-      {error && <ToastContainer />}
-      {loginError&&<ToastContainer />}
+      {/* ToastContainer moved outside the condition to show for both success and error */}
+      <ToastContainer />
     </div>
   );
 };

@@ -3,19 +3,19 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 
 const Header = () => {
-  const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
+  const { data: session } = useSession();
+  const handleLogout = async () => {
+    const res = await signOut({
+      redirect: false, 
+    });
 
-  const openSearchDialog = () => {
-    setIsSearchDialogOpen(true);
+    console.log("Logout response", res);
   };
-
-  const closeSearchDialog = () => {
-    setIsSearchDialogOpen(false);
-  };
+ 
   return (
     <div>
       <div className="flex flex-row align-middle p-3 bg-black text-white text-xs border-b-2 border-white">
@@ -23,15 +23,37 @@ const Header = () => {
           Free shipping for standard orders over $100
         </p>
         <div className="flex flex-row px-8 gap-5">
-          <button className="hover:text-yellow-400">
-            <Link href={"/faqs"}>Help & FAQs</Link>
-          </button>
-          <button className="hover:text-yellow-400">
-            <Link href={"/myAccount"}>My Account</Link>
-          </button>
-          <button className="hover:text-yellow-400" onClick={()=>signOut()}>
-            Logout!!
-          </button>
+          {session ? (
+            <>
+              {/* Display Greeting and Logout button when logged in */}
+              <div className="flex items-center text-lg font-semibold text-yellow-400 space-x-2">
+                <span
+                  role="img"
+                  aria-label="wave"
+                  className="transition-transform duration-300 ease-in-out hover:rotate-12"
+                >
+                  👋
+                </span>
+                <span>{session.user.name}</span>
+              </div>
+              <button className="hover:text-yellow-400">
+                <Link href={"/faqs"}>Help & FAQs</Link>
+              </button>
+              <button className="hover:text-yellow-400" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            // Display "My Account" and "Help & FAQs" buttons when logged out
+            <>
+              <button className="hover:text-yellow-400">
+                <Link href={"/myAccount"}>My Account</Link>
+              </button>
+              <button className="hover:text-yellow-400">
+                <Link href={"/faqs"}>Help & FAQs</Link>
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div className="border-b-2 border-yellow-400">
