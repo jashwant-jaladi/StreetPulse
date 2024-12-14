@@ -43,7 +43,7 @@ const BlogDetails = async ({ params }) => {
               By {post.name} on {new Date(post.date).toLocaleDateString()}
             </p>
             <h2 className="pt-5 pl-3 text-2xl font-bold">{post.title}</h2>
-            <p className="pt-5 pl-3 text-white">{post.content}</p>
+            <p className="pt-5 pl-3 text-white w-[100vh]">{post.content}</p>
           </div>
 
           {/* Comments Section */}

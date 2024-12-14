@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -45,14 +46,14 @@ model Shop {
   noOfRatings Int
   prices      Int
   preOffer    Int
-  discount    String
+  discount    Int
   bestSeller  Boolean?
   newest      Boolean?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
-model Register {
+model User {
   id              Int      @id @default(autoincrement()) 
   name            String
   email           String   @unique 

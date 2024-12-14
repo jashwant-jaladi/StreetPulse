@@ -17,12 +17,12 @@ export default function RootLayout({ children }) {
         <title>Street Pulse</title>
       </head>
       <body className={salsa.className}>
+      <Providers>
         <Header/>
-          <Providers>
             {children}
-            </Providers>
-            
+          
         <Footer/>
+        </Providers>
         </body>
     </html>
   )
