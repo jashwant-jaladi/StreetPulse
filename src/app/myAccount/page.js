@@ -66,7 +66,9 @@ const MyAccount = () => {
         setPassword("");
         setConfirmPassword("");
         toast.success("Registration successful!");
-       
+        setTimeout(() => {
+          window.location.href = "/myAccount";
+        }, 1000);
       
       } else {
         const errorData = await res.json();

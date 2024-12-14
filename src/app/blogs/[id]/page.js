@@ -1,13 +1,21 @@
 import React from 'react';
 import prisma from '@/libs/db';
 import Image from 'next/image';
+import Comment from '../Comment';
 
 
 
 const BlogDetails = async ({ params }) => {
-  // Fetch blog post by ID from the database
+  const {id} = params
+  if (!id) {
+    return (
+      <div className="bg-black text-yellow-400 h-screen flex items-center justify-center">
+        <h1 className="text-3xl font-bold">Post Not Found</h1>
+      </div>
+    );
+  }
   const post = await prisma.blogs.findUnique({
-    where: { id: parseInt(params.id, 10) }, // Assuming the ID is a number
+    where: { id: parseInt(id, 10) }, // Assuming the ID is a number
   });
 
   // If no post is found, handle it gracefully
@@ -46,23 +54,8 @@ const BlogDetails = async ({ params }) => {
             <p className="pt-5 pl-3 text-white w-[100vh]">{post.content}</p>
           </div>
 
-          {/* Comments Section */}
-          <h3 className="mt-10 mb-5 text-xl">Comments :</h3>
-          <div className="p-10 border-2 border-yellow-600 w-[700px]">
-            {/* Placeholder for Comments */}
-          </div>
-
-          {/* Leave a Comment */}
-          <div className="flex flex-col">
-            <h3 className="mt-10 mb-5 text-xl">Leave a comment :</h3>
-            <textarea
-              className="bg-black p-2 border-2 border-yellow-600 w-[700px]"
-              placeholder="Enter your comment here!!"
-            ></textarea>
-            <button className="w-40 border-2 border-yellow-600 rounded-2xl p-2 mt-10">
-              Submit
-            </button>
-          </div>
+          <Comment blogId={post.id}/>
+      
         </div>
       </div>
 
