@@ -5,7 +5,7 @@ export async function POST(req) {
   try {
     const { content, blogId, userId } = await req.json();
 
-    // Validate inputs
+    console.log(blogId, userId, content)
     if (!content || !blogId || !userId) {
       return new Response(
         JSON.stringify({ error: "Missing required fields." }),
@@ -22,7 +22,7 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-    // Create the comment
+   
     const newComment = await prisma.comment.create({
       data: {
         content,

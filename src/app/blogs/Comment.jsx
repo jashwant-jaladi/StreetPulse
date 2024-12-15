@@ -1,18 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"; // Import useSession
-import { Box, Heading, Textarea, Button, Flex, Text, Alert, AlertIcon } from "@chakra-ui/react";
+import { Box, Heading, Textarea, Button, Flex, Text, Alert, AlertIcon, useToast } from "@chakra-ui/react";
 
 const Comment = ({ blogId }) => {
-  const { data: session, status } = useSession(); // Retrieve session and authentication status
-  const [comments, setComments] = useState([]); // State for comments
-  const [newComment, setNewComment] = useState(""); // State for new comment input
-  const [loading, setLoading] = useState(false); // State for loading
-  const [error, setError] = useState(""); // State for errors
+  const { data: session, status } = useSession(); 
+  const [comments, setComments] = useState([]); 
+  const [newComment, setNewComment] = useState(""); 
+  const [loading, setLoading] = useState(false); 
+  const toast = useToast(); // Chakra UI toast hook
 
-  const isAuthenticated = status === "authenticated"; // Check if the user is logged in
+  const isAuthenticated = status === "authenticated"; 
 
-  // Fetch comments when the component loads
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -24,20 +23,32 @@ const Comment = ({ blogId }) => {
         setComments(data.comments);
       } catch (err) {
         console.error(err);
-        setError("Failed to load comments.");
+        toast({
+          title: "Error",
+          description: "Failed to load comments.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       }
     };
 
     fetchComments();
-  }, [blogId]);
+  }, [blogId, toast]);
 
-  // Handle comment submission
   const handleSubmit = async () => {
-    if (!newComment.trim()) return;
+    if (!newComment.trim()) {
+      toast({
+        title: "Error",
+        description: "Comment cannot be empty.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
 
     setLoading(true);
-    setError("");
-    console.log(session.user)
     try {
       const response = await fetch(`/api/comment`, {
         method: "POST",
@@ -45,7 +56,7 @@ const Comment = ({ blogId }) => {
         body: JSON.stringify({
           content: newComment,
           blogId: blogId,
-          
+          userId: session.user.id,
         }),
       });
 
@@ -56,9 +67,23 @@ const Comment = ({ blogId }) => {
       const data = await response.json();
       setComments((prev) => [data.comment, ...prev]); 
       setNewComment(""); 
+
+      toast({
+        title: "Success",
+        description: "Your comment has been posted.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (err) {
       console.error(err);
-      setError("Failed to submit the comment.");
+      toast({
+        title: "Error",
+        description: "Failed to submit the comment.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     } finally {
       setLoading(false);
     }
@@ -93,19 +118,23 @@ const Comment = ({ blogId }) => {
           },
         }}
       >
-        {error && <Text color="red.500">{error}</Text>}
         {comments.length > 0 ? (
-          comments.map((comment) => (
-            <Box key={comment.id} mb={4}>
-              <Text fontWeight="bold">{comment.user.name}</Text>
-              <Text>{comment.content}</Text>
-              <Text fontSize="sm" color="gray.400">
+          comments.map((comment, index) => (
+            <Box key={comment.id} mb={6}>
+              <Text fontWeight="bold" fontSize="lg" color="yellow.400">
+                {comment.user.name}
+              </Text>
+              <Text fontSize="lg" color="whitesmoke" mt={2} mb={4}>
+                {comment.content}
+              </Text>
+              <Text fontSize="sm" color="gray.500" mb={2}>
                 {new Date(comment.createdAt).toLocaleString()}
               </Text>
+              {index < comments.length - 1 && <Box borderBottom="1px" borderColor="gray.700" />}
             </Box>
           ))
         ) : (
-          <Text className="text-lg text-gray.400">
+          <Text fontSize="lg" color="gray.400">
             No comments yet. Be the first to comment!
           </Text>
         )}
