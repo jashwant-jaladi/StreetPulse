@@ -85,7 +85,7 @@ const Header = () => {
             </button>
             </li>
             <li className="list-none hover:text-white">
-              <Link href={"/"}>
+              <Link href={"/cart"}>
                 <Image src={"/shopping-cart.svg"} alt="cart" width={30} height={30} />
               </Link>
             </li>
