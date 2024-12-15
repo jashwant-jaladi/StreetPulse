@@ -1,19 +1,16 @@
-import React from 'react'
-import ShopComponent from './ShopComponent'
-import Shopnav from './shopnav'
-import prisma from '@/libs/db'
+"use client";
 
+import React from "react";
+import ShopComponent from "./ShopComponent";
+import Shopnav from "./shopnav";
 
-const Shop = async() => {
-
-
-const products = await prisma.shop.findMany()
+const Shop = () => {
   return (
     <div>
-    <Shopnav/>
-    <ShopComponent products={products}/>
+      <Shopnav />
+      <ShopComponent /> {/* ShopComponent will fetch products from Zustand */}
     </div>
-  )
-}
+  );
+};
 
-export default Shop
+export default Shop;
