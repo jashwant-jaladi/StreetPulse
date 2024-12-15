@@ -1,4 +1,5 @@
 import prisma from "@/libs/db";
+import { getSession } from "next-auth/react";
 
 
 export async function POST(req) {
@@ -28,6 +29,11 @@ export async function POST(req) {
         content,
         blogId: parseInt(blogId, 10),
         userId: parseInt(userId, 10),
+      },
+      include : {
+        user: {
+          select: { name: true }, // Include only the username
+        },
       },
     });
 
@@ -81,3 +87,33 @@ export async function GET(req) {
     }
   }
   
+ 
+export async function DELETE(req) {
+    try {
+      const { searchParams } = new URL(req.url);
+      const commentId = searchParams.get("commentId");
+  
+      if (!commentId) {
+        return new Response(
+          JSON.stringify({ error: "Comment ID is required." }),
+          { status: 400 }
+        );
+      }
+  
+      // Delete the comment with the given ID
+      await prisma.comment.delete({
+        where: { id: parseInt(commentId, 10) },
+      });
+  
+      return new Response(
+        JSON.stringify({ message: "Comment deleted successfully." }),
+        { status: 200 }
+      );
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      return new Response(
+        JSON.stringify({ error: "An error occurred while deleting the comment." }),
+        { status: 500 }
+      );
+    }
+  }
