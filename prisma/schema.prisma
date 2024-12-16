@@ -17,13 +17,13 @@ model Faqs {
 }
 
 model Blogs {
-  id        Int      @id @default(autoincrement())
-  image     String
-  name      String
-  date      DateTime @default(now())
-  title     String
-  content   String
-  comments  Comment[]
+  id       Int       @id @default(autoincrement())
+  image    String
+  name     String
+  date     DateTime  @default(now())
+  title    String
+  content  String
+  comments Comment[]
 }
 
 model Contact {
@@ -37,7 +37,7 @@ model Contact {
 }
 
 model Shop {
-  id          Int     @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   image       String
   category    String
   name        String
@@ -48,18 +48,20 @@ model Shop {
   discount    Int
   bestSeller  Boolean?
   newest      Boolean?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  wishlist    Wishlist[]
 }
 
 model User {
-  id              Int      @id @default(autoincrement()) 
-  name            String
-  email           String   @unique 
-  password        String   
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  comments        Comment[]
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  password  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  comments  Comment[]
+  wishlist  Wishlist[]
 }
 
 model Comment {
@@ -68,8 +70,19 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  blogId    Int
-  blog      Blogs    @relation(fields: [blogId], references: [id])
+  blogId Int
+  blog   Blogs @relation(fields: [blogId], references: [id])
+  userId Int
+  user   User  @relation(fields: [userId], references: [id])
+}
+
+model Wishlist {
+  id        Int      @id @default(autoincrement())
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
+  shopId    Int
+  shop      Shop     @relation(fields: [shopId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, shopId]) // Ensures a user can't add the same product multiple times
 }
