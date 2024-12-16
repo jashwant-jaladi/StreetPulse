@@ -9,7 +9,7 @@ import Slider from "react-slick";
 import useShopStore from "@/zustand/shopStore"; // Import Zustand store
 
 const StoreOverview = () => {
-  const { shops } = useShopStore(); // Access data from Zustand store
+  const { shops, addToWishlist, removeFromWishlist, wishlist } = useShopStore(); // Access data from Zustand store
   const [display, setDisplay] = useState([]); // Data to display
   const [activeSort, setActiveSort] = useState(""); // Track active sorting option
 
@@ -65,6 +65,15 @@ const StoreOverview = () => {
     slidesToScroll: 3,
   };
 
+  const handleWishlistClick = (product) => {
+    // Check if product is already in wishlist
+    if (wishlist.some((item) => item.id === product.id)) {
+      removeFromWishlist(product.id); // Remove from wishlist
+    } else {
+      addToWishlist(product); // Add to wishlist
+    }
+  };
+
   return (
     <div className="bg-black">
       <h3 className="text-5xl font-bold text-yellow-500 pt-28 flex justify-center">
@@ -117,8 +126,16 @@ const StoreOverview = () => {
                 <div className="line-clamp-1 pt-3 mb-1 font-semibold text-md w-[270px] cursor-pointer">
                   {item.name}
                 </div>
-                <button className="pt-2 flex items-center">
-                  <Image src="/heart.svg" width={25} height={25} alt="Heart Icon" />
+                <button
+                  className="pt-2 flex items-center"
+                  onClick={() => handleWishlistClick(item)}
+                >
+                  <Image
+                    src={wishlist.some((product) => product.id === item.id) ? "/heart-clicked.png" : "/heart.svg"}
+                    width={25}
+                    height={25}
+                    alt="Heart Icon"
+                  />
                 </button>
               </div>
 
