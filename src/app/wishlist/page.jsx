@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";  
 import useShopStore from "@/zustand/shopStore";  
 import { useSession } from "next-auth/react";  
+import { Button } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 const Wishlist = () => {  
   const { data: session } = useSession();  
@@ -92,8 +94,24 @@ const Wishlist = () => {
                   ₹ {shop.preOffer}  
                 </span>  
                 <span className="text-green-500">{shop.discount}% off</span>  
-              </div>  
-            </div>  
+              </div>
+              <Button
+  as={NextLink}
+  href="/cart"
+  size="lg"
+  width="full"
+  bg="yellow.500"
+  color="white"
+  fontWeight="semibold"
+  borderRadius="lg"
+  boxShadow="md"
+  _hover={{ bg: "yellow.600", transform: "scale(1.05)" }}
+  _focus={{ outline: "none", ring: 2, ringColor: "yellow.400" }}
+>
+  Move to Cart
+</Button>
+
+            </div> 
           );  
         })}  
       </div>  
