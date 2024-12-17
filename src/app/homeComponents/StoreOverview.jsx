@@ -1,3 +1,5 @@
+// /components/StoreOverview.js
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -9,12 +11,18 @@ import Slider from "react-slick";
 import useShopStore from "@/zustand/shopStore"; // Import Zustand store
 
 const StoreOverview = () => {
-  const { shops, addToWishlist, removeFromWishlist, wishlist } = useShopStore(); // Access data from Zustand store
+  const { shops, fetchShops, addToWishlist, removeFromWishlist, wishlist } =
+    useShopStore(); // Access data from Zustand store
   const [display, setDisplay] = useState([]); // Data to display
   const [activeSort, setActiveSort] = useState(""); // Track active sorting option
 
+  // Fetch shops data on mount
   useEffect(() => {
-    // Group products by category and fetch the first 5 items from each category
+    fetchShops();
+  }, [fetchShops]);
+
+  // Process shops data and group by category
+  useEffect(() => {
     const groupedByCategory = shops.reduce((acc, item) => {
       if (!acc[item.category]) {
         acc[item.category] = [];
@@ -23,14 +31,14 @@ const StoreOverview = () => {
       return acc;
     }, {});
 
-    // For each category, slice the first 5 items and update the display state
-    const limitedDisplay = Object.values(groupedByCategory).map((categoryItems) => {
-      return categoryItems.slice(0, 5); // Get only the first 5 items from each category
-    });
+    const limitedDisplay = Object.values(groupedByCategory).map((categoryItems) =>
+      categoryItems.slice(0, 5)
+    );
 
-    setDisplay(limitedDisplay.flat()); // Flatten the array to display all items from all categories
+    setDisplay(limitedDisplay.flat()); // Flatten the array to display items from all categories
   }, [shops]);
 
+  // Handle sorting based on different criteria
   const handleSort = (sortingOption) => {
     let sortedData;
 
@@ -56,7 +64,7 @@ const StoreOverview = () => {
     setActiveSort(sortingOption);
   };
 
-  // Slick slider settings
+  // Slick carousel settings
   const settings = {
     dots: true,
     infinite: false,
@@ -65,12 +73,12 @@ const StoreOverview = () => {
     slidesToScroll: 3,
   };
 
+  // Handle adding/removing items to wishlist
   const handleWishlistClick = (product) => {
-    // Check if product is already in wishlist
     if (wishlist.some((item) => item.id === product.id)) {
-      removeFromWishlist(product.id); // Remove from wishlist
+      removeFromWishlist(product.id); // Remove from wishlist if already added
     } else {
-      addToWishlist(product); // Add to wishlist
+      addToWishlist(product); // Add to wishlist if not yet added
     }
   };
 
@@ -121,7 +129,6 @@ const StoreOverview = () => {
                 alt={item.name}
                 className="w-[300px] h-[300px] object-center object-cover transition-transform ease-linear duration-300 hover:scale-105"
               />
-
               <div className="flex justify-between gap-4">
                 <div className="line-clamp-1 pt-3 mb-1 font-semibold text-md w-[270px] cursor-pointer">
                   {item.name}
@@ -131,31 +138,29 @@ const StoreOverview = () => {
                   onClick={() => handleWishlistClick(item)}
                 >
                   <Image
-                    src={wishlist.some((product) => product.id === item.id) ? "/heart-clicked.png" : "/heart.svg"}
+                    src={
+                      wishlist.some((product) => product.id === item.id)
+                        ? "/heart-clicked.png"
+                        : "/heart.svg"
+                    }
                     width={25}
                     height={25}
                     alt="Heart Icon"
                   />
                 </button>
               </div>
-
-              {item.rating <= 3 ? (
-                <span className="inline bg-red-600 p-1 font-semibold">
-                  <span>{item.rating}</span>
-                  <StarIcon className="fill-white inline pl-1 pb-1" />
-                </span>
-              ) : item.rating <= 4 ? (
-                <span className="inline bg-yellow-600 p-1 font-semibold">
-                  <span>{item.rating}</span>
-                  <StarIcon className="fill-white inline pl-1 pb-1" />
-                </span>
-              ) : (
-                <span className="inline bg-green-700 p-1 font-semibold">
-                  <span>{item.rating}</span>
-                  <StarIcon className="fill-white inline pl-1 pb-1" />
-                </span>
-              )}
-
+              <span
+                className={`inline ${
+                  item.rating <= 3
+                    ? "bg-red-600"
+                    : item.rating <= 4
+                    ? "bg-yellow-600"
+                    : "bg-green-700"
+                } p-1 font-semibold`}
+              >
+                <span>{item.rating}</span>
+                <StarIcon className="fill-white inline pl-1 pb-1" />
+              </span>
               <span className="pl-2">({item.noOfRatings})</span>
               <div className="flex gap-3 mt-1">
                 <span className="font-semibold">{item.prices}</span>

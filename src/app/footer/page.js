@@ -23,15 +23,15 @@ const Footer = () =>{
         <div className='list-none flex flex-col gap-5'>
             <li className='font-bold'>GET IN TOUCH</li>
             <div className='flex flex-row gap-2'>
-             <Image src={'/instagram.svg'} width={20} height={20}/>    
+             <Image src={'/instagram.svg'} alt='instagram logo' width={20} height={20}/>    
             <li>Instagram</li>
             </div>
             <div className='flex flex-row gap-2'>
-             <Image src={'/facebook.svg'} width={20} height={20}/>
+             <Image src={'/facebook.svg'} alt='facebook logo' width={20} height={20}/>
             <li>Facebook</li>
             </div>
              <div className='flex flex-row gap-2'>
-            <Image src={'/mail.svg'} width={20} height={20}/>
+            <Image src={'/mail.svg'}  alt='gmail logo' width={20} height={20}/>
             <li>Gmail</li>
             </div>
         </div>
@@ -43,7 +43,7 @@ const Footer = () =>{
     </div>
     <div className='flex flex-row gap-5 justify-center align-middle bg-black pb-8'>
     <p className='text-white text-md'>100% Secure Payment</p>
-    <Image src={'/payments-logo.svg'} width={200} height={200}/>
+    <Image src={'/payments-logo.svg'} alt='payment logos' width={200} height={200}  />
     </div>
     </>
   )

@@ -1,16 +1,35 @@
-"use client";
-
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { StarIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import Image from "next/image";
 import useShopStore from "@/zustand/shopStore";
+import { useSession } from "next-auth/react";
 
 const ShopComponent = () => {
-  const products = useShopStore((state) => state.shops); // Access products
-  const wishlist = useShopStore((state) => state.wishlist); // Access wishlist
-  const addToWishlist = useShopStore((state) => state.addToWishlist); // Add to wishlist
-  const removeFromWishlist = useShopStore((state) => state.removeFromWishlist); // Remove from wishlist
+  const products = useShopStore((state) => state.shops);
+  const fetchShops = useShopStore((state) => state.fetchShops);
+  const wishlist = useShopStore((state) => state.wishlist);
+  const fetchWishlist = useShopStore((state) => state.fetchWishlist);
+  const addToWishlist = useShopStore((state) => state.addToWishlist);
+  const removeFromWishlist = useShopStore((state) => state.removeFromWishlist);
+
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+
+  useEffect(() => {
+    const initializeData = async () => {
+      if (userId) {
+        try {
+          await fetchShops();
+          await fetchWishlist(userId); // Fetch wishlist on component load
+        } catch (error) {
+          console.error("Error initializing data:", error);
+        }
+      }
+    };
+
+    initializeData();
+  }, [userId, fetchShops, fetchWishlist]);
 
   // Guard against empty data
   if (!products || products.length === 0) {
@@ -18,19 +37,33 @@ const ShopComponent = () => {
   }
 
   // Check if product is in the wishlist
-  const isInWishlist = (productId) =>
-    wishlist.some((item) => item.id === productId);
+  const isInWishlist = (shopId) => 
+    wishlist?.some((item) => item.shopId === shopId);
 
   // Utility function for rating classes
   const getRatingClass = (rating) => {
+    if (!rating) return "bg-gray-500";
     if (rating <= 3) return "bg-red-600";
     if (rating <= 4) return "bg-yellow-600";
     return "bg-green-700";
   };
 
+  const handleWishlistClick = (shopId) => {
+    if (!userId) {
+      alert("Please log in to add items to your wishlist.");
+      return;
+    }
+
+    if (isInWishlist(shopId)) {
+      removeFromWishlist(userId, shopId);
+    } else {
+      addToWishlist(userId, shopId);
+    }
+  };
+
   return (
     <div>
-      <div className="bg-black text-slate-300 p-14 pt-10 grid grid-cols-4 gap-14 place-items-center">
+      <div className="bg-black text-slate-300 p-14 pt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-14 place-items-center">
         {products.map((item) => (
           <div
             key={item.id}
@@ -52,11 +85,7 @@ const ShopComponent = () => {
               </div>
               <button
                 className="pt-2 flex items-center"
-                onClick={() =>
-                  isInWishlist(item.id)
-                    ? removeFromWishlist(item.id)
-                    : addToWishlist(item)
-                }
+                onClick={() => handleWishlistClick(item.id)}
               >
                 <Image
                   src={isInWishlist(item.id) ? "/heart-clicked.png" : "/heart.svg"}
@@ -69,9 +98,7 @@ const ShopComponent = () => {
 
             {/* Product Rating */}
             <span
-              className={`inline ${getRatingClass(
-                item.rating
-              )} p-1 font-semibold`}
+              className={`inline ${getRatingClass(item.rating)} p-1 font-semibold`}
             >
               <span>{item.rating}</span>
               <StarIcon className="fill-white inline pl-1 pb-1" />

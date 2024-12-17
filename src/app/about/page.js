@@ -24,9 +24,17 @@ const About = () => {
 
 
     <div className='flex flex-row pt-20'>
-    <div className='p-5 mx-40 border-2 border-yellow-400 rounded-lg w-1/2'>
-        <Image src={'/about-3.avif'} width={250} height={250} alt='about Image' />
-        </div>
+    <div className='p-5 mx-40 border-2 border-yellow-400 rounded-lg w-1/3'>
+    <Image 
+        src={'/about-3.avif'} 
+        layout="responsive" 
+        width={100} 
+        height={100} 
+        alt='about Image' 
+    />
+</div>
+
+
     
     <div>
         <h3 className='text-3xl font-bold p-5  text-yellow-400 '>VISION</h3>
