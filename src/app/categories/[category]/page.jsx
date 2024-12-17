@@ -1,28 +1,44 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useShopStore from "@/zustand/shopStore";
-import { StarIcon } from "@chakra-ui/icons";
-import Image from "next/image";
 import Shopnav from "@/app/shop/shopnav";
+import Item from "@/app/components/Item";
+import { useSession } from "next-auth/react";
 
 const CategoryPage = ({ params }) => {
   const { category } = params;
-  const [products, setProducts] = useState([]);
-  const { shops, fetchShops } = useShopStore();
 
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+  const products = useShopStore((state) => state.shops);
+  const fetchShops = useShopStore((state) => state.fetchShops);
+  const wishlist = useShopStore((state) => state.wishlist);
+  const fetchWishlist = useShopStore((state) => state.fetchWishlist);
+  const addToWishlist = useShopStore((state) => state.addToWishlist);
+  const removeFromWishlist = useShopStore((state) => state.removeFromWishlist);
+
+  // Fetch data when the component mounts
   useEffect(() => {
-    // Fetch shops from the server on page load
-    if (shops.length === 0) {
-      fetchShops();
-    }
-  }, [fetchShops, shops.length]);
+    const initializeData = async () => {
+      if (userId) {
+        try {
+          await fetchShops();
+          await fetchWishlist(userId); // Fetch wishlist on component load
+        } catch (error) {
+          console.error("Error initializing data:", error);
+        }
+      }
+    };
 
-  useEffect(() => {
-    const filteredProducts = shops.filter((product) => product.category === category);
-    setProducts(filteredProducts);
-  }, [category, shops]);
+    initializeData();
+  }, [userId, fetchShops, fetchWishlist]);
+  // Filter products by category
+  const filteredProducts = products.filter(
+    (product) => product.category === category
+  );
 
-  if (products.length === 0) {
+  // Handle empty category case
+  if (filteredProducts.length === 0) {
     return (
       <div>
         <Shopnav />
@@ -33,53 +49,51 @@ const CategoryPage = ({ params }) => {
     );
   }
 
+  // Utility: Get rating class
+  const getRatingClass = (rating) => {
+    if (!rating) return "bg-gray-500";
+    if (rating <= 3) return "bg-red-600";
+    if (rating <= 4) return "bg-yellow-600";
+    return "bg-green-700";
+  };
+
+  // Check if the product is in the wishlist
+  const isInWishlist = (shopId) => wishlist.some((item) => item.shopId === shopId);
+
+  // Handle wishlist button click
+  const handleWishlistClick = (shopId) => {
+    if (!userId) {
+      alert("Please log in to add items to your wishlist.");
+      return;
+    }
+
+    if (isInWishlist(shopId)) {
+      removeFromWishlist(userId, shopId);
+    } else {
+      addToWishlist(userId, shopId);
+    }  
+  };
+
   return (
     <div>
       <Shopnav />
       <div className="bg-black text-slate-300 p-14 pt-10 grid grid-cols-4 gap-14 place-items-center">
-        {products.map((item) => (
-          <div key={item._id} className="border-2 border-yellow-700 w-[320px] p-3 rounded-xl overflow-hidden">
-            <Image
-              src={item.image}
-              width={300}
-              height={300}
-              alt="cart item"
-              className="w-[300px] h-[300px] object-center object-cover transition-transform ease-linear duration-300 hover:scale-105"
-            />
-
-            <div className="flex justify-between gap-4">
-              <div className="line-clamp-1 pt-3 mb-1 font-semibold text-md w-[270px] cursor-pointer">
-                {item.name}
-              </div>
-              <button className="pt-2 flex items-center">
-                <Image src="/heart.svg" width={25} height={25} alt="heart Image" />
-              </button>
-            </div>
-
-            {item.rating <= 3 ? (
-              <span className="inline bg-red-600 p-1 font-semibold">
-                <span>{item.rating}</span>
-                <StarIcon className="fill-white inline pl-1 pb-1" />
-              </span>
-            ) : item.rating <= 4 ? (
-              <span className="inline bg-yellow-600 p-1 font-semibold">
-                <span>{item.rating}</span>
-                <StarIcon className="fill-white inline pl-1 pb-1" />
-              </span>
-            ) : (
-              <span className="inline bg-green-700 p-1 font-semibold">
-                <span>{item.rating}</span>
-                <StarIcon className="fill-white inline pl-1 pb-1" />
-              </span>
-            )}
-
-            <span className="pl-2">({item.noOfRatings})</span>
-            <div className="flex gap-3 mt-1">
-              <span className="font-semibold">{item.prices}</span>
-              <span className="line-through text-slate-500">{item.preOffer}</span>
-              <span className="text-green-500">{item.discount}% off</span>
-            </div>
-          </div>
+        {filteredProducts.map((item) => (
+          <Item
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            price={item.prices}
+            image={item.image}
+            category={item.category}
+            noOfRatings={item.noOfRatings}
+            preOffer={item.preOffer}
+            discount={item.discount}
+            rating={item.rating}
+            ratingClass={getRatingClass(item.rating)}
+            handleWishlistClick={handleWishlistClick}
+            isInWishlist={isInWishlist(item.id)} // Reactively checks wishlist status
+          />
         ))}
       </div>
     </div>
