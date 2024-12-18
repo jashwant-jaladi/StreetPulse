@@ -14,6 +14,8 @@ import {
 } from '@chakra-ui/react';
 import Dropdown from './Dropdown';
 import QuantitySelector from './Quantity';
+import useShopStore from '@/zustand/shopStore'; // Make sure you have the store imported
+import { useSession } from 'next-auth/react';
 
 const ItemDescription = ({
   onClose,
@@ -24,16 +26,23 @@ const ItemDescription = ({
   image,
   rating,
   noOfRatings,
-  handleWishlistClick,
-  isInWishlist,
 }) => {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const toast = useToast(); // Initialize the toast
+  const wishlist = useShopStore((state) => state.wishlist);
+  const addToWishlist = useShopStore((state) => state.addToWishlist);
+  const removeFromWishlist = useShopStore((state) => state.removeFromWishlist);
+
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
 
   const sizeOptions = ['Small', 'Medium', 'Large', 'XL'];
   const colorOptions = ['Black', 'Yellow', 'Red', 'Blue'];
-  const toast = useToast(); // Initialize the toast
+
+  // Check if product is in the wishlist
+  const isInWishlist = wishlist?.some((item) => item.shopId === id);
 
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {
@@ -57,6 +66,31 @@ const ItemDescription = ({
       isClosable: true,
       position: 'top',
     });
+  };
+
+  // Handle Wishlist click (Add/Remove)
+  const handleWishlistClick = () => {
+    if (isInWishlist) {
+      removeFromWishlist(userId,id); // Remove from wishlist if already in wishlist
+      toast({
+        title: 'Removed from Wishlist',
+        description: `${name} has been removed from your wishlist.`,
+        status: 'info',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+    } else {
+      addToWishlist(userId,id); // Add to wishlist if not already in wishlist
+      toast({
+        title: 'Added to Wishlist',
+        description: `${name} has been added to your wishlist.`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
   };
 
   return (
@@ -119,12 +153,12 @@ const ItemDescription = ({
 
               <Button
                 onClick={handleWishlistClick}
-                bg={isInWishlist ? "yellow.400" : "gray.700"}
+                bg={isInWishlist ? 'yellow.400' : 'gray.700'}
                 color="black"
-                _hover={{ bg: "yellow.500" }}
+                _hover={{ bg: 'yellow.500' }}
                 mt={6}
               >
-                {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+                {isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
               </Button>
 
               <h3 className="text-xl font-semibold mt-4 mb-2">Add your Review</h3>
@@ -140,7 +174,7 @@ const ItemDescription = ({
             mr={3}
             onClick={onClose}
             bg="yellow.400"
-            _hover={{ bg: "yellow.500" }}
+            _hover={{ bg: 'yellow.500' }}
           >
             Close
           </Button>
@@ -148,7 +182,7 @@ const ItemDescription = ({
             variant="outline"
             borderColor="yellow.400"
             color="yellow.400"
-            _hover={{ bg: "yellow.500", color: "black" }}
+            _hover={{ bg: 'yellow.500', color: 'black' }}
             onClick={handleAddToCart} // Call the add-to-cart handler
           >
             Add to Cart
