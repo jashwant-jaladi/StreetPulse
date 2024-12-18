@@ -57,7 +57,7 @@ const Item = ({
 
       {/* Product Name and Wishlist Button */}
       <div className="flex justify-between gap-4">
-        <div className="line-clamp-1 pt-3 mb-1 font-semibold text-md w-[270px] cursor-pointer">
+        <div className="line-clamp-1 pt-3 mb-1 font-semibold text-md w-[270px] cursor-pointer text-gray-300">
           <Link href={`/shop/${id}`}>{name}</Link>
         </div>
         <button className="pt-2 flex items-center" onClick={() => handleWishlistClick(id)}>
@@ -75,11 +75,11 @@ const Item = ({
         <span>{rating}</span>
         <StarIcon className="fill-white inline pl-1 pb-1" />
       </span>
-      <span className="pl-2">({noOfRatings})</span>
+      <span className="pl-2 text-gray-300">({noOfRatings})</span>
 
       {/* Product Price and Discount */}
       <div className="flex gap-3 mt-1">
-        <span className="font-semibold">₹ {price}</span>
+        <span className="font-semibold text-gray-300">₹ {price}</span>
         <span className="line-through text-slate-500">₹ {preOffer}</span>
         <span className="text-green-500">{discount}% off</span>
       </div>
