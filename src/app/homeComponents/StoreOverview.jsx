@@ -174,6 +174,7 @@ const StoreOverview = () => {
               ratingClass={getRatingClass(item.rating)}
               handleWishlistClick={handleWishlistClick}
               isInWishlist={isInWishlist(item.id)}
+              description={item.description}
             />
             
           ))}

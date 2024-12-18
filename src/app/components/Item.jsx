@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { StarIcon } from "@chakra-ui/icons";
-import { Button } from "@chakra-ui/react";
 import ItemDescription from "./ItemDescription"; // Ensure you import this
 
 const Item = ({
@@ -12,6 +11,7 @@ const Item = ({
   image,
   rating,
   noOfRatings,
+  description,
   preOffer,
   discount,
   handleWishlistClick,
@@ -85,7 +85,7 @@ const Item = ({
       </div>
 
 
-      {isModalOpen && <ItemDescription onClose={handleCloseModal} />}
+      {isModalOpen && <ItemDescription onClose={handleCloseModal} description={description} id={id} name={name} price={price} image={image} rating={rating} noOfRatings={noOfRatings} preOffer={preOffer} discount={discount} isInWishlist={isInWishlist} handleWishlistClick={handleWishlistClick}   />}
     </div>
   );
 };

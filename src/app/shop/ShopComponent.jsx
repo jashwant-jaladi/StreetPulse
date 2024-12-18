@@ -57,7 +57,7 @@ const ShopComponent = () => {
       addToWishlist(userId, shopId);
     }
   };
-
+  console.log(products)
   return (
     <div>
       <div className="bg-black text-slate-300 p-14 pt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-14 place-items-center">
@@ -71,6 +71,7 @@ const ShopComponent = () => {
             image={item.image}
             category={item.category}
             noOfRatings={item.noOfRatings}
+            description={item.description}
             preOffer={item.preOffer}
             discount={item.discount}
             rating={item.rating}
@@ -78,7 +79,7 @@ const ShopComponent = () => {
             handleWishlistClick={handleWishlistClick}
             isInWishlist={isInWishlist(item.id)}
           />
-         
+        
         ))}
       </div>
     </div>
