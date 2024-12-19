@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation'; // For handling 404 pages
 import Searchbar from './Searchbar';
 import BlogCategory from './BlogCategory';
+import FeaturedProducts from './FeaturedProducts';
 
 
 
@@ -84,7 +85,7 @@ const Blog = async ({ searchParams }) => {
          <Searchbar/>
           <div className="grid place-content-center list-none mt-10 gap-4 text-xl">
            <BlogCategory/>
-            <h3 className="text-3xl font-bold p-5 mt-10">Featured Products</h3>
+            <FeaturedProducts/>
             <h3 className="text-3xl font-bold p-5 mt-10">Tags</h3>
             <div className="grid grid-rows-4 grid-flow-col gap-4">
               <button className="border-2 border-yellow-700 rounded-3xl p-3">Men</button>
