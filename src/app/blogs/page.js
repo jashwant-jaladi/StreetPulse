@@ -4,6 +4,8 @@ import Pagination from './pagination';
 import prisma from '@/libs/db';
 import Image from 'next/image';
 import { notFound } from 'next/navigation'; // For handling 404 pages
+import Searchbar from './Searchbar';
+import BlogCategory from './BlogCategory';
 
 
 
@@ -79,22 +81,9 @@ const Blog = async ({ searchParams }) => {
         </div>
 
         <div className="w-1/2">
-          <input
-            type="text"
-            placeholder="search"
-            className="p-3 m-auto mt-20 flex justify-center content-center border-2 border-yellow-400 rounded-lg bg-black text-yellow-400"
-          />
+         <Searchbar/>
           <div className="grid place-content-center list-none mt-10 gap-4 text-xl">
-            <h3 className="text-3xl font-bold p-5">Categories</h3>
-            <li>Fashion</li>
-            <hr />
-            <li>StreetStyle</li>
-            <hr />
-            <li>Beauty</li>
-            <hr />
-            <li>Life Style</li>
-            <hr />
-            <li>DIY & Crafts</li>
+           <BlogCategory/>
             <h3 className="text-3xl font-bold p-5 mt-10">Featured Products</h3>
             <h3 className="text-3xl font-bold p-5 mt-10">Tags</h3>
             <div className="grid grid-rows-4 grid-flow-col gap-4">

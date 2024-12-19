@@ -2,6 +2,7 @@ import React from 'react';
 import prisma from '@/libs/db';
 import Image from 'next/image';
 import Comment from '../Comment';
+import Searchbar from '../Searchbar';
 
 
 
@@ -61,11 +62,7 @@ const BlogDetails = async ({ params }) => {
 
       {/* Sidebar */}
       <div className="w-1/2">
-        <input
-          type="text"
-          placeholder="Search"
-          className="p-3 m-auto mt-20 flex justify-center content-center border-2 border-yellow-400 rounded-lg bg-black text-yellow-400"
-        />
+        <Searchbar/>
         <div className="grid place-content-center list-none mt-10 gap-4 text-xl">
           <h3 className="text-3xl font-bold p-5">Categories</h3>
           <li>Fashion</li>

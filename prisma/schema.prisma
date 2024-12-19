@@ -23,6 +23,7 @@ model Blogs {
   date     DateTime  @default(now())
   title    String
   content  String
+  category String?
   comments Comment[]
 }
 
