@@ -14,17 +14,28 @@ import {
 import { CloseIcon } from "@chakra-ui/icons";
 import Image from "next/image";
 import useCartStore from "@/zustand/cartStore";
+import { ToastContainer, toast } from "react-toastify";
 
 const CartItems = () => {
   const [coupon, setCoupon] = useState("");
   const cartItems = useCartStore((state) => state.cart); // Get cart items from cartStore
   const removeFromCart = useCartStore((state) => state.removeFromCart); // Remove item functionality
-
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
   const handleApplyCoupon = () => {
-    console.log("Coupon Applied:", coupon);
-    // Implement coupon logic here
+    if(coupon === "streetpulse5" || coupon === "streetpulse10"){
+
+      toast.success("Coupon applied successfully!");
+      setCoupon("");
+    }
+    else{
+      toast.error("Invalid coupon code.");
+      setCoupon("");
+    }
   };
 
+  const handleQuantityChange = (id, size, color, newQuantity) => {
+    updateQuantity(id, size, color, newQuantity); // Update the quantity in the cart
+  }; 
   return (
     <div className="w-[80vw] pl-10">
       <Flex justify="start" mt={8} direction="row">
@@ -67,7 +78,7 @@ const CartItems = () => {
 
           {/* Cart Items */}
           {cartItems.map((item, index) => (
-            <React.Fragment key={item.id}>
+            <React.Fragment key={`${item.id}-${item.size}-${item.color}`}>
               <GridItem display="flex" justifyContent="center" alignItems="center">
                 <Image
                   src={item.image}
@@ -126,17 +137,34 @@ const CartItems = () => {
                 </Text>
               </GridItem>
               <GridItem display="flex" justifyContent="center" alignItems="center">
-                <Text
-                  color="white"
-                  textAlign="center"
-                  fontSize="lg"
-                  fontWeight="bold"
-                  transition="all 0.3s"
-                  _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
-                >
-                  {item.quantity}
-                </Text>
-              </GridItem>
+  <Flex alignItems="center">
+    <Button
+      size="sm"
+      colorScheme="yellow"
+      onClick={() => handleQuantityChange(item.id, item.size, item.color, item.quantity - 1)}
+      disabled={item.quantity === 1} // Disable decrement button if quantity is 1
+    >
+      -
+    </Button>
+    <Text
+      color="white"
+      textAlign="center"
+      fontSize="lg"
+      fontWeight="bold"
+      mx={2}
+    >
+      {item.quantity}
+    </Text>
+    <Button
+      size="sm"
+      colorScheme="yellow"
+      onClick={() => handleQuantityChange(item.id, item.size, item.color, item.quantity + 1)}
+    >
+      +
+    </Button>
+  </Flex>
+</GridItem>
+
               <GridItem display="flex" justifyContent="center" alignItems="center">
                 <Text
                   color="white"
@@ -150,13 +178,14 @@ const CartItems = () => {
                 </Text>
               </GridItem>
               <GridItem display="flex" justifyContent="center" alignItems="center">
-                <IconButton
-                  icon={<CloseIcon />}
-                  colorScheme="red"
-                  onClick={() => removeFromCart(item.id)}
-                  aria-label={`Remove ${item.name}`}
-                  _hover={{ transform: "scale(1.1)" }}
-                />
+              <IconButton
+  icon={<CloseIcon />}
+  colorScheme="red"
+  onClick={() => removeFromCart(item.id, item.size, item.color)} // Pass all attributes
+  aria-label={`Remove ${item.name}`}
+  _hover={{ transform: "scale(1.1)" }}
+/>
+
               </GridItem>
             </React.Fragment>
           ))}
@@ -199,6 +228,7 @@ const CartItems = () => {
           </Stack>
         </Box>
       </Flex>
+      <ToastContainer />
     </div>
   );
 };

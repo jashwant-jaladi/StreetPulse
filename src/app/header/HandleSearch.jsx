@@ -38,7 +38,7 @@ const HandleSearch = ({ onClose }) => {
   return (
     <Modal isOpen={true} onClose={onClose}>
       <ModalOverlay bg="rgba(0, 0, 0, 0.6)" />
-      <ModalContent bg="black" color="white">
+      <ModalContent bg="gray.800" color="white">
         <ModalHeader color="yellow.400">Search</ModalHeader>
         <ModalCloseButton color="yellow.400" _hover={{ bg: "yellow.500" }} />
         <ModalBody>
@@ -63,7 +63,7 @@ const HandleSearch = ({ onClose }) => {
           </InputGroup>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter gap={4}>
           <Button variant="ghost" color="yellow.400" onClick={onClose} _hover={{ bg: "yellow.500" }}>
             Cancel
           </Button>
