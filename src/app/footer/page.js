@@ -17,8 +17,8 @@ const Footer = () =>{
         <div className='list-none flex flex-col gap-5'>
             <li className='font-bold'>HELP</li>
             <li>Track Orders</li>
-            <li>Contact Us</li>
-            <li>FAQS</li>
+            <Link href ={'/contact'}><li>Contact Us</li></Link>
+            <Link href={'/faqs'}><li>FAQS</li></Link>
         </div>
         <div className='list-none flex flex-col gap-5'>
             <li className='font-bold'>GET IN TOUCH</li>

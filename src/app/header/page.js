@@ -5,11 +5,13 @@ import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import HandleSearch from "./HandleSearch"; // Import the component
+import useCartStore from "@/zustand/cartStore";
 
 const Header = () => {
   const { data: session } = useSession();
   const [searchVisible, setSearchVisible] = useState(false);
-
+  const cart = useCartStore((state) => state.cart);
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const handleLogout = async () => {
     const res = await signOut({
       redirect: false,
@@ -73,11 +75,22 @@ const Header = () => {
                 <Image src={"/search.svg"} alt="search" width={30} height={30} />
               </button>
             </li>
-            <li className="list-none hover:text-white">
-              <Link href={"/cart"}>
-                <Image src={"/shopping-cart.svg"} alt="cart" width={30} height={30} />
-              </Link>
-            </li>
+            <li className="list-none hover:text-white relative">
+  <Link href={"/cart"} className="relative inline-block">
+    <Image
+      src={"/shopping-cart.svg"}
+      alt="cart"
+      width={30}
+      height={30}
+      className="relative"
+    />
+    {totalItems > 0 && (
+      <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
+        {totalItems}
+      </span>
+    )}
+  </Link>
+</li>
             <li className="list-none hover:text-white">
               <Link href={"/wishlist"}>
                 <Image src={"/heart.svg"} width={30} height={30} alt="wishlist" />

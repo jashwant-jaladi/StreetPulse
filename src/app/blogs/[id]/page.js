@@ -3,6 +3,7 @@ import prisma from '@/libs/db';
 import Image from 'next/image';
 import Comment from '../Comment';
 import Searchbar from '../Searchbar';
+import FeaturedProducts from '../FeaturedProducts';
 
 
 
@@ -75,6 +76,7 @@ const BlogDetails = async ({ params }) => {
           <hr />
           <li>DIY & Crafts</li>
           <h3 className="text-3xl font-bold p-5 mt-10">Featured Products</h3>
+          <FeaturedProducts/>
           <h3 className="text-3xl font-bold p-5 mt-10">Tags</h3>
           <div className="grid grid-rows-4 grid-flow-col gap-4 text-sm">
             <button className="border-2 border-yellow-700 rounded-3xl p-2">Men</button>

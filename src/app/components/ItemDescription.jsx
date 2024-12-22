@@ -16,6 +16,7 @@ import Dropdown from './Dropdown';
 import QuantitySelector from './Quantity';
 import useShopStore from '@/zustand/shopStore'; // Make sure you have the store imported
 import { useSession } from 'next-auth/react';
+import useCartStore from '@/zustand/cartStore';
 
 const ItemDescription = ({
   onClose,
@@ -34,6 +35,7 @@ const ItemDescription = ({
   const wishlist = useShopStore((state) => state.wishlist);
   const addToWishlist = useShopStore((state) => state.addToWishlist);
   const removeFromWishlist = useShopStore((state) => state.removeFromWishlist);
+  const addToCart = useCartStore((state) => state.addToCart);
 
   const { data: session } = useSession();
   const userId = session?.user?.id;
@@ -44,9 +46,9 @@ const ItemDescription = ({
   // Check if product is in the wishlist
   const isInWishlist = wishlist?.some((item) => item.shopId === id);
 
+
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {
-      // Show toast if size or color is not selected
       toast({
         title: 'Selection Missing',
         description: 'Please select both a size and a color before adding to cart.',
@@ -57,7 +59,21 @@ const ItemDescription = ({
       });
       return;
     }
-    // Proceed with adding to cart logic
+  
+    const product = {
+      id,
+      name,
+      description,
+      price,
+      image,
+      quantity,
+      size: selectedSize,
+      color: selectedColor,
+    };
+  
+    // Add item to cart
+    addToCart(product);
+  
     toast({
       title: 'Added to Cart',
       description: `Successfully added ${name} to your cart.`,
@@ -67,6 +83,7 @@ const ItemDescription = ({
       position: 'top',
     });
   };
+  
 
   // Handle Wishlist click (Add/Remove)
   const handleWishlistClick = () => {

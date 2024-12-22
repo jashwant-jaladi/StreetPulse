@@ -1,12 +1,26 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation'; // Import useParams
+import HandleSearch from '../header/HandleSearch';
 
 const Shopnav = () => {
   const params = useParams(); // Get route parameters
   const currentCategory = params?.category; // Extract 'category' param if available
+  
+  // State to manage modal visibility
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+
+  // Function to handle opening the search modal
+  const openSearchModal = () => {
+    setIsSearchModalOpen(true);
+  };
+
+  // Function to handle closing the search modal
+  const closeSearchModal = () => {
+    setIsSearchModalOpen(false);
+  };
 
   return (
     <div>
@@ -25,9 +39,13 @@ const Shopnav = () => {
         </nav>
         <div className='flex flex-row gap-5 pt-8 px-16 my-auto mx-auto mr-8 bg-black text-yellow-400'>
           <button>Filter</button>
-          <button>Search</button>
+          {/* Open the search modal on click */}
+          <button onClick={openSearchModal}>Search</button>
         </div>
       </div>
+
+      {/* Conditionally render HandleSearch modal */}
+      {isSearchModalOpen && <HandleSearch onClose={closeSearchModal} />}
     </div>
   );
 };

@@ -53,6 +53,7 @@ model Shop {
   updatedAt   DateTime   @updatedAt
   wishlist    Wishlist[]
   description String?
+  cartItems   CartItem[]
 }
 
 model User {
@@ -87,4 +88,16 @@ model Wishlist {
   createdAt DateTime @default(now())
 
   @@unique([userId, shopId]) // Ensures a user can't add the same product multiple times
+}
+
+model CartItem {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  shopId      Int
+  shop        Shop     @relation(fields: [shopId], references: [id])
+  size        String
+  color       String
+  quantity    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

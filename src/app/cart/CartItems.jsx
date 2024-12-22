@@ -1,13 +1,27 @@
 "use client";
-import React, { useState } from 'react';
-import { Flex, Grid, GridItem, Text, Box, Button, Input, Stack } from '@chakra-ui/react';
-import Image from 'next/image';
+import React, { useState } from "react";
+import {
+  Flex,
+  Grid,
+  GridItem,
+  Text,
+  Box,
+  Button,
+  Input,
+  Stack,
+  IconButton,
+} from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
+import Image from "next/image";
+import useCartStore from "@/zustand/cartStore";
 
 const CartItems = () => {
-  const [coupon, setCoupon] = useState('');
+  const [coupon, setCoupon] = useState("");
+  const cartItems = useCartStore((state) => state.cart); // Get cart items from cartStore
+  const removeFromCart = useCartStore((state) => state.removeFromCart); // Remove item functionality
 
   const handleApplyCoupon = () => {
-    console.log('Coupon Applied:', coupon);
+    console.log("Coupon Applied:", coupon);
     // Implement coupon logic here
   };
 
@@ -15,7 +29,7 @@ const CartItems = () => {
     <div className="w-[80vw] pl-10">
       <Flex justify="start" mt={8} direction="row">
         <Grid
-          templateColumns="repeat(7, 1fr)"
+          templateColumns="repeat(8, 1fr)" // Added an extra column for the remove icon
           gap={8}
           w="90%"
           p={8}
@@ -26,179 +40,131 @@ const CartItems = () => {
           border="1px solid rgba(255, 255, 255, 0.3)"
           alignItems="center"
         >
-          {/* Product Headers */}
-          <GridItem>
-            <Text
-              color="yellow.600"
-              fontWeight="bold"
-              fontSize="lg"
-              textAlign="center"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.500", transform: "scale(1.05)" }}
-            >
-              PRODUCT
-            </Text>
-          </GridItem>
-          <GridItem>
-            <Text
-              color="yellow.600"
-              fontWeight="bold"
-              fontSize="lg"
-              textAlign="center"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.500", transform: "scale(1.05)" }}
-            >
-              PRODUCT NAME
-            </Text>
-          </GridItem>
-          <GridItem>
-            <Text
-              color="yellow.600"
-              fontWeight="bold"
-              fontSize="lg"
-              textAlign="center"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.500", transform: "scale(1.05)" }}
-            >
-              PRICE
-            </Text>
-          </GridItem>
-          <GridItem>
-            <Text
-              color="yellow.600"
-              fontWeight="bold"
-              fontSize="lg"
-              textAlign="center"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.500", transform: "scale(1.05)" }}
-            >
-              QUANTITY
-            </Text>
-          </GridItem>
-          <GridItem>
-            <Text
-              color="yellow.600"
-              fontWeight="bold"
-              fontSize="lg"
-              textAlign="center"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.500", transform: "scale(1.05)" }}
-            >
-              TOTAL PRICE
-            </Text>
-          </GridItem>
-          <GridItem>
-            <Text
-              color="yellow.600"
-              fontWeight="bold"
-              fontSize="lg"
-              textAlign="center"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.500", transform: "scale(1.05)" }}
-            >
-              SIZE
-            </Text>
-          </GridItem>
-          <GridItem>
-            <Text
-              color="yellow.600"
-              fontWeight="bold"
-              fontSize="lg"
-              textAlign="center"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.500", transform: "scale(1.05)" }}
-            >
-              COLOR
-            </Text>
-          </GridItem>
+          {/* Header Row */}
+          {[
+            "PRODUCT",
+            "PRODUCT NAME",
+            "SIZE",
+            "COLOR",
+            "PRICE",
+            "QUANTITY",
+            "TOTAL PRICE",
+            "",
+          ].map((header, index) => (
+            <GridItem key={index}>
+              <Text
+                color="yellow.600"
+                fontWeight="bold"
+                fontSize="lg"
+                textAlign="center"
+                transition="all 0.3s"
+                _hover={{ color: "yellow.500", transform: "scale(1.05)" }}
+              >
+                {header}
+              </Text>
+            </GridItem>
+          ))}
 
-          {/* Product Row */}
-          <GridItem rowSpan={2} display="flex" justifyContent="center" alignItems="center">
-            <Image
-              src="/Shop/sneakers/shoes-1.webp"
-              alt="Product Image"
-              width={200}
-              height={200}
-              className="rounded-lg shadow-lg transition-all ease-in-out transform hover:scale-105"
-            />
-          </GridItem>
-          <GridItem display="flex" justifyContent="center" alignItems="center" rowSpan={2}>
-            <Text
-              color="white"
-              textAlign="center"
-              fontSize="lg"
-              fontWeight="semibold"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
-            >
-              NIKE AIRFORCE 1S GAGA EDITION
-            </Text>
-          </GridItem>
-          <GridItem display="flex" justifyContent="center" alignItems="center" rowSpan={2}>
-            <Text
-              color="white"
-              textAlign="center"
-              fontSize="lg"
-              fontWeight="bold"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
-            >
-              9 US
-            </Text>
-          </GridItem>
-          <GridItem display="flex" justifyContent="center" alignItems="center" rowSpan={2}>
-            <Text
-              color="white"
-              textAlign="center"
-              fontSize="lg"
-              fontWeight="bold"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
-            >
-              WHITE
-            </Text>
-          </GridItem>
-          <GridItem display="flex" justifyContent="center" alignItems="center" rowSpan={2}>
-            <Text
-              color="white"
-              textAlign="center"
-              fontSize="lg"
-              fontWeight="bold"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
-            >
-              ₹ 1200
-            </Text>
-          </GridItem>
-          <GridItem display="flex" justifyContent="center" alignItems="center" rowSpan={2}>
-            <Text
-              color="white"
-              textAlign="center"
-              fontSize="lg"
-              fontWeight="bold"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
-            >
-              1
-            </Text>
-          </GridItem>
-          <GridItem display="flex" justifyContent="center" alignItems="center" rowSpan={2}>
-            <Text
-              color="white"
-              textAlign="center"
-              fontSize="lg"
-              fontWeight="bold"
-              transition="all 0.3s"
-              _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
-            >
-              ₹ 1200
-            </Text>
-          </GridItem>
+          {/* Cart Items */}
+          {cartItems.map((item, index) => (
+            <React.Fragment key={item.id}>
+              <GridItem display="flex" justifyContent="center" alignItems="center">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={200}
+                  height={200}
+                  className="rounded-lg shadow-lg transition-all ease-in-out transform hover:scale-105"
+                />
+              </GridItem>
+              <GridItem display="flex" justifyContent="center" alignItems="center">
+                <Text
+                  color="white"
+                  textAlign="center"
+                  fontSize="lg"
+                  fontWeight="semibold"
+                  transition="all 0.3s"
+                  _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
+                >
+                  {item.name}
+                </Text>
+              </GridItem>
+              <GridItem display="flex" justifyContent="center" alignItems="center">
+                <Text
+                  color="white"
+                  textAlign="center"
+                  fontSize="lg"
+                  fontWeight="bold"
+                  transition="all 0.3s"
+                  _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
+                >
+                  {item.size}
+                </Text>
+              </GridItem>
+              <GridItem display="flex" justifyContent="center" alignItems="center">
+                <Text
+                  color="white"
+                  textAlign="center"
+                  fontSize="lg"
+                  fontWeight="bold"
+                  transition="all 0.3s"
+                  _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
+                >
+                  {item.color}
+                </Text>
+              </GridItem>
+              <GridItem display="flex" justifyContent="center" alignItems="center">
+                <Text
+                  color="white"
+                  textAlign="center"
+                  fontSize="lg"
+                  fontWeight="bold"
+                  transition="all 0.3s"
+                  _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
+                >
+                  ₹ {item.price}
+                </Text>
+              </GridItem>
+              <GridItem display="flex" justifyContent="center" alignItems="center">
+                <Text
+                  color="white"
+                  textAlign="center"
+                  fontSize="lg"
+                  fontWeight="bold"
+                  transition="all 0.3s"
+                  _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
+                >
+                  {item.quantity}
+                </Text>
+              </GridItem>
+              <GridItem display="flex" justifyContent="center" alignItems="center">
+                <Text
+                  color="white"
+                  textAlign="center"
+                  fontSize="lg"
+                  fontWeight="bold"
+                  transition="all 0.3s"
+                  _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
+                >
+                  ₹ {item.price * item.quantity}
+                </Text>
+              </GridItem>
+              <GridItem display="flex" justifyContent="center" alignItems="center">
+                <IconButton
+                  icon={<CloseIcon />}
+                  colorScheme="red"
+                  onClick={() => removeFromCart(item.id)}
+                  aria-label={`Remove ${item.name}`}
+                  _hover={{ transform: "scale(1.1)" }}
+                />
+              </GridItem>
+            </React.Fragment>
+          ))}
         </Grid>
       </Flex>
 
       {/* Coupon Section */}
-      <Flex justify="start" pl-10 mt={8}>
+      <Flex justify="start" pl={10} mt={8}>
         <Box
           w="25%"
           p={6}
