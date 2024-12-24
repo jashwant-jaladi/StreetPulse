@@ -47,7 +47,7 @@ const ItemDescription = ({
   const isInWishlist = wishlist?.some((item) => item.shopId === id);
 
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!selectedSize || !selectedColor) {
       toast({
         title: 'Selection Missing',
@@ -60,28 +60,45 @@ const ItemDescription = ({
       return;
     }
   
+    if (!session) {
+      toast({
+        title: 'Not Logged In',
+        description: 'You need to be logged in to add items to the cart.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+      return;
+    }
+  
     const product = {
-      id,
-      name,
-      description,
-      price,
-      image,
+      shopId: id,  // Make sure this matches the database field name
       quantity,
       size: selectedSize,
       color: selectedColor,
     };
   
-    // Add item to cart
-    addToCart(product);
-  
-    toast({
-      title: 'Added to Cart',
-      description: `Successfully added ${name} to your cart.`,
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-      position: 'top',
-    });
+    try {
+      await addToCart(userId, product);
+      toast({
+        title: 'Added to Cart',
+        description: `Successfully added ${name} to your cart.`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to add item to cart.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
   };
   
 

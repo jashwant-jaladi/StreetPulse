@@ -65,6 +65,7 @@ model User {
   updatedAt DateTime   @updatedAt
   comments  Comment[]
   wishlist  Wishlist[]
+  CartItem  CartItem[]
 }
 
 model Comment {
@@ -91,13 +92,17 @@ model Wishlist {
 }
 
 model CartItem {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  shopId      Int
-  shop        Shop     @relation(fields: [shopId], references: [id])
-  size        String
-  color       String
-  quantity    Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  shopId    Int
+  shop      Shop     @relation(fields: [shopId], references: [id])
+  size      String
+  color     String
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([shopId])
 }
