@@ -7,14 +7,10 @@ const useCartStore = create((set, get) => ({
   fetchCart: async (userId) => {
     try {
       const response = await fetch(`/api/cart?userId=${userId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch cart items');
-      }
-
       const data = await response.json();
       set({ cart: data });
     } catch (error) {
-      console.error('Error fetching cart:', error);
+      console.error("Error fetching cart:", error);
     }
   },
 
@@ -111,43 +107,33 @@ const useCartStore = create((set, get) => ({
 
   // Update the quantity of an item in the cart
   updateQuantity: async (userId, shopId, size, color, newQuantity) => {
-    const cart = get().cart;
-    if (newQuantity <= 0) {
-      await get().removeFromCart(userId, shopId, size, color);
-    } else {
-      try {
-        const response = await fetch('/api/cart', {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            userId,
-            shopId,
-            size,
-            color,
-            newQuantity,
-          }),
-        });
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, shopId, size, color, newQuantity }),
+      });
 
-        if (!response.ok) {
-          throw new Error('Failed to update item quantity in backend');
-        }
-
+      if (response.ok) {
         const updatedItem = await response.json();
-
-        set({
-          cart: cart.map((item) =>
-            item.shopId === updatedItem.shopId &&
-            item.size === updatedItem.size &&
-            item.color === updatedItem.color
-              ? updatedItem
+        set((state) => ({
+          cart: state.cart.map((item) =>
+            item.shopId === shopId && item.size === size && item.color === color
+              ? { ...item, quantity: updatedItem.quantity }
               : item
           ),
-        });
-      } catch (error) {
-        console.error('Error updating quantity:', error);
-        throw error;
+        }));
+      } else {
+        throw new Error("Failed to update quantity");
       }
+    } catch (error) {
+      console.error("Error updating quantity:", error);
     }
+  },
+
+  totalPrice: () => {
+    const cart = get().cart;
+    return cart.reduce((total, item) => total + item.shop.prices * item.quantity, 0);
   },
 }));
 

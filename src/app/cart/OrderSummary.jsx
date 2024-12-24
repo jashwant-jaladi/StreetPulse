@@ -1,8 +1,38 @@
-import React from 'react';
+"use client";
+import React, { useState } from 'react';
 import { Flex, Box, Text, Stack, Button, Input, FormControl, FormLabel } from '@chakra-ui/react';
+import { ToastContainer, toast } from 'react-toastify'; // Import toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import the required CSS for Toastify
+import useCartStore from '@/zustand/cartStore';
 
 const OrderSummary = () => {
+  const [couponCode, setCouponCode] = useState('');
+  const [discountApplied, setDiscountApplied] = useState(false);
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const totalPrice = useCartStore((state) => state.totalPrice(state));
 
+  const handleApplyCoupon = () => {
+    let discount = 0;
+
+    if (couponCode === 'streetpulse5') {
+      discount = (totalPrice * 0.05).toFixed(2);
+       // 5% discount
+      setDiscountApplied(true);
+      setDiscountAmount(discount);
+      toast.success("5% discount applied!");
+    } else if (couponCode === 'streetpulse10') {
+      discount = totalPrice * 0.10; // 10% discount
+      setDiscountApplied(true);
+      setDiscountAmount(discount);
+      toast.success("10% discount applied!");
+    } else {
+      setDiscountApplied(false);
+      setDiscountAmount(0);
+      toast.error("Invalid coupon code!");
+    }
+  };
+
+  const finalTotal = totalPrice + 100 - discountAmount; // Calculate total after discount
 
   return (
     <div className="w-[20vw]">
@@ -29,7 +59,7 @@ const OrderSummary = () => {
           <Stack spacing={4}>
             <Flex justify="space-between">
               <Text color="white" fontSize="lg">Items Total:</Text>
-              <Text color="white" fontSize="lg">₹ 2400</Text>
+              <Text color="white" fontSize="lg">₹ {totalPrice}</Text>
             </Flex>
             <Flex justify="space-between">
               <Text color="white" fontSize="lg">Shipping:</Text>
@@ -37,11 +67,38 @@ const OrderSummary = () => {
             </Flex>
             <Flex justify="space-between">
               <Text color="white" fontSize="lg">Discount:</Text>
-              <Text color="white" fontSize="lg">-₹ 200</Text>
+              <Text color="white" fontSize="lg">-₹ {discountAmount}</Text>
             </Flex>
+
+            {/* Coupon Code Section */}
+            <FormControl>
+              <FormLabel color="white" fontSize="lg">Coupon Code</FormLabel>
+              <Input
+                name="couponCode"
+                placeholder="Enter coupon code"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                bg="gray.800"
+                color="white"
+                borderRadius="md"
+                _focus={{ borderColor: 'yellow.400' }}
+                mt={2}
+              />
+              <Button
+                mt={4}
+                w="full"
+                colorScheme="yellow"
+                size="sm"
+                onClick={handleApplyCoupon}
+                _hover={{ transform: 'scale(1.05)' }}
+              >
+                Apply Coupon
+              </Button>
+            </FormControl>
+
             <Flex justify="space-between" fontWeight="bold" mt={4}>
               <Text color="white" fontSize="lg">Total:</Text>
-              <Text color="yellow.400" fontSize="xl">₹ 2300</Text>
+              <Text color="yellow.400" fontSize="xl">₹ {finalTotal}</Text>
             </Flex>
           </Stack>
 
@@ -56,7 +113,6 @@ const OrderSummary = () => {
               <Input
                 name="name"
                 placeholder="Enter your name"
-              
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -68,7 +124,6 @@ const OrderSummary = () => {
               <Input
                 name="address"
                 placeholder="Enter your address"
-               
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -80,7 +135,6 @@ const OrderSummary = () => {
               <Input
                 name="city"
                 placeholder="Enter your city"
-               
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -92,7 +146,6 @@ const OrderSummary = () => {
               <Input
                 name="postalCode"
                 placeholder="Enter your postal code"
-             
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -113,6 +166,9 @@ const OrderSummary = () => {
           </Button>
         </Box>
       </Flex>
+
+      {/* Toast Container for displaying notifications */}
+      <ToastContainer />
     </div>
   );
 };

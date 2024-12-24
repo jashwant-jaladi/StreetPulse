@@ -6,9 +6,6 @@ export async function POST(req) {
   try {
     const { userId, shopId, size, color, quantity } = await req.json();
 
-    // Debug log for incoming data
-    console.log("Incoming request data:", { userId, shopId, size, color, quantity });
-
     // Validate input
     if (!userId || !shopId || !size || !color || !quantity) {
       return NextResponse.json(
@@ -24,7 +21,7 @@ export async function POST(req) {
       return NextResponse.json({ error: "User not found" }, { status: 400 });
     }
 
-    // Check if the item exists in the cart
+    // Check if the item already exists
     const existingItem = await prisma.cartItem.findFirst({
       where: {
         userId: parseInt(userId, 10),
@@ -35,39 +32,40 @@ export async function POST(req) {
     });
 
     if (existingItem) {
-      // Update the quantity for an existing cart item
-      const updatedItem = await prisma.cartItem.update({
-        where: { id: existingItem.id },
-        data: { quantity: existingItem.quantity + parseInt(quantity, 10) },
-      });
-
-      console.log("Updated cart item:", updatedItem);
-      return NextResponse.json(updatedItem, { status: 200 });
-    } else {
-      // Create a new cart item
-      const newItem = await prisma.cartItem.create({
-        data: {
-          userId: parseInt(userId, 10),
-          shopId: parseInt(shopId, 10),
-          size,
-          color,
-          quantity: parseInt(quantity, 10),
-        },
-      });
-
-      console.log("New cart item created:", newItem);
-      return NextResponse.json(newItem, { status: 201 });
+      return NextResponse.json(
+        { error: "Item already exists in the cart. Use PATCH to update the quantity." },
+        { status: 409 }
+      );
     }
+
+    // Create a new cart item
+    const newItem = await prisma.cartItem.create({
+      data: {
+        userId: parseInt(userId, 10),
+        shopId: parseInt(shopId, 10),
+        size,
+        color,
+        quantity: parseInt(quantity, 10),
+      },
+    });
+
+   
+    return NextResponse.json(newItem, { status: 201 });
   } catch (error) {
     console.error("Error in POST /api/cart:", error);
     return NextResponse.json({ error: "Failed to process request", details: error.message }, { status: 500 });
   }
 }
 
-// GET: Retrieve all items in the cart for a user
+
+
+
+
 export async function GET(req) {
   try {
-    const { userId } = req.query;
+    // Get userId from searchParams
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get('userId');
 
     // Validate userId
     if (!userId) {
@@ -83,7 +81,10 @@ export async function GET(req) {
     return NextResponse.json(cartItems, { status: 200 });
   } catch (error) {
     console.error("Error in GET /api/cart:", error);
-    return NextResponse.json({ error: "Failed to fetch cart items", details: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch cart items", details: error.message }, 
+      { status: 500 }
+    );
   }
 }
 
@@ -94,7 +95,10 @@ export async function DELETE(req) {
 
     // Validate input
     if (!userId || !shopId || !size || !color) {
-      return NextResponse.json({ error: "userId, shopId, size, and color are required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "userId, shopId, size, and color are required" }, 
+        { status: 400 }
+      );
     }
 
     // Check if the item exists in the cart
@@ -108,7 +112,10 @@ export async function DELETE(req) {
     });
 
     if (!existingItem) {
-      return NextResponse.json({ error: "Item not found in cart" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Item not found in cart" }, 
+        { status: 404 }
+      );
     }
 
     // Delete the cart item
@@ -116,9 +123,57 @@ export async function DELETE(req) {
       where: { id: existingItem.id },
     });
 
-    return NextResponse.json({ message: "Item removed from cart" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Item removed from cart" }, 
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error in DELETE /api/cart:", error);
-    return NextResponse.json({ error: "Failed to delete item from cart", details: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to delete item from cart", details: error.message }, 
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(req) {
+  try {
+    const { userId, shopId, size, color, newQuantity } = await req.json();
+
+    // Validate input
+    if (!userId || !shopId || !size || !color || newQuantity === undefined) {
+      return NextResponse.json(
+        { error: "Missing required fields (userId, shopId, size, color, newQuantity)" },
+        { status: 400 }
+      );
+    }
+
+    // Check if the item exists in the cart
+    const existingItem = await prisma.cartItem.findFirst({
+      where: {
+        userId: parseInt(userId, 10),
+        shopId: parseInt(shopId, 10),
+        size,
+        color,
+      },
+    });
+
+    if (!existingItem) {
+      return NextResponse.json(
+        { error: "Cart item not found. Use POST to create a new item." },
+        { status: 404 }
+      );
+    }
+
+    // Update the quantity to the new value
+    const updatedItem = await prisma.cartItem.update({
+      where: { id: existingItem.id },
+      data: { quantity: parseInt(newQuantity, 10) },
+    });
+
+    return NextResponse.json(updatedItem, { status: 200 });
+  } catch (error) {
+    console.error("Error in PATCH /api/cart:", error);
+    return NextResponse.json({ error: "Failed to process request", details: error.message }, { status: 500 });
   }
 }

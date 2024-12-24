@@ -26,26 +26,20 @@ const CartItems = () => {
   const fetchCart = useCartStore((state) => state.fetchCart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
+  
+ 
 
   useEffect(() => {
     if (userId) {
       fetchCart(userId);
     }
-  }, [userId, fetchCart]);
+  }, [userId, fetchCart, cartItems]);
 
-  const handleApplyCoupon = () => {
-    if (coupon === "streetpulse5" || coupon === "streetpulse10") {
-      toast.success("Coupon applied successfully!");
-      setCoupon("");
-    } else {
-      toast.error("Invalid coupon code.");
-      setCoupon("");
-    }
-  };
+
 
   const handleRemoveFromCart = async (shopId, size, color) => {
     try {
-      await removeFromCart(userId, shopId, size, color);
+      await removeFromCart(userId, shopId, size, color);s
       toast.success("Item removed from cart successfully!");
     } catch (error) {
       toast.error("Failed to remove item from cart");
@@ -54,12 +48,15 @@ const CartItems = () => {
 
   const handleQuantityChange = async (shopId, size, color, newQuantity) => {
     try {
-      await updateQuantity(userId, shopId, size, color, newQuantity);
+      await updateQuantity(userId, shopId, size, color, newQuantity); // Call API to update the quantity
+      await fetchCart(userId); // Fetch the updated cart after the mutation
       toast.success("Quantity updated successfully!");
     } catch (error) {
       toast.error("Failed to update quantity");
     }
   };
+  
+
 
   return (
     <div className="w-[80vw] pl-10">
@@ -107,8 +104,8 @@ const CartItems = () => {
               <React.Fragment key={`${item.shopId}-${item.size}-${item.color}`}>
                 <GridItem display="flex" justifyContent="center" alignItems="center">
                   <Image
-                    src={item.image}
-                    alt={item.name}
+                    src={item.shop.image}
+                    alt={item.shop.name}
                     width={200}
                     height={200}
                     className="rounded-lg shadow-lg transition-all ease-in-out transform hover:scale-105"
@@ -123,7 +120,7 @@ const CartItems = () => {
                     transition="all 0.3s"
                     _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
                   >
-                    {item.name}
+                    {item.shop.name}
                   </Text>
                 </GridItem>
                 <GridItem display="flex" justifyContent="center" alignItems="center">
@@ -159,7 +156,7 @@ const CartItems = () => {
                     transition="all 0.3s"
                     _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
                   >
-                    ₹ {item.price}
+                    ₹ {item.shop.prices}
                   </Text>
                 </GridItem>
                 <GridItem display="flex" justifyContent="center" alignItems="center">
@@ -200,7 +197,7 @@ const CartItems = () => {
                     transition="all 0.3s"
                     _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
                   >
-                    ₹ {item.price * item.quantity}
+                    ₹ {item.shop.prices * item.quantity}
                   </Text>
                 </GridItem>
                 <GridItem display="flex" justifyContent="center" alignItems="center">
@@ -223,43 +220,8 @@ const CartItems = () => {
           )}
         </Grid>
       </Flex>
-
-      {/* Coupon Section */}
-      <Flex justify="start" pl={10} mt={8}>
-        <Box
-          w="25%"
-          p={6}
-          borderRadius="lg"
-          backdropFilter="blur(12px)"
-          bg="rgba(155, 155, 155, 0.2)"
-          boxShadow="0 4px 12px rgba(0, 0, 0, 0.2)"
-          border="1px solid rgba(255, 255, 255, 0.3)"
-          textAlign="center"
-        >
-          <Stack spacing={4}>
-            <Text color="yellow.600" fontWeight="bold" fontSize="lg">
-              APPLY COUPON
-            </Text>
-            <Input
-              placeholder="Enter coupon code"
-              value={coupon}
-              onChange={(e) => setCoupon(e.target.value)}
-              bg="gray.800"
-              color="white"
-              borderRadius="md"
-              _focus={{ borderColor: "yellow.400" }}
-            />
-            <Button
-              onClick={handleApplyCoupon}
-              colorScheme="yellow"
-              size="lg"
-              _hover={{ transform: "scale(1.05)" }}
-            >
-              APPLY
-            </Button>
-          </Stack>
-        </Box>
-      </Flex>
+    
+      
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
