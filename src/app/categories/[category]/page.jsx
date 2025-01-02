@@ -34,16 +34,14 @@ const CategoryPage = ({ params }) => {
     initializeData();
   }, [userId, fetchShops, fetchWishlist]);
 
-  // Filter and sort products
+ 
   const filteredProducts = useMemo(() => {
-    // First filter by category
+    
     let filtered = products.filter((product) => product.category === category);
     
-    // Then apply sorting if a filter is selected
+   
     if (selectedFilter) {
-      // Create a new array to avoid mutating the original
-      filtered = [...filtered];
-      
+     
       switch (selectedFilter) {
         case "priceLowToHigh":
           filtered.sort((a, b) => a.prices - b.prices);

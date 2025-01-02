@@ -18,11 +18,6 @@ import {
 const Filters = ({ isOpen, onClose, setSelectedFilter }) => {
   const [localSelectedFilter, setLocalSelectedFilter] = useState("");
 
-  const applyFilters = () => {
-    setSelectedFilter(localSelectedFilter);
-    onClose(); 
-  };
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />

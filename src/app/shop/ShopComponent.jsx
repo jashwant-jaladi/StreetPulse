@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import Item from "../components/Item";
 import useShopStore from "@/zustand/shopStore";
 import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";  // Use useParams for Next.js dynamic routing
+import { useParams } from "next/navigation";  
 
 const ShopComponent = ({ selectedFilter }) => {
-  const { category } = useParams();  // Get category from URL params
+  const { category } = useParams();  
   const products = useShopStore((state) => state.shops);
   const fetchShops = useShopStore((state) => state.fetchShops);
   const wishlist = useShopStore((state) => state.wishlist);
@@ -27,6 +27,7 @@ const ShopComponent = ({ selectedFilter }) => {
         }
       }
     };
+ 
 
     initializeData();
   }, [userId, fetchShops, fetchWishlist]);
