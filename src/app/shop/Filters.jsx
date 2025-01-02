@@ -15,13 +15,12 @@ import {
   RadioGroup,
 } from "@chakra-ui/react";
 
-const Filters = ({ isOpen, onClose }) => {
-  const [selectedFilter, setSelectedFilter] = useState("");
+const Filters = ({ isOpen, onClose, setSelectedFilter }) => {
+  const [localSelectedFilter, setLocalSelectedFilter] = useState("");
 
   const applyFilters = () => {
-    console.log("Selected Filter:", selectedFilter);
-    // Perform filtering logic here, e.g., update state or call a function
-    onClose(); // Close the modal after applying filters
+    setSelectedFilter(localSelectedFilter);
+    onClose(); 
   };
 
   return (
@@ -39,7 +38,7 @@ const Filters = ({ isOpen, onClose }) => {
           <Stack spacing={4}>
             <p className="font-semibold">Select a filter option:</p>
             <RadioGroup
-              value={selectedFilter}
+              value={localSelectedFilter}
               onChange={setSelectedFilter}
               colorScheme="yellow"
             >
@@ -62,14 +61,7 @@ const Filters = ({ isOpen, onClose }) => {
           >
             Close
           </Button>
-          <Button
-            bg="yellow.400"
-            color="black"
-            _hover={{ bg: "yellow.600" }}
-            onClick={applyFilters}
-          >
-            Apply Filters
-          </Button>
+        
         </ModalFooter>
       </ModalContent>
     </Modal>

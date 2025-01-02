@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import HandleSearch from "../header/HandleSearch";
 import Filters from "./Filters";
 
-const Shopnav = () => {
+const Shopnav = ({ onFilterChange }) => {
   const params = useParams();
   const currentCategory = params?.category;
 
@@ -47,7 +47,7 @@ const Shopnav = () => {
       </div>
 
       {isSearchModalOpen && <HandleSearch onClose={() => setIsSearchModalOpen(false)} />}
-      <Filters isOpen={isFilterModalOpen} onClose={() => setIsFilterModalOpen(false)} />
+      <Filters isOpen={isFilterModalOpen} onClose={() => setIsFilterModalOpen(false)} setSelectedFilter={onFilterChange} />
     </div>
   );
 };

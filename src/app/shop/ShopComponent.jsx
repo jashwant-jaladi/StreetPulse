@@ -1,9 +1,11 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import Item from "../components/Item";
 import useShopStore from "@/zustand/shopStore";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";  // Use useParams for Next.js dynamic routing
 
-const ShopComponent = () => {
+const ShopComponent = ({ selectedFilter }) => {
+  const { category } = useParams();  // Get category from URL params
   const products = useShopStore((state) => state.shops);
   const fetchShops = useShopStore((state) => state.fetchShops);
   const wishlist = useShopStore((state) => state.wishlist);
@@ -29,22 +31,47 @@ const ShopComponent = () => {
     initializeData();
   }, [userId, fetchShops, fetchWishlist]);
 
+  // Filter products by category and selected filter
+  const filteredProducts = React.useMemo(() => {
+    let filtered = products;
+
+    if (selectedFilter) {
+      switch (selectedFilter) {
+        case "priceLowToHigh":
+          filtered.sort((a, b) => a.prices - b.prices);
+          break;
+        case "priceHighToLow":
+          filtered.sort((a, b) => b.prices - a.prices);
+          break;
+        case "discountHighToLow":
+          filtered.sort((a, b) => b.discount - a.discount);
+          break;
+        case "ratingHighToLow":
+          filtered.sort((a, b) => b.rating - a.rating);
+          break;
+        default:
+          break;
+      }
+    }
+
+    return filtered;
+  }, [selectedFilter, category, products]);
+
   // Guard against empty data
-  if (!products || products.length === 0) {
+  if (!filteredProducts || filteredProducts.length === 0) {
     return <p className="text-white text-center mt-10">No products available.</p>;
   }
 
-  // Check if product is in the wishlist
-  const isInWishlist = (shopId) => 
+  const isInWishlist = (shopId) =>
     wishlist?.some((item) => item.shopId === shopId);
 
-  // Utility function for rating classes
   const getRatingClass = (rating) => {
     if (!rating) return "bg-gray-500";
     if (rating <= 3) return "bg-red-600";
     if (rating <= 4) return "bg-yellow-600";
     return "bg-green-700";
   };
+
   const handleWishlistClick = (shopId) => {
     if (!userId) {
       alert("Please log in to add items to your wishlist.");
@@ -61,8 +88,7 @@ const ShopComponent = () => {
   return (
     <div>
       <div className="bg-black text-slate-300 p-14 pt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-14 place-items-center">
-        {products.map((item) => (
-          
+        {filteredProducts.map((item) => (
           <Item
             key={item.id}
             id={item.id}
@@ -79,7 +105,6 @@ const ShopComponent = () => {
             handleWishlistClick={handleWishlistClick}
             isInWishlist={isInWishlist(item.id)}
           />
-        
         ))}
       </div>
     </div>

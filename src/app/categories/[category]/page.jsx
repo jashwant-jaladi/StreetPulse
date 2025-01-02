@@ -1,5 +1,6 @@
 "use client";
-import { useEffect } from "react";
+import React from "react";
+import { useEffect, useState, useMemo } from "react";
 import useShopStore from "@/zustand/shopStore";
 import Shopnav from "@/app/shop/shopnav";
 import Item from "@/app/components/Item";
@@ -7,6 +8,7 @@ import { useSession } from "next-auth/react";
 
 const CategoryPage = ({ params }) => {
   const { category } = params;
+  const [selectedFilter, setSelectedFilter] = useState("");
 
   const { data: session } = useSession();
   const userId = session?.user?.id;
@@ -17,13 +19,12 @@ const CategoryPage = ({ params }) => {
   const addToWishlist = useShopStore((state) => state.addToWishlist);
   const removeFromWishlist = useShopStore((state) => state.removeFromWishlist);
 
-  // Fetch data when the component mounts
   useEffect(() => {
     const initializeData = async () => {
       if (userId) {
         try {
           await fetchShops();
-          await fetchWishlist(userId); // Fetch wishlist on component load
+          await fetchWishlist(userId);
         } catch (error) {
           console.error("Error initializing data:", error);
         }
@@ -32,16 +33,42 @@ const CategoryPage = ({ params }) => {
 
     initializeData();
   }, [userId, fetchShops, fetchWishlist]);
-  // Filter products by category
-  const filteredProducts = products.filter(
-    (product) => product.category === category
-  );
 
-  // Handle empty category case
+  // Filter and sort products
+  const filteredProducts = useMemo(() => {
+    // First filter by category
+    let filtered = products.filter((product) => product.category === category);
+    
+    // Then apply sorting if a filter is selected
+    if (selectedFilter) {
+      // Create a new array to avoid mutating the original
+      filtered = [...filtered];
+      
+      switch (selectedFilter) {
+        case "priceLowToHigh":
+          filtered.sort((a, b) => a.prices - b.prices);
+          break;
+        case "priceHighToLow":
+          filtered.sort((a, b) => b.prices - a.prices);
+          break;
+        case "discountHighToLow":
+          filtered.sort((a, b) => b.discount - a.discount);
+          break;
+        case "ratingHighToLow":
+          filtered.sort((a, b) => b.rating - a.rating);
+          break;
+        default:
+          break;
+      }
+    }
+    
+    return filtered;
+  }, [products, category, selectedFilter]);
+
   if (filteredProducts.length === 0) {
     return (
       <div>
-        <Shopnav />
+        <Shopnav onFilterChange={setSelectedFilter} />
         <div className="text-center text-red-500 p-24 bg-black flex justify-center">
           No Products available for this category
         </div>
@@ -49,7 +76,6 @@ const CategoryPage = ({ params }) => {
     );
   }
 
-  // Utility: Get rating class
   const getRatingClass = (rating) => {
     if (!rating) return "bg-gray-500";
     if (rating <= 3) return "bg-red-600";
@@ -57,10 +83,8 @@ const CategoryPage = ({ params }) => {
     return "bg-green-700";
   };
 
-  // Check if the product is in the wishlist
   const isInWishlist = (shopId) => wishlist.some((item) => item.shopId === shopId);
 
-  // Handle wishlist button click
   const handleWishlistClick = (shopId) => {
     if (!userId) {
       alert("Please log in to add items to your wishlist.");
@@ -71,12 +95,12 @@ const CategoryPage = ({ params }) => {
       removeFromWishlist(userId, shopId);
     } else {
       addToWishlist(userId, shopId);
-    }  
+    }
   };
 
   return (
     <div>
-      <Shopnav />
+      <Shopnav onFilterChange={setSelectedFilter} />
       <div className="bg-black text-slate-300 p-14 pt-10 grid grid-cols-4 gap-14 place-items-center">
         {filteredProducts.map((item) => (
           <Item
@@ -92,7 +116,7 @@ const CategoryPage = ({ params }) => {
             rating={item.rating}
             ratingClass={getRatingClass(item.rating)}
             handleWishlistClick={handleWishlistClick}
-            isInWishlist={isInWishlist(item.id)} // Reactively checks wishlist status
+            isInWishlist={isInWishlist(item.id)}
           />
         ))}
       </div>

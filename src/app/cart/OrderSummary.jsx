@@ -9,19 +9,25 @@ const OrderSummary = () => {
   const [couponCode, setCouponCode] = useState('');
   const [discountApplied, setDiscountApplied] = useState(false);
   const [discountAmount, setDiscountAmount] = useState(0);
+  const [shippingDetails, setShippingDetails] = useState({
+    name: '',
+    address: '',
+    city: '',
+    postalCode: ''
+  });
+
   const totalPrice = useCartStore((state) => state.totalPrice(state));
 
   const handleApplyCoupon = () => {
     let discount = 0;
 
     if (couponCode === 'streetpulse5') {
-      discount = (totalPrice * 0.05).toFixed(2);
-       // 5% discount
+      discount = (totalPrice * 0.05).toFixed(2); // 5% discount
       setDiscountApplied(true);
       setDiscountAmount(discount);
       toast.success("5% discount applied!");
     } else if (couponCode === 'streetpulse10') {
-      discount = totalPrice * 0.10; // 10% discount
+      discount = (totalPrice * 0.10).toFixed(2); // 10% discount
       setDiscountApplied(true);
       setDiscountAmount(discount);
       toast.success("10% discount applied!");
@@ -29,6 +35,31 @@ const OrderSummary = () => {
       setDiscountApplied(false);
       setDiscountAmount(0);
       toast.error("Invalid coupon code!");
+    }
+  };
+
+  const handleShippingDetailsValidation = () => {
+    const { name, address, city, postalCode } = shippingDetails;
+
+    // Simple validation checks
+    if (!name || !address || !city || !postalCode) {
+      toast.error("All fields are required!");
+      return false;
+    }
+
+    // Postal code validation: check if it's a valid number
+    if (!/^\d{6}$/.test(postalCode)) {
+      toast.error("Please enter a valid 6-digit postal code!");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleCheckout = () => {
+    if (handleShippingDetailsValidation()) {
+      
+      toast.success("Proceeding to checkout...");
     }
   };
 
@@ -113,6 +144,8 @@ const OrderSummary = () => {
               <Input
                 name="name"
                 placeholder="Enter your name"
+                value={shippingDetails.name}
+                onChange={(e) => setShippingDetails({ ...shippingDetails, name: e.target.value })}
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -124,6 +157,8 @@ const OrderSummary = () => {
               <Input
                 name="address"
                 placeholder="Enter your address"
+                value={shippingDetails.address}
+                onChange={(e) => setShippingDetails({ ...shippingDetails, address: e.target.value })}
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -135,6 +170,8 @@ const OrderSummary = () => {
               <Input
                 name="city"
                 placeholder="Enter your city"
+                value={shippingDetails.city}
+                onChange={(e) => setShippingDetails({ ...shippingDetails, city: e.target.value })}
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -146,6 +183,8 @@ const OrderSummary = () => {
               <Input
                 name="postalCode"
                 placeholder="Enter your postal code"
+                value={shippingDetails.postalCode}
+                onChange={(e) => setShippingDetails({ ...shippingDetails, postalCode: e.target.value })}
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -161,6 +200,7 @@ const OrderSummary = () => {
             variant="solid"
             size="lg"
             _hover={{ transform: 'scale(1.05)' }}
+            onClick={handleCheckout}
           >
             CHECKOUT
           </Button>
