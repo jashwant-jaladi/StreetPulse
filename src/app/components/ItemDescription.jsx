@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Rating from '../Icons/Rating';
+import Review from './Review';
 import {
   Modal,
   ModalOverlay,
@@ -11,6 +11,7 @@ import {
   ModalCloseButton,
   Button,
   useToast,
+  Flex
 } from '@chakra-ui/react';
 import Dropdown from './Dropdown';
 import QuantitySelector from './Quantity';
@@ -31,7 +32,7 @@ const ItemDescription = ({
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const toast = useToast(); // Initialize the toast
+  const toast = useToast(); 
   const wishlist = useShopStore((state) => state.wishlist);
   const addToWishlist = useShopStore((state) => state.addToWishlist);
   const removeFromWishlist = useShopStore((state) => state.removeFromWishlist);
@@ -162,7 +163,10 @@ const ItemDescription = ({
               />
             </div>
             <div className="flex-grow">
+              <Flex justifyContent="space-between">
               <h3 className="text-2xl font-semibold mb-2">{name}</h3>
+              <div>{rating} stars ({noOfRatings} ratings)</div>
+              </Flex>
               <h5 className="text-xl mb-4">₹ {price}</h5>
               <p className="mb-4">{description}</p>
 
@@ -194,9 +198,8 @@ const ItemDescription = ({
               >
                 {isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
               </Button>
-
-              <h3 className="text-xl font-semibold mt-4 mb-2">Add your Review</h3>
-              <Rating rating={rating} noOfRatings={noOfRatings} />
+              <Review userId={userId} shopId={id} />
+              
             </div>
           </div>
         </ModalBody>

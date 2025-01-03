@@ -42,8 +42,8 @@ model Shop {
   image       String
   category    String
   name        String
-  rating      Int
-  noOfRatings Int
+  rating      Float      @default(0) // Average rating
+  noOfRatings Int        @default(0) // Number of ratings
   prices      Int
   preOffer    Int
   discount    Int
@@ -54,6 +54,7 @@ model Shop {
   wishlist    Wishlist[]
   description String?
   cartItems   CartItem[]
+  reviews     Review[]
 }
 
 model User {
@@ -66,6 +67,7 @@ model User {
   comments  Comment[]
   wishlist  Wishlist[]
   CartItem  CartItem[]
+  reviews   Review[]
 }
 
 model Comment {
@@ -105,4 +107,19 @@ model CartItem {
 
   @@index([userId])
   @@index([shopId])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int      // User rating for the shop item
+  content   String   // Review content
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int
+  user   User  @relation(fields: [userId], references: [id])
+  shopId Int
+  shop   Shop  @relation(fields: [shopId], references: [id])
+
+  @@unique([userId, shopId]) // Ensures a user can review an item only once
 }
