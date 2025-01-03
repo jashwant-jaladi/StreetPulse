@@ -16,18 +16,19 @@ export async function POST(request) {
       where: { userId_shopId: { userId, shopId } },
     });
 
-    if (existingReview) {
-      // Update existing review
-      await prisma.review.update({
+    const newReview = existingReview
+    ? await prisma.review.update({
         where: { id: existingReview.id },
         data: { rating, content, updatedAt: new Date() },
-      });
-    } else {
-      // Create a new review
-      await prisma.review.create({
+        include: { user: { select: { name: true } } }, // Include user details
+      })
+    : await prisma.review.create({
         data: { userId, shopId, rating, content },
+        include: { user: { select: { name: true } } }, // Include user details
       });
-    }
+  
+  return NextResponse.json(newReview);
+  
 
   
     const reviews = await prisma.review.findMany({ where: { shopId } });

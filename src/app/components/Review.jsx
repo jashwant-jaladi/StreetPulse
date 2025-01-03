@@ -72,23 +72,40 @@ const Review = ({ shopId, userId }) => {
       });
       return;
     }
-
+  
     try {
       const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ shopId, userId, rating, content: comment }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to submit review');
       }
-
+  
       const newReview = await response.json();
-      setComments((prevComments) => [...prevComments, newReview]);
+  
+      // Update local state
+      setComments((prevComments) => {
+        const existingIndex = prevComments.findIndex(
+          (c) => c.userId === userId && c.shopId === shopId
+        );
+  
+        if (existingIndex !== -1) {
+          // Replace existing review
+          const updatedComments = [...prevComments];
+          updatedComments[existingIndex] = newReview;
+          return updatedComments;
+        }
+  
+        // Add new review
+        return [...prevComments, newReview];
+      });
+  
       setComment('');
       setRating(0);
-
+  
       toast({
         title: "Review submitted",
         description: "Thank you for your feedback!",
@@ -106,6 +123,7 @@ const Review = ({ shopId, userId }) => {
       });
     }
   };
+  
 
   return (
     <Box bg="gray.800"  borderRadius="lg" mt={8} color="yellow.400" boxShadow="lg">
