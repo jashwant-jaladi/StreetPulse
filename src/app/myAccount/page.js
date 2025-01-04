@@ -13,13 +13,12 @@ const MyAccount = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loginEmail, setLoginEmail] = useState(""); // Updated: Use this for login email
-  const [loginPassword, setLoginPassword] = useState(""); // Updated: Use this for login password
-  
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
   const router = useRouter();
 
-  // Function to show error toast notifications
+  // Show error toast notifications
   const showToast = (errorMessage) => {
     toast.error(errorMessage, {
       position: "top-right",
@@ -33,18 +32,56 @@ const MyAccount = () => {
     });
   };
 
+  // Handle Guest Login
+  const handleGuestLogin = async () => {
+    try {
+      const res = await signIn("credentials", {
+        guest: true, 
+        redirect: false,
+      });
+
+      if (res?.error) {
+        showToast("Failed to log in as a guest");
+      } else {
+        toast.success("Logged in as Guest!");
+        router.replace("/"); // Redirect to home after guest login
+      }
+    } catch (error) {
+      console.error("Error during guest login:", error);
+      showToast("An unexpected error occurred");
+    }
+  };
+
+  // Handle Login Form Submission
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await signIn("credentials", {
+        email: loginEmail,
+        password: loginPassword,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        showToast("Invalid credentials");
+        return;
+      }
+
+      router.replace("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // Handle Registration Form Submission
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
-    // Ensure all fields are filled
     if (!name || !email || !password || !confirmPassword) {
       showToast("Please fill all the fields");
       return;
     }
 
-    // Ensure the passwords match
     if (password !== confirmPassword) {
       showToast("Passwords do not match");
       return;
@@ -60,16 +97,10 @@ const MyAccount = () => {
       });
 
       if (res.ok) {
-        // Reset form state after success
-        setName("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
         toast.success("Registration successful!");
         setTimeout(() => {
           window.location.href = "/myAccount";
         }, 1000);
-      
       } else {
         const errorData = await res.json();
         showToast(errorData.message || "Registration failed");
@@ -77,28 +108,6 @@ const MyAccount = () => {
     } catch (error) {
       console.error("Error occurred while registering the user:", error);
       showToast("An unexpected error occurred");
-    }
-  };
-
-  // Handle Login Form Submission
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await signIn("credentials", {
-        email: loginEmail, // Use loginEmail from state
-        password: loginPassword, // Use loginPassword from state
-        redirect: false,
-      });
-
-      if (res?.error) {
-        const errorMessage = "Invalid credentials";
-        showToast(errorMessage);
-        return;
-      }
-
-      router.replace("/"); // Redirect after successful login
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -130,11 +139,17 @@ const MyAccount = () => {
                   className="p-2 border-2 border-yellow-400 rounded-lg bg-black"
                   onChange={(e) => setLoginPassword(e.target.value)}
                 />
-                <ModalPassword /> {/* Modal for forgotten password */}
+                <ModalPassword />
                 <button className="m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black text-white hover:bg-yellow-700">
                   Submit
                 </button>
               </form>
+              <button
+                onClick={handleGuestLogin}
+                className="mt-5 m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black text-white hover:bg-yellow-700"
+              >
+                Continue as Guest
+              </button>
             </TabPanel>
 
             <TabPanel>
@@ -174,16 +189,10 @@ const MyAccount = () => {
                   Register
                 </button>
               </form>
-              {password !== confirmPassword && (
-                <div className="text-red-500 text-sm pt-3">
-                  Passwords do not match
-                </div>
-              )}
             </TabPanel>
           </TabPanels>
         </Tabs>
       </div>
-      {/* ToastContainer moved outside the condition to show for both success and error */}
       <ToastContainer />
     </div>
   );

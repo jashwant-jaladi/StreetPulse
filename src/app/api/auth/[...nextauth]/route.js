@@ -15,8 +15,28 @@ const handler = NextAuth({
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        guest: { label: "Is Guest", type: "checkbox" },
       },
+
       async authorize(credentials) {
+        // Handle guest user login
+        if (credentials?.guest) {
+          const guestUser = await prisma.user.create({
+            data: {
+              name: "Guest",
+              email: `guest_${Date.now()}@example.com`,
+              guest: true,
+              password: "guest",
+            },
+          });
+
+          return {
+            id: guestUser.id,
+            name: guestUser.name,
+            email: guestUser.email,
+          };
+        }
+
         // Ensure email and password are provided
         if (!credentials?.email || !credentials?.password) {
           throw new Error("Email and password are required.");
@@ -60,6 +80,7 @@ const handler = NextAuth({
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
+        token.guest = user.guest || false; 
       }
       return token;
     },
@@ -69,6 +90,7 @@ const handler = NextAuth({
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
+        session.user.guest = token.guest; 
       }
       return session;
     },
