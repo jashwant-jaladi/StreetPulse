@@ -18,12 +18,13 @@ export async function POST(req) {
                 pass: process.env.EMAIL_PASS,
             },
         });
-
+        const resetLink = `${process.env.NEXTAUTH_URL}/reset-password/${user.id}`;
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
             subject: "Password Reset for StreetPulse",
-            text: `Click the link to reset your password: process.env.NEXTAUTH_URL/reset-password/${user.id}`,
+            text: `Click the link to reset your password: ${resetLink}`
+
         };
 
         await transporter.sendMail(mailOptions);
