@@ -1,13 +1,23 @@
 import React from 'react';
 import prisma from '@/libs/db';
 import Image from 'next/image';
+import Comment from '../Comment';
+import Searchbar from '../Searchbar';
+import FeaturedProducts from '../FeaturedProducts';
 
 
 
 const BlogDetails = async ({ params }) => {
-  // Fetch blog post by ID from the database
+  const {id} = params
+  if (!id) {
+    return (
+      <div className="bg-black text-yellow-400 h-screen flex items-center justify-center">
+        <h1 className="text-3xl font-bold">Post Not Found</h1>
+      </div>
+    );
+  }
   const post = await prisma.blogs.findUnique({
-    where: { id: parseInt(params.id, 10) }, // Assuming the ID is a number
+    where: { id: parseInt(id, 10) }, // Assuming the ID is a number
   });
 
   // If no post is found, handle it gracefully
@@ -43,36 +53,17 @@ const BlogDetails = async ({ params }) => {
               By {post.name} on {new Date(post.date).toLocaleDateString()}
             </p>
             <h2 className="pt-5 pl-3 text-2xl font-bold">{post.title}</h2>
-            <p className="pt-5 pl-3 text-white">{post.content}</p>
+            <p className="pt-5 pl-3 text-white w-[100vh]">{post.content}</p>
           </div>
 
-          {/* Comments Section */}
-          <h3 className="mt-10 mb-5 text-xl">Comments :</h3>
-          <div className="p-10 border-2 border-yellow-600 w-[700px]">
-            {/* Placeholder for Comments */}
-          </div>
-
-          {/* Leave a Comment */}
-          <div className="flex flex-col">
-            <h3 className="mt-10 mb-5 text-xl">Leave a comment :</h3>
-            <textarea
-              className="bg-black p-2 border-2 border-yellow-600 w-[700px]"
-              placeholder="Enter your comment here!!"
-            ></textarea>
-            <button className="w-40 border-2 border-yellow-600 rounded-2xl p-2 mt-10">
-              Submit
-            </button>
-          </div>
+          <Comment blogId={post.id}/>
+      
         </div>
       </div>
 
       {/* Sidebar */}
       <div className="w-1/2">
-        <input
-          type="text"
-          placeholder="Search"
-          className="p-3 m-auto mt-20 flex justify-center content-center border-2 border-yellow-400 rounded-lg bg-black text-yellow-400"
-        />
+        <Searchbar/>
         <div className="grid place-content-center list-none mt-10 gap-4 text-xl">
           <h3 className="text-3xl font-bold p-5">Categories</h3>
           <li>Fashion</li>
@@ -85,6 +76,7 @@ const BlogDetails = async ({ params }) => {
           <hr />
           <li>DIY & Crafts</li>
           <h3 className="text-3xl font-bold p-5 mt-10">Featured Products</h3>
+          <FeaturedProducts/>
           <h3 className="text-3xl font-bold p-5 mt-10">Tags</h3>
           <div className="grid grid-rows-4 grid-flow-col gap-4 text-sm">
             <button className="border-2 border-yellow-700 rounded-3xl p-2">Men</button>

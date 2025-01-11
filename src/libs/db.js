@@ -12,3 +12,5 @@ if (!global.prisma) {
 }
 
 module.exports = prisma;
+
+

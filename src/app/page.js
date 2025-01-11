@@ -1,20 +1,23 @@
-"use client"
-import React from "react"
-import Carousel from "./homeComponents/Carousel"
-import CategoryGrid from "./homeComponents/CategoryGrid"
-import Blogdisplay from "./homeComponents/Blogdisplay"
-import StoreOverview from "./homeComponents/StoreOverview"
-import Testimonials from "./homeComponents/Testimonials"
+"use client";
 
+import React from "react";
+import Carousel from "./homeComponents/Carousel";
+import CategoryGrid from "./homeComponents/CategoryGrid";
+import Blogdisplay from "./homeComponents/Blogdisplay";
+import StoreOverview from "./homeComponents/StoreOverview";
+import Testimonials from "./homeComponents/Testimonials";
+import useShopStore from "@/zustand/shopStore";
 
 export default function Home() {
+  const shops = useShopStore((state) => state.shops); // Access shops from Zustand
+
   return (
-   <>
-    <Carousel/>
-    <CategoryGrid/>
-    <StoreOverview/>
-    <Blogdisplay/>
-    <Testimonials/>
-   </> 
-  )
+    <>
+      <Carousel />
+      <CategoryGrid />
+      <StoreOverview shops={shops} /> {/* Pass shops as needed */}
+      <Blogdisplay />
+      <Testimonials />
+    </>
+  );
 }

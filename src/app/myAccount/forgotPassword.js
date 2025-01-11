@@ -25,23 +25,30 @@ function ModalPassword() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = React.useState("");
 
-  const handleSend = (e) => {
-    if (email.trim() === "") {
-      toast.error("Please enter your email.", {
-        theme: "dark",
+  const handleSend = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("/api/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
-    } else {
-      toast.success("Recovery link is sent to your email!", {
-        theme: "dark",
-      });
-      setTimeout(() => {
-        onClose();
-        setEmail("")
-      },1000)
-    
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success(data.message);
+        setEmail("");
+      } else {
+        toast.error(data.message);
+        setEmail("");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred. Please try again.");
       
     }
-    
   };
 
   return (

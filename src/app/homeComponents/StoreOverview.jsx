@@ -1,21 +1,51 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { StarIcon } from "@chakra-ui/icons";
+import Item from "../components/Item";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import useShopStore from "@/zustand/shopStore"; // Import Zustand store
+import useShopStore from "@/zustand/shopStore";
+import { useSession } from "next-auth/react";
 
 const StoreOverview = () => {
-  const { shops } = useShopStore(); // Access data from Zustand store
-  const [display, setDisplay] = useState([]); // Data to display
-  const [activeSort, setActiveSort] = useState(""); // Track active sorting option
+  const products = useShopStore((state) => state.shops);
+  const fetchShops = useShopStore((state) => state.fetchShops);
+  const wishlist = useShopStore((state) => state.wishlist);
+  const fetchWishlist = useShopStore((state) => state.fetchWishlist);
+  const addToWishlist = useShopStore((state) => state.addToWishlist);
+  const removeFromWishlist = useShopStore((state) => state.removeFromWishlist);
 
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+  const [display, setDisplay] = useState([]); 
+  const [activeSort, setActiveSort] = useState(""); 
+
+  // Fetch shops data on mount
   useEffect(() => {
-    // Group products by category and fetch the first 5 items from each category
-    const groupedByCategory = shops.reduce((acc, item) => {
+    const initializeData = async () => {
+      if (userId) {
+        try {
+          await fetchShops();
+          await fetchWishlist(userId);
+        } catch (error) {
+          console.error("Error initializing data:", error);
+        }
+      }
+    };
+
+    initializeData();
+  }, [userId, fetchShops, fetchWishlist]);
+
+  // Check if product is in the wishlist
+  const isInWishlist = (shopId) => 
+    wishlist?.some((item) => item.shopId === shopId);
+
+  // Process shops data and group by category
+  useEffect(() => {
+    if (!products || products.length === 0) return;
+
+    const groupedByCategory = products.reduce((acc, item) => {
       if (!acc[item.category]) {
         acc[item.category] = [];
       }
@@ -23,47 +53,90 @@ const StoreOverview = () => {
       return acc;
     }, {});
 
-    // For each category, slice the first 5 items and update the display state
-    const limitedDisplay = Object.values(groupedByCategory).map((categoryItems) => {
-      return categoryItems.slice(0, 5); // Get only the first 5 items from each category
-    });
+    const limitedDisplay = Object.values(groupedByCategory)
+      .flatMap((categoryItems) => categoryItems.slice(0, 5));
 
-    setDisplay(limitedDisplay.flat()); // Flatten the array to display all items from all categories
-  }, [shops]);
+    setDisplay(limitedDisplay);
+  }, [products]);
 
+  // Handle sorting based on different criteria
   const handleSort = (sortingOption) => {
-    let sortedData;
+    if (!products) return;
+
+    let sortedData = [];
 
     switch (sortingOption) {
       case "Best Seller":
-        sortedData = shops.filter((item) => item.bestSeller === true);
+        sortedData = products.filter((item) => item.bestSeller === true);
         break;
       case "Newest":
-        sortedData = shops.filter((item) => item.newest === true);
+        sortedData = products.filter((item) => item.newest === true);
         break;
       case "Discount":
-        sortedData = [...shops].sort((a, b) => b.discount - a.discount);
+        sortedData = [...products].sort((a, b) => b.discount - a.discount);
         break;
       case "Top Rated":
-        sortedData = [...shops].sort((a, b) => b.rating - a.rating);
+        sortedData = [...products].sort((a, b) => b.rating - a.rating);
         break;
       default:
-        sortedData = [...shops];
+        sortedData = products;
         break;
     }
 
-    setDisplay(sortedData.slice(0, 8)); // Limit display to 8 items
+    setDisplay(sortedData.slice(0, 8));
     setActiveSort(sortingOption);
   };
 
-  // Slick slider settings
+  // Slick carousel settings with responsive breakpoints
   const settings = {
     dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 3,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1
+        }
+      }
+    ]
   };
+
+  // Handle adding/removing items to wishlist
+  const getRatingClass = (rating) => {
+    if (!rating) return "bg-gray-500";
+    if (rating <= 3) return "bg-red-600";
+    if (rating <= 4) return "bg-yellow-600";
+    return "bg-green-700";
+  };
+
+  const handleWishlistClick = (shopId) => {
+    if (!userId) {
+      alert("Please log in to add items to your wishlist.");
+      return;
+    }
+
+    if (isInWishlist(shopId)) {
+      removeFromWishlist(userId, shopId);
+    } else {
+      addToWishlist(userId, shopId);
+    }
+  };
+
+  // Guard against empty products
+  if (!products || products.length === 0) {
+    return <p className="text-white text-center mt-10">No products available.</p>;
+  }
 
   return (
     <div className="bg-black">
@@ -72,80 +145,38 @@ const StoreOverview = () => {
       </h3>
 
       <div className="flex flex-row justify-center gap-10 pt-10 bg-black text-yellow-500 font-semibold">
-        <button
-          className={`hover:underline ${activeSort === "Best Seller" ? "underline" : ""}`}
-          onClick={() => handleSort("Best Seller")}
-        >
-          Best Seller
-        </button>
-        <button
-          className={`hover:underline ${activeSort === "Newest" ? "underline" : ""}`}
-          onClick={() => handleSort("Newest")}
-        >
-          Newest
-        </button>
-        <button
-          className={`hover:underline ${activeSort === "Discount" ? "underline" : ""}`}
-          onClick={() => handleSort("Discount")}
-        >
-          Discount
-        </button>
-        <button
-          className={`hover:underline ${activeSort === "Top Rated" ? "underline" : ""}`}
-          onClick={() => handleSort("Top Rated")}
-        >
-          Top Rated
-        </button>
+        {["Best Seller", "Newest", "Discount", "Top Rated"].map((option) => (
+          <button
+            key={option}
+            className={`hover:underline ${activeSort === option ? "underline" : ""}`}
+            onClick={() => handleSort(option)}
+          >
+            {option}
+          </button>
+        ))}
       </div>
 
       <div className="bg-black text-slate-300 pb-10">
-        <Slider {...settings} className="w-[1200px] mx-auto mt-10">
+        <Slider {...settings} className="w-[80vw] mx-auto mt-10">
           {display.map((item) => (
-            <div
+            
+            <Item
               key={item.id}
-              className="border-2 border-yellow-700 w-[320px] p-3 rounded-xl overflow-hidden cursor-pointer"
-            >
-              <Image
-                src={item.image}
-                width={300}
-                height={300}
-                alt={item.name}
-                className="w-[300px] h-[300px] object-center object-cover transition-transform ease-linear duration-300 hover:scale-105"
-              />
-
-              <div className="flex justify-between gap-4">
-                <div className="line-clamp-1 pt-3 mb-1 font-semibold text-md w-[270px] cursor-pointer">
-                  {item.name}
-                </div>
-                <button className="pt-2 flex items-center">
-                  <Image src="/heart.svg" width={25} height={25} alt="Heart Icon" />
-                </button>
-              </div>
-
-              {item.rating <= 3 ? (
-                <span className="inline bg-red-600 p-1 font-semibold">
-                  <span>{item.rating}</span>
-                  <StarIcon className="fill-white inline pl-1 pb-1" />
-                </span>
-              ) : item.rating <= 4 ? (
-                <span className="inline bg-yellow-600 p-1 font-semibold">
-                  <span>{item.rating}</span>
-                  <StarIcon className="fill-white inline pl-1 pb-1" />
-                </span>
-              ) : (
-                <span className="inline bg-green-700 p-1 font-semibold">
-                  <span>{item.rating}</span>
-                  <StarIcon className="fill-white inline pl-1 pb-1" />
-                </span>
-              )}
-
-              <span className="pl-2">({item.noOfRatings})</span>
-              <div className="flex gap-3 mt-1">
-                <span className="font-semibold">{item.prices}</span>
-                <span className="line-through text-slate-500">{item.preOffer}</span>
-                <span className="text-green-500">{item.discount}% off</span>
-              </div>
-            </div>
+              id={item.id}
+              name={item.name}
+              price={item.prices}
+              image={item.image}
+              category={item.category}
+              noOfRatings={item.noOfRatings}
+              preOffer={item.preOffer}
+              discount={item.discount}
+              rating={item.rating}
+              ratingClass={getRatingClass(item.rating)}
+              handleWishlistClick={handleWishlistClick}
+              isInWishlist={isInWishlist(item.id)}
+              description={item.description}
+            />
+            
           ))}
         </Slider>
       </div>

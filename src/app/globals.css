@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 .glass
 {
     
@@ -69,3 +71,4 @@ border: 2px solid rgba(27, 26, 26, 1);
       transform: rotateY(180deg);
     }
     
+ 

@@ -1,19 +1,24 @@
-import React from 'react'
-import ShopComponent from './ShopComponent'
-import Shopnav from './shopnav'
-import prisma from '@/libs/db'
+"use client";
 
+import React from "react";
+import { useState , useEffect} from "react";
+import ShopComponent from "./ShopComponent";
+import Shopnav from "./shopnav";
 
-const Shop = async() => {
+const Shop = () => {
+  const [selectedFilter, setSelectedFilter] = useState("");
 
-
-const products = await prisma.shop.findMany()
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+   
+  }
+ 
   return (
     <div>
-    <Shopnav/>
-    <ShopComponent products={products}/>
+      <Shopnav onFilterChange={handleFilterChange} />
+      <ShopComponent selectedFilter={selectedFilter} /> 
     </div>
-  )
-}
+  );
+};
 
-export default Shop
+export default Shop;
