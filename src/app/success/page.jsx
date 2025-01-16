@@ -1,18 +1,44 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Center, Heading, Text, Button, Icon } from "@chakra-ui/react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/navigation";
-import useCartStore from "@/zustand/cartStore";
+import { useSession } from "next-auth/react";
 
 const Success = () => {
   const router = useRouter();
-    const resetCart = useCartStore((state) => state.resetCart);
+  const { data: session } = useSession(); // Fetch the user session to get the email
 
-  React.useEffect(() => {
-    resetCart();
-  }, [resetCart]);
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      sendOrderConfirmationEmail(session.user?.email);
+    }
+  }, [session]);
+
+  // Function to send order confirmation email
+  const sendOrderConfirmationEmail = async (email) => {
+    try {
+      const response = await fetch('/api/order-confirmation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }), // Send the email to the backend API
+      });
+
+      const result = await response.json();
+      if (result.error) {
+        console.error('Error sending email:', result.error);
+      } else {
+        console.log('Email sent successfully');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  };
+
   return (
     <Center minH="100vh" bgGradient="linear(to-br, green.300, blue.500)">
       <Box
