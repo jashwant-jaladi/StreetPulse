@@ -1,22 +1,48 @@
 "use client";
-import React, { useState } from 'react';
-import { Flex, Box, Text, Stack, Button, Input, FormControl, FormLabel } from '@chakra-ui/react';
-import { ToastContainer, toast } from 'react-toastify'; // Import toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import the required CSS for Toastify
+import React, { useState, useEffect } from 'react';
+import {
+  Flex,
+  Box,
+  Text,
+  Stack,
+  Button,
+  Input,
+  FormControl,
+  FormLabel,
+} from '@chakra-ui/react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import useCartStore from '@/zustand/cartStore';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const OrderSummary = () => {
+  const router = useRouter();
   const [couponCode, setCouponCode] = useState('');
+  const { data: session } = useSession();
   const [discountApplied, setDiscountApplied] = useState(false);
   const [discountAmount, setDiscountAmount] = useState(0);
   const [shippingDetails, setShippingDetails] = useState({
     name: '',
+    email: '',
+    phone: '',
     address: '',
     city: '',
-    postalCode: ''
+    postalCode: '',
   });
 
   const totalPrice = useCartStore((state) => state.totalPrice(state));
+
+  // Populate name and email from session if available
+  useEffect(() => {
+    if (session) {
+      setShippingDetails((prevDetails) => ({
+        ...prevDetails,
+        name: session.user.name || '',
+        email: session.user.email || '',
+      }));
+    }
+  }, [session]);
 
   const handleApplyCoupon = () => {
     let discount = 0;
@@ -25,31 +51,31 @@ const OrderSummary = () => {
       discount = (totalPrice * 0.05).toFixed(2); // 5% discount
       setDiscountApplied(true);
       setDiscountAmount(discount);
-      toast.success("5% discount applied!");
+      toast.success('5% discount applied!');
     } else if (couponCode === 'streetpulse10') {
-      discount = (totalPrice * 0.10).toFixed(2); // 10% discount
+      discount = (totalPrice * 0.1).toFixed(2); // 10% discount
       setDiscountApplied(true);
       setDiscountAmount(discount);
-      toast.success("10% discount applied!");
+      toast.success('10% discount applied!');
     } else {
       setDiscountApplied(false);
       setDiscountAmount(0);
-      toast.error("Invalid coupon code!");
+      toast.error('Invalid coupon code!');
     }
   };
 
   const handleShippingDetailsValidation = () => {
-    const { name, address, city, postalCode } = shippingDetails;
+    const { name, email, phone, address, city, postalCode } = shippingDetails;
 
     // Simple validation checks
-    if (!name || !address || !city || !postalCode) {
-      toast.error("All fields are required!");
+    if (!name || !email || !phone || !address || !city || !postalCode) {
+      toast.error('All fields are required!');
       return false;
     }
 
     // Postal code validation: check if it's a valid number
     if (!/^\d{6}$/.test(postalCode)) {
-      toast.error("Please enter a valid 6-digit postal code!");
+      toast.error('Please enter a valid 6-digit postal code!');
       return false;
     }
 
@@ -58,8 +84,12 @@ const OrderSummary = () => {
 
   const handleCheckout = () => {
     if (handleShippingDetailsValidation()) {
-      
-      toast.success("Proceeding to checkout...");
+      toast.success('Proceeding to payment...');
+      setTimeout(() => {
+        router.push(
+          `/checkout?finalTotal=${encodeURIComponent(finalTotal)}`
+        );
+      }, 1000);
     }
   };
 
@@ -89,21 +119,35 @@ const OrderSummary = () => {
           </Text>
           <Stack spacing={4}>
             <Flex justify="space-between">
-              <Text color="white" fontSize="lg">Items Total:</Text>
-              <Text color="white" fontSize="lg">₹ {totalPrice}</Text>
+              <Text color="white" fontSize="lg">
+                Items Total:
+              </Text>
+              <Text color="white" fontSize="lg">
+                ₹ {totalPrice}
+              </Text>
             </Flex>
             <Flex justify="space-between">
-              <Text color="white" fontSize="lg">Shipping:</Text>
-              <Text color="white" fontSize="lg">₹ 100</Text>
+              <Text color="white" fontSize="lg">
+                Shipping:
+              </Text>
+              <Text color="white" fontSize="lg">
+                ₹ 100
+              </Text>
             </Flex>
             <Flex justify="space-between">
-              <Text color="white" fontSize="lg">Discount:</Text>
-              <Text color="white" fontSize="lg">-₹ {discountAmount}</Text>
+              <Text color="white" fontSize="lg">
+                Discount:
+              </Text>
+              <Text color="white" fontSize="lg">
+                -₹ {discountAmount}
+              </Text>
             </Flex>
 
             {/* Coupon Code Section */}
             <FormControl>
-              <FormLabel color="white" fontSize="lg">Coupon Code</FormLabel>
+              <FormLabel color="white" fontSize="lg">
+                Coupon Code
+              </FormLabel>
               <Input
                 name="couponCode"
                 placeholder="Enter coupon code"
@@ -128,12 +172,21 @@ const OrderSummary = () => {
             </FormControl>
 
             <Flex justify="space-between" fontWeight="bold" mt={4}>
-              <Text color="white" fontSize="lg">Total:</Text>
-              <Text color="yellow.400" fontSize="xl">₹ {finalTotal}</Text>
+              <Text color="white" fontSize="lg">
+                Total:
+              </Text>
+              <Text color="yellow.400" fontSize="xl">
+                ₹ {finalTotal}
+              </Text>
             </Flex>
           </Stack>
 
-          <hr style={{ margin: '1.5rem 0', borderColor: 'rgba(255, 255, 255, 0.3)' }} />
+          <hr
+            style={{
+              margin: '1.5rem 0',
+              borderColor: 'rgba(255, 255, 255, 0.3)',
+            }}
+          />
 
           <Text color="yellow.600" fontWeight="bold" fontSize="lg" mb={4}>
             SHIPPING DETAILS
@@ -145,7 +198,41 @@ const OrderSummary = () => {
                 name="name"
                 placeholder="Enter your name"
                 value={shippingDetails.name}
-                onChange={(e) => setShippingDetails({ ...shippingDetails, name: e.target.value })}
+                onChange={(e) =>
+                  setShippingDetails({ ...shippingDetails, name: e.target.value })
+                }
+                readOnly={session? true : false}
+                bg="gray.800"
+                color="white"
+                borderRadius="md"
+                _focus={{ borderColor: 'yellow.400' }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel color="white">Email</FormLabel>
+              <Input
+                name="email"
+                placeholder="Enter your email"
+                value={shippingDetails.email}
+                onChange={(e) =>
+                  setShippingDetails({ ...shippingDetails, email: e.target.value })
+                }
+                readOnly={session? true : false}
+                bg="gray.800"
+                color="white"
+                borderRadius="md"
+                _focus={{ borderColor: 'yellow.400' }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel color="white">Phone</FormLabel>
+              <Input
+                name="phone"
+                placeholder="Enter your phone number"
+                value={shippingDetails.phone}
+                onChange={(e) =>
+                  setShippingDetails({ ...shippingDetails, phone: e.target.value })
+                }
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -158,7 +245,9 @@ const OrderSummary = () => {
                 name="address"
                 placeholder="Enter your address"
                 value={shippingDetails.address}
-                onChange={(e) => setShippingDetails({ ...shippingDetails, address: e.target.value })}
+                onChange={(e) =>
+                  setShippingDetails({ ...shippingDetails, address: e.target.value })
+                }
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -171,7 +260,9 @@ const OrderSummary = () => {
                 name="city"
                 placeholder="Enter your city"
                 value={shippingDetails.city}
-                onChange={(e) => setShippingDetails({ ...shippingDetails, city: e.target.value })}
+                onChange={(e) =>
+                  setShippingDetails({ ...shippingDetails, city: e.target.value })
+                }
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -184,7 +275,12 @@ const OrderSummary = () => {
                 name="postalCode"
                 placeholder="Enter your postal code"
                 value={shippingDetails.postalCode}
-                onChange={(e) => setShippingDetails({ ...shippingDetails, postalCode: e.target.value })}
+                onChange={(e) =>
+                  setShippingDetails({
+                    ...shippingDetails,
+                    postalCode: e.target.value,
+                  })
+                }
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -200,14 +296,13 @@ const OrderSummary = () => {
             variant="solid"
             size="lg"
             _hover={{ transform: 'scale(1.05)' }}
-            onClick={handleCheckout}
+            onClick={() => handleCheckout()}
           >
-            CHECKOUT
+            Proceed to Payment
           </Button>
         </Box>
       </Flex>
 
-      {/* Toast Container for displaying notifications */}
       <ToastContainer />
     </div>
   );

@@ -130,6 +130,9 @@ const useCartStore = create((set, get) => ({
       console.error("Error updating quantity:", error);
     }
   },
+  resetCart: () => {
+    set({ cart: [] });
+  },
 
   totalPrice: () => {
     const cart = get().cart;
