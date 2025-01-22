@@ -64,19 +64,26 @@ const Contact = () => {
 
   return (
     <>
-      <div className="bg-[url('/contact.jpg')] h-40 bg-center bg-cover blur-sm border-b-2 border-yellow-400"></div>
-      <div className="text-white font-bold grid place-content-center text-5xl absolute top-[190px] left-[610px]">
-        CONTACT
+      {/* Header Section */}
+      <div className="relative h-32 sm:h-40 bg-[url('/contact.jpg')] bg-center bg-cover border-b-2 border-yellow-400">
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-3xl sm:text-4xl md:text-5xl text-center">
+          CONTACT
+        </div>
       </div>
 
-      <div className="flex flex-row bg-black">
+      {/* Main Content */}
+      <div className="flex flex-col lg:flex-row bg-black">
+        {/* Form Section */}
         <form
-          className="flex flex-col p-20 w-1/2 bg-black text-yellow-400"
+          className="flex flex-col p-6 sm:p-10 lg:p-20 w-full lg:w-1/2 bg-black text-yellow-400"
           onSubmit={handleSubmit}
         >
-          <h3 className="text-3xl font-bold text-center pb-10">Send us a message</h3>
+          <h3 className="text-2xl sm:text-3xl font-bold text-center pb-6 sm:pb-10">
+            Send us a message
+          </h3>
           <p className="pb-2">Name</p>
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-col sm:flex-row justify-between gap-4">
             <input
               type="text"
               placeholder="First Name"
@@ -84,7 +91,7 @@ const Contact = () => {
               value={formData.firstName}
               onChange={handleChange}
               disabled={loading}
-              className="mb-5 p-2 bg-black border-2 border-yellow-400 rounded-lg w-5/12"
+              className="mb-5 p-2 bg-black border-2 border-yellow-400 rounded-lg w-full sm:w-5/12"
             />
             <input
               type="text"
@@ -93,7 +100,7 @@ const Contact = () => {
               value={formData.lastName}
               onChange={handleChange}
               disabled={loading}
-              className="mb-5 p-2 bg-black border-2 border-yellow-400 rounded-lg w-5/12"
+              className="mb-5 p-2 bg-black border-2 border-yellow-400 rounded-lg w-full sm:w-5/12"
             />
           </div>
           <p className="pb-2">Email</p>
@@ -104,7 +111,7 @@ const Contact = () => {
             value={formData.email}
             onChange={handleChange}
             disabled={loading}
-            className="mb-5 p-2 bg-black border-2 border-yellow-400 rounded-lg"
+            className="mb-5 p-2 bg-black border-2 border-yellow-400 rounded-lg w-full"
           />
           <p className="pb-2">Comments</p>
           <textarea
@@ -113,38 +120,41 @@ const Contact = () => {
             onChange={handleChange}
             disabled={loading}
             cols="30"
-            rows="10"
+            rows="6"
             placeholder="Enter your message here"
-            className="mb-5 p-2 bg-black border-2 border-yellow-400 rounded-lg"
+            className="mb-5 p-2 bg-black border-2 border-yellow-400 rounded-lg w-full"
           ></textarea>
           <button
             type="submit"
             disabled={loading}
-            className="border-2 border-yellow-400 w-32 p-4 rounded-xl m-auto hover:bg-white hover:text-black"
+            className="border-2 border-yellow-400 w-32 p-3 sm:p-4 rounded-xl m-auto hover:bg-white hover:text-black transition-colors"
           >
             {loading ? "Submitting..." : "Submit"}
           </button>
         </form>
 
-        <div className="flex flex-col p-20 w-1/2 bg-black text-yellow-400">
-          <h3 className="text-3xl font-bold text-center pb-10">Get in touch</h3>
-          <div className="p-10 flex flex-col gap-10 text-xl justify-center">
+        {/* Contact Info Section */}
+        <div className="flex flex-col p-6 sm:p-10 lg:p-20 w-full lg:w-1/2 bg-black text-yellow-400">
+          <h3 className="text-2xl sm:text-3xl font-bold text-center pb-6 sm:pb-10">
+            Get in touch
+          </h3>
+          <div className="p-6 sm:p-10 flex flex-col gap-6 sm:gap-10 text-lg sm:text-xl justify-center">
             <div className="flex flex-row gap-4">
-              <Image src={"/map-pin.svg"} width={30} height={30} alt="location" />
+              <Image src={"/map-pin.svg"} width={24} height={24} alt="location" />
               <div className="flex flex-col">
                 <h3 className="font-bold text-yellow-700">Our Location</h3>
                 <p>123 Urban Avenue, Cityville, Streetland</p>
               </div>
             </div>
             <div className="flex flex-row gap-4">
-              <Image src={"/phone.svg"} width={30} height={30} alt="phone"/>
+              <Image src={"/phone.svg"} width={24} height={24} alt="phone" />
               <div className="flex flex-col">
                 <h3 className="font-bold text-yellow-700">Call Us</h3>
                 <p>123-456-7890</p>
               </div>
             </div>
             <div className="flex flex-row gap-4">
-              <Image src={"/mail.svg"} width={30} height={30} alt="mail" />
+              <Image src={"/mail.svg"} width={24} height={24} alt="mail" />
               <div className="flex flex-col">
                 <h3 className="font-bold text-yellow-700">Email Us</h3>
                 <p>n1nR1@example.com</p>
@@ -152,8 +162,21 @@ const Contact = () => {
             </div>
           </div>
         </div>
-        <ToastContainer />
       </div>
+
+      {/* Toast Notifications */}
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 };

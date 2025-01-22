@@ -1,31 +1,65 @@
-"use client"
-import React from 'react'
-import { useState } from 'react'
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-const Newsletter = () => {
-  const [email,setEmail]=useState("")
-  const handleClick = (e) => {
-      if(email.trim() === ""){
-        toast.error("Please enter your email.", {
-          theme: "dark",
-        });
-      }else{
-        toast.success("Thank you for subscribing.", {
-          theme: "dark",
-        });
-        setTimeout(() => {
-          setEmail("")
-        },100)
-      }
-  }
-    return (
-    <>
-    <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} placeholder='Enter your email' className='border-2 border-yellow-400 px-3 py-2 bg-black text-yellow-400'/>
-    <button className="border-2 border-yellow-400 p-2 w-auto rounded-lg hover:bg-yellow-500 hover:text-black hover:font-bold" onClick={handleClick}>Subscibe</button>
-    <ToastContainer/>
-    </>
-  )
-}
+"use client";
+import React, { useState } from "react";
+import { Button, Input, Box, useToast } from "@chakra-ui/react";
 
-export default Newsletter
+const Newsletter = () => {
+  const [email, setEmail] = useState("");
+  const toast = useToast();
+
+  const handleClick = () => {
+    if (email.trim() === "" || !email.includes("@")) {
+      toast({
+        title: "Error",
+        description: "Please enter valid email ID.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Thank you for subscribing.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      setEmail(""); // Clears input immediately
+    }
+  };
+
+  return (
+    <Box display="flex" flexDirection="column" alignItems="center" gap={4} p={4}>
+      <Input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email"
+        size="md"
+        variant="outline"
+        borderColor="yellow.400"
+        _placeholder={{ color: "yellow.400" }}
+        bg="black"
+        color="yellow.400"
+        focusBorderColor="yellow.500"
+        aria-label="Email input"
+      />
+      <Button
+        onClick={handleClick}
+        colorScheme="yellow"
+        variant="solid"
+        _hover={{
+          bg: "yellow.500",
+          color: "black",
+          fontWeight: "bold",
+        }}
+        aria-label="Subscribe button"
+      >
+        Subscribe
+      </Button>
+    </Box>
+  );
+};
+
+export default Newsletter;

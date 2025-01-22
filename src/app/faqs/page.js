@@ -1,39 +1,62 @@
-import React from 'react'
+import prisma from "@/libs/db";
 import {
   Accordion,
   AccordionItem,
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Box
-} from '@chakra-ui/react'
-import { PrismaClient } from '@prisma/client'
+  Box,
+} from '@chakra-ui/react';
+import Image from "next/image";
 
-const prisma = new PrismaClient()
+const fetchFaqData = async () => {
+  try {
+    return await prisma.faqs.findMany();
+  } catch (error) {
+    console.error("Error fetching FAQ data:", error);
+    return [];
+  }
+};
+
 const Faq = async () => {
-
-  const faqData = await prisma.faqs.findMany()
+  const faqData = await fetchFaqData();
 
   return (
     <>
-      <div className="bg-[url('/sussy.jpg')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-5xl border-b-2 border-yellow-400">
-        FREQUENTLY ASKED QUESTIONS
+      {/* Header Section */}
+      <div className="relative h-40 md:h-48 lg:h-56 w-full">
+        <Image
+          src="/sussy.jpg"
+          alt="FAQ Background"
+          fill
+          sizes="(max-width: 768px) 100vw, 75vw"
+          className="object-cover border-b-2 border-yellow-400"
+          priority
+        />
+        <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl px-4 text-center">
+          FREQUENTLY ASKED QUESTIONS
+        </div>
       </div>
 
-      <div className="p-20 bg-black">
+      {/* FAQ Content */}
+      <div className="p-4 sm:p-8 md:p-12 lg:p-16 xl:p-20 bg-black">
         {faqData.map((item) => (
           <Accordion allowMultiple key={item.id} className="bg-black text-yellow-400">
-            {item.title && <h3 className="text-3xl font-bold p-5 pt-20">{item.title}</h3>}
+            {item.title && (
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold p-3 sm:p-4 md:p-5 pt-8 sm:pt-12 md:pt-16">
+                {item.title}
+              </h3>
+            )}
             <AccordionItem>
               <h2>
-                <AccordionButton>
-                  <Box as="span" flex="1" textAlign="left" className="text-yellow-600">
+                <AccordionButton className="hover:bg-gray-900 transition-colors">
+                  <Box as="span" flex="1" textAlign="left" className="text-base sm:text-lg md:text-xl text-yellow-500">
                     {item.question}
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
               </h2>
-              <AccordionPanel pb={4}>
+              <AccordionPanel pb={4} className="text-gray-200 text-sm sm:text-base md:text-lg">
                 {item.answer}
               </AccordionPanel>
             </AccordionItem>
@@ -41,7 +64,7 @@ const Faq = async () => {
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Faq
+export default Faq;
