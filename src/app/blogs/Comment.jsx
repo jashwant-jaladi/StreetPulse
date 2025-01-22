@@ -5,13 +5,13 @@ import { Box, Heading, Textarea, Button, Flex, Text, Alert, AlertIcon, useToast 
 import Image from "next/image";
 
 const Comment = ({ blogId }) => {
-  const { data: session, status } = useSession(); 
-  const [comments, setComments] = useState([]); 
-  const [newComment, setNewComment] = useState(""); 
-  const [loading, setLoading] = useState(false); 
+  const { data: session, status } = useSession();
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [loading, setLoading] = useState(false);
   const toast = useToast(); // Chakra UI toast hook
 
-  const isAuthenticated = status === "authenticated"; 
+  const isAuthenticated = status === "authenticated";
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -37,27 +37,27 @@ const Comment = ({ blogId }) => {
     fetchComments();
   }, [blogId, toast]);
 
-const handleDelete = async (commentId) => {
-  try {
-    const response = await fetch(`/api/comment?commentId=${commentId}`, {
-      method: "DELETE",
-    });
-    if (!response.ok) {
-      throw new Error("Failed to delete comment");
+  const handleDelete = async (commentId) => {
+    try {
+      const response = await fetch(`/api/comment?commentId=${commentId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete comment");
+      }
+      setComments((prev) => prev.filter((c) => c.id !== commentId));
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Error",
+        description: "Failed to delete comment.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
-    setComments((prev) => prev.filter((c) => c.id !== commentId));
-  } catch (err) {
-    console.error(err);
-    toast({
-      title: "Error",
-      description: "Failed to delete comment.",
-      status: "error",
-      duration: 5000,
-      isClosable: true,
-    });
-  }
-};
-  
+  };
+
   const handleSubmit = async () => {
     if (!newComment.trim()) {
       toast({
@@ -87,8 +87,8 @@ const handleDelete = async (commentId) => {
       }
 
       const data = await response.json();
-      setComments((prev) => [data.comment, ...prev]); 
-      setNewComment(""); 
+      setComments((prev) => [data.comment, ...prev]);
+      setNewComment("");
 
       toast({
         title: "Success",
@@ -112,7 +112,7 @@ const handleDelete = async (commentId) => {
   };
 
   return (
-    <Box p={2}>
+    <Box p={4}>
       {/* Comments Section */}
       <Heading as="h3" size="md" mt={10} mb={5}>
         Comments:
@@ -121,7 +121,8 @@ const handleDelete = async (commentId) => {
         border="2px"
         borderColor="yellow.600"
         borderRadius="md"
-        w="1000px"
+        w="full"
+        maxW="1000px"
         p={4}
         h="300px"
         overflowY="scroll"
@@ -143,28 +144,27 @@ const handleDelete = async (commentId) => {
         {comments.length > 0 ? (
           comments.map((comment, index) => (
             <Box key={comment.id} mb={6}>
-              <Flex alignItems="center" justify={"space-between"}>
-              <Text fontWeight="bold" fontSize="lg" color="yellow.400">
-                {comment.user.name}
-              </Text>
-              <Button
-  width="40px" // Adjusted width for better visibility
-  height="40px" // Set height to maintain a square shape
-  bg="yellow.600" // Background color for better visibility
-  borderRadius="full" // Makes the button circular
-  display="flex" // Center the icon
-  justifyContent="center"
-  alignItems="center"
-  p={0} // Remove extra padding
-  _hover={{ bg: "yellow.500", transform: "scale(1.1)" }} // Add hover effect
-  _active={{ bg: "yellow.700" }} // Active state for better feedback
-  onClick={handleDelete.bind(this, comment.id)}
->
-  <Image src="/icons8-delete.svg" alt="Delete" width={20} height={20} />
-</Button>
-
+              <Flex alignItems="center" justify="space-between">
+                <Text fontWeight="bold" fontSize="lg" color="yellow.400">
+                  {comment.user.name}
+                </Text>
+                <Button
+                  width="30px"
+                  height="30px"
+                  bg="yellow.600"
+                  borderRadius="full"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  p={0}
+                  _hover={{ bg: "yellow.500", transform: "scale(1.1)" }}
+                  _active={{ bg: "yellow.700" }}
+                  onClick={handleDelete.bind(this, comment.id)}
+                >
+                  <Image src="/icons8-delete.svg" alt="Delete" width={16} height={16} />
+                </Button>
               </Flex>
-              <Text fontSize="lg" color="whitesmoke" mt={2} mb={4}>
+              <Text fontSize="md" color="whitesmoke" mt={2} mb={4}>
                 {comment.content}
               </Text>
               <Text fontSize="sm" color="gray.500" mb={2}>
@@ -187,13 +187,14 @@ const handleDelete = async (commentId) => {
             <Heading as="h3" size="md" mb={5}>
               Leave a Comment:
             </Heading>
-            <Flex direction={"column"}>
+            <Flex direction="column">
               <Textarea
                 placeholder="Enter your comment here!"
                 bg="black"
                 border="2px"
                 borderColor="yellow.600"
-                w="700px"
+                w="full"
+                maxW="700px"
                 color="yellow.400"
                 resize="none"
                 _hover={{ borderColor: "yellow.500" }}

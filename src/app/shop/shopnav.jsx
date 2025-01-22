@@ -15,12 +15,18 @@ const Shopnav = ({ onFilterChange }) => {
 
   return (
     <div>
-      <div className='bg-[url("/about-2.avif")] h-40 bg-bottom bg-cover border-b-2 border-yellow-400'></div>
-      <div className='text-white font-bold grid place-content-center text-5xl absolute top-[190px] left-[610px]'>
-        {currentCategory ? currentCategory.toUpperCase() : "Shop"}
+      {/* Header Section */}
+      <div className="relative h-32 sm:h-40 bg-[url('/about-2.avif')] bg-bottom bg-cover border-b-2 border-yellow-400">
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-3xl sm:text-4xl md:text-5xl text-center">
+          {currentCategory ? currentCategory.toUpperCase() : "SHOP"}
+        </div>
       </div>
-      <div className="flex flex-row bg-black text-yellow-400">
-        <nav className="bg-black text-yellow-400 flex flex-row gap-4 pt-8 px-16">
+
+      {/* Navigation and Buttons */}
+      <div className="flex flex-col sm:flex-row justify-between bg-black text-yellow-400 p-4 sm:p-8">
+        {/* Navigation Links */}
+        <nav className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm sm:text-base">
           <Link href="/shop" className="hover:text-white">
             All Products
           </Link>
@@ -40,14 +46,33 @@ const Shopnav = ({ onFilterChange }) => {
             Sneakers
           </Link>
         </nav>
-        <div className="flex flex-row gap-5 pt-8 px-16 my-auto mx-auto mr-8 bg-black text-yellow-400">
-          <button onClick={() => setIsFilterModalOpen(true)}>Filter</button>
-          <button onClick={() => setIsSearchModalOpen(true)}>Search</button>
+
+        {/* Filter and Search Buttons */}
+        <div className="flex flex-row gap-4 mt-4 sm:mt-0">
+          <button
+            onClick={() => setIsFilterModalOpen(true)}
+            className="hover:text-white text-sm sm:text-base"
+          >
+            Filter
+          </button>
+          <button
+            onClick={() => setIsSearchModalOpen(true)}
+            className="hover:text-white text-sm sm:text-base"
+          >
+            Search
+          </button>
         </div>
       </div>
 
-      {isSearchModalOpen && <HandleSearch onClose={() => setIsSearchModalOpen(false)} />}
-      <Filters isOpen={isFilterModalOpen} onClose={() => setIsFilterModalOpen(false)} setSelectedFilter={onFilterChange} />
+      {/* Modals */}
+      {isSearchModalOpen && (
+        <HandleSearch onClose={() => setIsSearchModalOpen(false)} />
+      )}
+      <Filters
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        setSelectedFilter={onFilterChange}
+      />
     </div>
   );
 };

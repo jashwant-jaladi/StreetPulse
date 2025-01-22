@@ -8,8 +8,6 @@ import Searchbar from './Searchbar';
 import BlogCategory from './BlogCategory';
 import FeaturedProducts from './FeaturedProducts';
 
-
-
 const ITEMS_PER_PAGE = 3;
 
 // Function to fetch blogs and implement server-side pagination
@@ -39,33 +37,38 @@ const Blog = async ({ searchParams }) => {
 
   return (
     <div className="bg-black text-yellow-600 pb-10">
-      <div className="bg-[url('/blog/f7.avif')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-5xl border-b-2 border-yellow-400">
-        <h1>BLOGS</h1>
+      {/* Header Section */}
+      <div className="relative h-32 sm:h-40 bg-[url('/blog/f7.avif')] bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="relative z-10">BLOGS</div>
       </div>
 
-      <div className="flex flex-row">
-        <div>
+      {/* Main Content */}
+      <div className="flex flex-col lg:flex-row p-6 sm:p-10 md:p-20">
+        {/* Blog Posts */}
+        <div className="w-full lg:w-2/3">
           {blogs.map((item) => (
-            <div key={item.id} className="w-[50vw] ml-20">
-              <div className="pt-20">
-                <div className="border-2 border-yellow-600 rounded-lg overflow-hidden cursor-pointer grow shrink aspect-[2/1]">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={500}
-                    height={500}
-                    className="w-full h-full object-center object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg"
-                  />
-                </div>
+            <div key={item.id} className="mb-10">
+              <div className="border-2 border-yellow-600 rounded-lg overflow-hidden cursor-pointer w-[90%] aspect-[2/1]">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  width={400}
+                  height={200}
+                  layout="responsive"
+                  className="object-cover transition-transform ease-linear duration-300 hover:scale-110"
+                />
               </div>
-              <div className="w-[700px]">
-                <p className="pt-3 pl-3 text-gray-500">By {item.name} on {new Date(item.date).toLocaleDateString()}</p>
-                <h2 className="pt-3 pl-3 text-2xl font-bold hover:text-yellow-400 cursor-pointer">
+              <div className="mt-4 w-[90%]">
+                <p className="text-gray-500 text-sm sm:text-base">
+                  By {item.name} on {new Date(item.date).toLocaleDateString()}
+                </p>
+                <h2 className="mt-2 text-xl sm:text-2xl font-bold hover:text-yellow-400 cursor-pointer">
                   <Link href={`/blogs/${item.id}`} rel="noopener noreferrer" target="_blank">
                     {item.title}
                   </Link>
                 </h2>
-                <p className="pt-3 pl-3 text-white">
+                <p className="mt-2 text-white text-sm sm:text-base">
                   {item.content.slice(0, 310)}...
                   <Link
                     href={`/blogs/${item.id}`}
@@ -81,20 +84,21 @@ const Blog = async ({ searchParams }) => {
           ))}
         </div>
 
-        <div className="w-1/2">
-         <Searchbar/>
-          <div className="grid place-content-center list-none mt-10 gap-4 text-xl">
-           <BlogCategory/>
-            <FeaturedProducts/>
-            <h3 className="text-3xl font-bold p-5 mt-10">Tags</h3>
-            <div className="grid grid-rows-4 grid-flow-col gap-4">
-              <button className="border-2 border-yellow-700 rounded-3xl p-3">Men</button>
-              <button className="border-2 border-yellow-700 rounded-3xl p-3">Women</button>
-              <button className="border-2 border-yellow-700 rounded-3xl p-3">Fashion</button>
-              <button className="border-2 border-yellow-700 rounded-3xl p-3">LifeStyle</button>
-              <button className="border-2 border-yellow-700 rounded-3xl p-3">Denim</button>
-              <button className="border-2 border-yellow-700 rounded-3xl p-3">StreetStyle</button>
-              <button className="border-2 border-yellow-700 rounded-3xl p-3">Crafts</button>
+        {/* Sidebar */}
+        <div className="w-full lg:w-1/3 mt-10 lg:mt-0 lg:ml-10">
+          <Searchbar />
+          <div className="mt-10">
+            <BlogCategory />
+            <FeaturedProducts />
+            <h3 className="text-2xl sm:text-3xl font-bold mt-10 mb-5">Tags</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-4">
+              <button className="border-2 border-yellow-700 rounded-3xl p-2 sm:p-3 text-sm sm:text-base">Men</button>
+              <button className="border-2 border-yellow-700 rounded-3xl p-2 sm:p-3 text-sm sm:text-base">Women</button>
+              <button className="border-2 border-yellow-700 rounded-3xl p-2 sm:p-3 text-sm sm:text-base">Fashion</button>
+              <button className="border-2 border-yellow-700 rounded-3xl p-2 sm:p-3 text-sm sm:text-base">LifeStyle</button>
+              <button className="border-2 border-yellow-700 rounded-3xl p-2 sm:p-3 text-sm sm:text-base">Denim</button>
+              <button className="border-2 border-yellow-700 rounded-3xl p-2 sm:p-3 text-sm sm:text-base">StreetStyle</button>
+              <button className="border-2 border-yellow-700 rounded-3xl p-2 sm:p-3 text-sm sm:text-base">Crafts</button>
             </div>
           </div>
         </div>

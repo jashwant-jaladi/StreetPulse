@@ -51,27 +51,46 @@ const Testimonials = () => {
   ]
 
   return (
-    <>
-      <div className='bg-black pb-20'>
-        <h1 className='text-5xl pt-20 pb-10  text-center bg-black text-yellow-500'>Testimonials</h1>
-        <div className={`testimonials-container ${flipped ? 'flipped' : ''} grid grid-cols-3 p-20 gap-y-32  place-items-center bg-black text-yellow-500 border-4 border-yellow-600 rounded-full ring-2 ring-white ring-offset-4 ring-offset-slate-50 dark:ring-offset-slate-900 m-5` }>
-    {testimonialsData.map((item) => (
-         <div className="card" onClick={handleFlip} key={item.name}>
-           <div className="card-inner">
-             <div className="card-front">
-               <Image src={item.image} alt={item.name} width={150} height={150} className="mb-3 m-auto aspect-[1/1.1] rounded-full" />
-               <h2 className='text-center font-bold text-white text-xl'>{item.name}</h2>
-               <h3 className='text-center text-sm italic'>{item.title}</h3>
-             </div>
-             <div className="card-back">
-               <p className='text-center'>{item.text}</p>
-             </div>
-           </div>
-         </div>
-         ))}
-       </div>
-       </div>
-    </>
+    <div className="bg-black pb-20">
+      <h1 className="text-5xl pt-20 pb-10 text-center bg-black text-yellow-500">
+        Testimonials
+      </h1>
+      <div className={`testimonials-container ${flipped ? 'flipped' : ''} 
+        grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 
+        p-4 md:p-10 lg:p-20 
+        gap-y-8 md:gap-y-16 lg:gap-y-32
+        place-items-center bg-black text-yellow-500 
+        border-4 border-yellow-600 rounded-full 
+        ring-2 ring-white ring-offset-4 ring-offset-slate-50 
+        dark:ring-offset-slate-900 m-2 md:m-5`}>
+        {testimonialsData.map((item) => (
+          <div className="card w-full max-w-xs" onClick={handleFlip} key={item.name}>
+            <div className="card-inner">
+              <div className="card-front">
+                <Image 
+                  src={item.image} 
+                  alt={item.name} 
+                  width={150} 
+                  height={150} 
+                  className="mb-3 m-auto aspect-[1/1.1] rounded-full"
+                />
+                <h2 className="text-center font-bold text-white text-xl">
+                  {item.name}
+                </h2>
+                <h3 className="text-center text-sm italic">
+                  {item.title}
+                </h3>
+              </div>
+              <div className="card-back">
+                <p className="text-center">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

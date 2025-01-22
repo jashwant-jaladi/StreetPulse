@@ -18,8 +18,8 @@ const StoreOverview = () => {
 
   const { data: session } = useSession();
   const userId = session?.user?.id;
-  const [display, setDisplay] = useState([]); 
-  const [activeSort, setActiveSort] = useState(""); 
+  const [display, setDisplay] = useState([]);
+  const [activeSort, setActiveSort] = useState("");
 
   // Fetch shops data on mount
   useEffect(() => {
@@ -38,7 +38,7 @@ const StoreOverview = () => {
   }, [userId, fetchShops, fetchWishlist]);
 
   // Check if product is in the wishlist
-  const isInWishlist = (shopId) => 
+  const isInWishlist = (shopId) =>
     wishlist?.some((item) => item.shopId === shopId);
 
   // Process shops data and group by category
@@ -53,8 +53,9 @@ const StoreOverview = () => {
       return acc;
     }, {});
 
-    const limitedDisplay = Object.values(groupedByCategory)
-      .flatMap((categoryItems) => categoryItems.slice(0, 5));
+    const limitedDisplay = Object.values(groupedByCategory).flatMap(
+      (categoryItems) => categoryItems.slice(0, 5)
+    );
 
     setDisplay(limitedDisplay);
   }, [products]);
@@ -99,17 +100,24 @@ const StoreOverview = () => {
         breakpoint: 1024,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 2
-        }
+          slidesToScroll: 2,
+        },
       },
       {
-        breakpoint: 600,
+        breakpoint: 768,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 1
-        }
-      }
-    ]
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   // Handle adding/removing items to wishlist
@@ -140,15 +148,18 @@ const StoreOverview = () => {
 
   return (
     <div className="bg-black">
-      <h3 className="text-5xl font-bold text-yellow-500 pt-28 flex justify-center">
+      <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-500 pt-20 sm:pt-28 text-center">
         Store Overview
       </h3>
 
-      <div className="flex flex-row justify-center gap-10 pt-10 bg-black text-yellow-500 font-semibold">
+      {/* Sorting Buttons */}
+      <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-10 pt-10 bg-black text-yellow-500 font-semibold px-4">
         {["Best Seller", "Newest", "Discount", "Top Rated"].map((option) => (
           <button
             key={option}
-            className={`hover:underline ${activeSort === option ? "underline" : ""}`}
+            className={`hover:underline ${
+              activeSort === option ? "underline" : ""
+            } text-sm sm:text-base`}
             onClick={() => handleSort(option)}
           >
             {option}
@@ -156,27 +167,27 @@ const StoreOverview = () => {
         ))}
       </div>
 
+      {/* Carousel */}
       <div className="bg-black text-slate-300 pb-10">
-        <Slider {...settings} className="w-[80vw] mx-auto mt-10">
+        <Slider {...settings} className="w-[90vw] sm:w-[80vw] mx-auto mt-10 px-4">
           {display.map((item) => (
-            
-            <Item
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              price={item.prices}
-              image={item.image}
-              category={item.category}
-              noOfRatings={item.noOfRatings}
-              preOffer={item.preOffer}
-              discount={item.discount}
-              rating={item.rating}
-              ratingClass={getRatingClass(item.rating)}
-              handleWishlistClick={handleWishlistClick}
-              isInWishlist={isInWishlist(item.id)}
-              description={item.description}
-            />
-            
+            <div key={item.id} className="px-2"> {/* Add padding between items */}
+              <Item
+                id={item.id}
+                name={item.name}
+                price={item.prices}
+                image={item.image}
+                category={item.category}
+                noOfRatings={item.noOfRatings}
+                preOffer={item.preOffer}
+                discount={item.discount}
+                rating={item.rating}
+                ratingClass={getRatingClass(item.rating)}
+                handleWishlistClick={handleWishlistClick}
+                isInWishlist={isInWishlist(item.id)}
+                description={item.description}
+              />
+            </div>
           ))}
         </Slider>
       </div>

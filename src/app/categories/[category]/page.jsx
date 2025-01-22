@@ -34,14 +34,10 @@ const CategoryPage = ({ params }) => {
     initializeData();
   }, [userId, fetchShops, fetchWishlist]);
 
- 
   const filteredProducts = useMemo(() => {
-    
     let filtered = products.filter((product) => product.category === category);
-    
-   
+
     if (selectedFilter) {
-     
       switch (selectedFilter) {
         case "priceLowToHigh":
           filtered.sort((a, b) => a.prices - b.prices);
@@ -59,7 +55,7 @@ const CategoryPage = ({ params }) => {
           break;
       }
     }
-    
+
     return filtered;
   }, [products, category, selectedFilter]);
 
@@ -67,7 +63,7 @@ const CategoryPage = ({ params }) => {
     return (
       <div>
         <Shopnav onFilterChange={setSelectedFilter} />
-        <div className="text-center text-red-500 p-24 bg-black flex justify-center">
+        <div className="text-center text-red-500 p-10 sm:p-24 bg-black flex justify-center">
           No Products available for this category
         </div>
       </div>
@@ -81,7 +77,8 @@ const CategoryPage = ({ params }) => {
     return "bg-green-700";
   };
 
-  const isInWishlist = (shopId) => wishlist.some((item) => item.shopId === shopId);
+  const isInWishlist = (shopId) =>
+    wishlist.some((item) => item.shopId === shopId);
 
   const handleWishlistClick = (shopId) => {
     if (!userId) {
@@ -99,7 +96,7 @@ const CategoryPage = ({ params }) => {
   return (
     <div>
       <Shopnav onFilterChange={setSelectedFilter} />
-      <div className="bg-black text-slate-300 p-14 pt-10 grid grid-cols-4 gap-14 place-items-center">
+      <div className="bg-black text-slate-300 p-4 sm:p-14 pt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-14 place-items-center">
         {filteredProducts.map((item) => (
           <Item
             key={item.id}
