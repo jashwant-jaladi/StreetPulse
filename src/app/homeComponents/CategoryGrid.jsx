@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const CategoryGrid = () => {
   return (
@@ -7,11 +8,15 @@ const CategoryGrid = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 h-auto sm:h-[750px] w-[90%] sm:w-[85%] m-auto py-8 px-4">
 
         {/* Skateboards */}
-        <div
-          style={{ backgroundImage: "url('/home/skateboardgrid2.jpg')" }}
-          className="relative bg-center bg-cover sm:bg-[length:85%] col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-2 border-4 border-yellow-700 rounded-xl overflow-hidden group hover:backdrop-blur-md transition duration-300 h-[300px] sm:h-auto"
-        >
-          <div className="p-3 text-black">
+        <div className="relative col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-2 border-4 border-yellow-700 rounded-xl overflow-hidden group hover:backdrop-blur-md transition duration-300 h-[300px] sm:h-auto">
+          <Image
+            src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646760/StreetPulse/HomepageImages%20and%20headers/skateboardgrid2_teakbo.jpg"
+            alt="Skateboards"
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+          <div className="p-3 text-black relative z-10">
             <h3 className="font-bold text-xl sm:text-2xl">Skateboards</h3>
             <p className="font-bold text-sm sm:text-md text-gray-500">New Collection</p>
           </div>
@@ -23,11 +28,15 @@ const CategoryGrid = () => {
         </div>
 
         {/* Apparels */}
-        <div
-          style={{ backgroundImage: "url('/home/apparelgrid.jpg')" }}
-          className="relative bg-center bg-cover sm:bg-[length:85%] col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-2 border-4 border-yellow-700 rounded-xl overflow-hidden group hover:backdrop-blur-md transition duration-300 h-[300px] sm:h-auto"
-        >
-          <div className="p-3 text-black">
+        <div className="relative col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-2 border-4 border-yellow-700 rounded-xl overflow-hidden group hover:backdrop-blur-md transition duration-300 h-[300px] sm:h-auto">
+          <Image
+            src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737647300/StreetPulse/HomepageImages%20and%20headers/apparelgrid_tt8rpr.jpg"
+            alt="Apparels"
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+          <div className="p-3 text-black relative z-10">
             <h3 className="font-bold text-xl sm:text-2xl">Apparels</h3>
             <p className="font-bold text-sm sm:text-md text-gray-500">Fresh Arrivals</p>
           </div>
@@ -39,11 +48,15 @@ const CategoryGrid = () => {
         </div>
 
         {/* Vanity Bags */}
-        <div
-          style={{ backgroundImage: "url('/home/bags.jpg')" }}
-          className="relative bg-right bg-cover sm:bg-[length:90%] col-span-1 sm:col-span-1 lg:col-span-1 xl:col-span-2 border-4 border-yellow-700 rounded-xl overflow-hidden group hover:backdrop-blur-md transition duration-300 h-[300px] sm:h-auto"
-        >
-          <div className="p-3 text-black">
+        <div className="relative col-span-1 sm:col-span-1 lg:col-span-1 xl:col-span-2 border-4 border-yellow-700 rounded-xl overflow-hidden group hover:backdrop-blur-md transition duration-300 h-[300px] sm:h-auto">
+          <Image
+            src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646755/StreetPulse/HomepageImages%20and%20headers/bags_xlxk91.jpg"
+            alt="Vanity Bags"
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+          <div className="p-3 text-black relative z-10">
             <h3 className="font-bold text-xl sm:text-2xl">Vanity Bags</h3>
             <p className="font-bold text-sm text-gray-500">Seasonal Showcase</p>
           </div>
@@ -55,11 +68,15 @@ const CategoryGrid = () => {
         </div>
 
         {/* Sneakers */}
-        <div
-          style={{ backgroundImage: "url('/home/sneakersgrid2.jpg')" }}
-          className="relative bg-center bg-cover sm:bg-[length:100%] col-span-1 sm:col-span-1 lg:col-span-2 xl:col-span-2 border-4 border-yellow-700 rounded-xl overflow-hidden group hover:backdrop-blur-md transition duration-300 h-[300px] sm:h-auto"
-        >
-          <div className="p-3 text-black">
+        <div className="relative col-span-1 sm:col-span-1 lg:col-span-2 xl:col-span-2 border-4 border-yellow-700 rounded-xl overflow-hidden group hover:backdrop-blur-md transition duration-300 h-[300px] sm:h-auto">
+          <Image
+            src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646760/StreetPulse/HomepageImages%20and%20headers/sneakersgrid2_ljnpsb.jpg"
+            alt="Sneakers"
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+          <div className="p-3 text-black relative z-10">
             <h3 className="font-bold text-xl sm:text-2xl">Sneakers</h3>
             <p className="font-bold text-sm sm:text-md text-gray-500">Next-gen collection</p>
           </div>
@@ -71,11 +88,15 @@ const CategoryGrid = () => {
         </div>
 
         {/* Rugs */}
-        <div
-          style={{ backgroundImage: "url('/home/rugs.webp')" }}
-          className="relative bg-top bg-cover sm:bg-[length:100%] col-span-1 sm:col-span-2 lg:col-span-2 xl:col-span-2 border-4 border-yellow-700 rounded-xl overflow-hidden group hover:backdrop-blur-md transition duration-300 h-[300px] sm:h-auto"
-        >
-          <div className="p-3 text-black">
+        <div className="relative col-span-1 sm:col-span-2 lg:col-span-2 xl:col-span-2 border-4 border-yellow-700 rounded-xl overflow-hidden group hover:backdrop-blur-md transition duration-300 h-[300px] sm:h-auto">
+          <Image
+            src="https://res.cloudinary.com/dm7ntehzl/image/upload/v1737646762/StreetPulse/HomepageImages%20and%20headers/rugs_ls9hnn.webp"
+            alt="Rugs"
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+          <div className="p-3 text-black relative z-10">
             <h3 className="font-bold text-xl sm:text-2xl">Rugs</h3>
             <p className="font-bold text-sm text-gray-500">Revamped Assortment</p>
           </div>

@@ -26,7 +26,7 @@ const Faq = async () => {
       {/* Header Section */}
       <div className="relative h-40 md:h-48 lg:h-56 w-full">
         <Image
-          src="/sussy.jpg"
+          src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737648404/StreetPulse/HomepageImages%20and%20headers/sussy_cnixrq.jpg"
           alt="FAQ Background"
           fill
           sizes="(max-width: 768px) 100vw, 75vw"

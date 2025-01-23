@@ -1,53 +1,54 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { useState } from "react";
+import Image from "next/image";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import CircleIcon from "../Icons/CircleIcon";
 
 const Carousel = () => {
   const CarouselImages = [
     {
-      image: "/home/home1.jpg",
+      image: "https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646759/StreetPulse/HomepageImages%20and%20headers/home1_kxgvrc.jpg",
       title: "City Lights Panache 2024",
       context: "Winter Collection",
       buttonText: "Shop Now",
       property: "top",
     },
     {
-      image: "/home/home2.jpg",
+      image: "https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646758/StreetPulse/HomepageImages%20and%20headers/home2_c6wd70.jpg",
       title: "Footwear Fusion Line 2024",
       context: "New Season",
       buttonText: "Shop Now",
       property: "center",
     },
     {
-      image: "/home/home3.jpg",
+      image: "https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646762/StreetPulse/HomepageImages%20and%20headers/home3_chqy8i.jpg",
       title: "Chic Carry Companion 2024",
       context: "Latest Bag Collection",
       buttonText: "Shop Now",
       property: "bottom",
     },
     {
-      image: "/home/sbs.jpg",
+      image: "https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646760/StreetPulse/HomepageImages%20and%20headers/sbs_i5vrlp.jpg",
       title: "Concrete Wave Series 2024",
       context: "Limited Edition Skateboards",
       buttonText: "Shop Now",
       property: "center",
     },
   ];
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const LeftClick = () => {
-    currentIndex == 0
-      ? setCurrentIndex(CarouselImages.length - 1)
-      : setCurrentIndex(currentIndex - 1);
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? CarouselImages.length - 1 : prevIndex - 1
+    );
   };
 
   const RightClick = () => {
-    currentIndex == CarouselImages.length - 1
-      ? setCurrentIndex(0)
-      : setCurrentIndex(currentIndex + 1);
+    setCurrentIndex((prevIndex) =>
+      prevIndex === CarouselImages.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
   const goToSlide = (slideIndex) => {
@@ -66,12 +67,15 @@ const Carousel = () => {
 
         {/* Carousel Container */}
         <div className="max-w-[1400px] h-[300px] sm:h-[400px] md:h-[600px] w-[90%] sm:w-[75%] m-auto py-4 sm:py-8 px-4 relative">
-          <div
-            style={{
-              backgroundImage: `url(${CarouselImages[currentIndex].image})`,
-            }}
-            className={`w-full h-full rounded-2xl bg-${CarouselImages[currentIndex].property} bg-cover bg-origin-content duration-500 border-4 border-yellow-700`}
-          >
+          <div className="w-full h-full rounded-2xl overflow-hidden relative border-4 border-yellow-700">
+            <Image
+              src={CarouselImages[currentIndex].image}
+              alt={CarouselImages[currentIndex].title}
+              fill
+              className="object-cover"
+              priority={currentIndex === 0} // Preload the first image
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1400px"
+            />
             {/* Overlay Text */}
             <div className="glass text-white opacity-100 absolute top-[70%] left-[50%] bg-black rounded-2xl p-4 sm:p-7 translate-x-[-50%] translate-y-[-50%] w-[90%] sm:w-[80%] md:w-[50%]">
               <h3 className="text-xl sm:text-2xl md:text-3xl font-bold transition-all ease-in">

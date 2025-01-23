@@ -5,7 +5,7 @@ const About = () => {
   return (
     <>
       {/* Header Section */}
-      <div className="relative h-32 sm:h-40 bg-[url('/about.jpeg')] bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
+      <div className="relative h-32 sm:h-40 bg-[url('https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737648399/StreetPulse/HomepageImages%20and%20headers/about_gpetn6.jpg')] bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="relative z-10">ABOUT US</div>
       </div>
@@ -31,7 +31,7 @@ const About = () => {
           <div className="w-full lg:w-1/2 order-1 lg:order-2 flex justify-center items-center">
             <div className="p-5 border-2 border-yellow-400 rounded-lg">
               <Image
-                src="/about-2.avif"
+                src="https://res.cloudinary.com/dm7ntehzl/image/upload/v1737648399/StreetPulse/HomepageImages%20and%20headers/about-2_e9hugc.avif"
                 alt="About Image"
                 width={500}
                 height={500}
@@ -48,7 +48,7 @@ const About = () => {
           <div className="w-full lg:w-1/3 order-1 lg:order-1 flex justify-center items-center">
   <div className="p-5 border-2 border-yellow-400 rounded-lg w-full max-w-[300px] sm:max-w-[400px] lg:max-w-[500px]">
     <Image
-      src="/about-3.avif"
+      src="https://res.cloudinary.com/dm7ntehzl/image/upload/v1737648401/StreetPulse/HomepageImages%20and%20headers/about-3_rdqxmh.avif"
       alt="About Image"
       width={500}
       height={500}

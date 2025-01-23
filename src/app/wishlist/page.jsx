@@ -6,13 +6,15 @@ import Item from "../components/Item";
 import { Button, Box, VStack } from "@chakra-ui/react";
 import ItemDescription from "../components/ItemDescription";
 
+
+
 const Wishlist = () => {
+  
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const wishlist = useShopStore((state) => state.wishlist); // Get wishlist from Zustand store
   const fetchWishlist = useShopStore((state) => state.fetchWishlist); // Fetch wishlist from the API
   const removeFromWishlist = useShopStore((state) => state.removeFromWishlist); // Function to remove from Zustand store
-
   const [loading, setLoading] = useState(true); // Loading state to handle async fetching
   const [activeItem, setActiveItem] = useState(null); // Track the active item's modal
 
@@ -42,7 +44,7 @@ const Wishlist = () => {
   if (loading) {
     return (
       <div className="bg-black">
-        <div className="bg-[url('/about-1.avif')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
+        <div className="bg-[url('https://res.cloudinary.com/dm7ntehzl/image/upload/v1737648401/StreetPulse/HomepageImages%20and%20headers/about-3_rdqxmh.avif')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
           WISHLIST SECTION
         </div>
         <p className="text-yellow-400 text-xl sm:text-2xl pb-5 bg-black text-center mt-10">
@@ -58,7 +60,7 @@ const Wishlist = () => {
         <div className="bg-[url('/about-1.avif')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
           WISHLIST SECTION
         </div>
-        <p className="text-yellow-400 text-xl sm:text-2xl pb-5 bg-black text-center mt-10">
+        <p className="text-yellow-400 text-xl sm:text-2xl pb-5 bg-black text-center mt-20">
           Your wishlist is empty 😭
         </p>
       </div>
@@ -127,3 +129,4 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
+

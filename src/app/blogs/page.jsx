@@ -38,7 +38,7 @@ const Blog = async ({ searchParams }) => {
   return (
     <div className="bg-black text-yellow-600 pb-10">
       {/* Header Section */}
-      <div className="relative h-32 sm:h-40 bg-[url('/blog/f7.avif')] bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
+      <div className="relative h-32 sm:h-40 bg-[url('https://res.cloudinary.com/dm7ntehzl/image/upload/v1737648399/StreetPulse/HomepageImages%20and%20headers/about-1_dpbx6z.avif')] bg-right bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="relative z-10">BLOGS</div>
       </div>

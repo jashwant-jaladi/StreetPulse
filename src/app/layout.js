@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   const shops = useShopStore((state) => state.shops);
 
   useEffect(() => {
-    if (shops.length === 0) { // Fetch only if not already loaded
+    if (shops.length === 0) {
       fetchShops();
     }
   }, [fetchShops, shops]);
@@ -26,10 +26,10 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="./street-pulse-logo.png" />
         <title>Street Pulse</title>
       </head>
-      <body className={salsa.className}>
+      <body className={`${salsa.className} flex flex-col min-h-screen`}>
         <Providers>
           <Header />
-          {children}
+          <main className="flex-grow bg-black">{children || <div></div>}</main>
           <Footer />
         </Providers>
       </body>

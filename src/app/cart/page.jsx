@@ -8,10 +8,9 @@ const Cart = () => {
   return (
     <div className="bg-black min-h-screen">
       {/* Hero Section */}
-      <div className="bg-[url('/about-2.avif')] h-40 bg-center bg-cover blur-sm border-b-2 border-yellow-400 relative">
-        <div className="text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 drop-shadow-xl">
-          SHOPPING CART
-        </div>
+      <div className="relative h-32 sm:h-40 bg-[url('https://res.cloudinary.com/dm7ntehzl/image/upload/v1737648399/StreetPulse/HomepageImages%20and%20headers/about-2_e9hugc.avif')] bg-right bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="relative z-10">SHOPPING CART</div>
       </div>
 
       {/* Main Content */}
