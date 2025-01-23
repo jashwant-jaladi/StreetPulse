@@ -50,7 +50,7 @@ const Review = ({ shopId, userId }) => {
         <Icon
           key={star}
           as={StarIcon}
-          boxSize={6}
+          boxSize={6} // Keep star size consistent
           cursor="pointer"
           color={(hoveredValue || value) >= star ? "yellow.400" : "gray.600"}
           onClick={() => onChange(star)}
@@ -72,40 +72,40 @@ const Review = ({ shopId, userId }) => {
       });
       return;
     }
-  
+
     try {
       const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ shopId, userId, rating, content: comment }),
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to submit review');
       }
-  
+
       const newReview = await response.json();
-  
+
       // Update local state
       setComments((prevComments) => {
         const existingIndex = prevComments.findIndex(
           (c) => c.userId === userId && c.shopId === shopId
         );
-  
+
         if (existingIndex !== -1) {
           // Replace existing review
           const updatedComments = [...prevComments];
           updatedComments[existingIndex] = newReview;
           return updatedComments;
         }
-  
+
         // Add new review
         return [...prevComments, newReview];
       });
-  
+
       setComment('');
       setRating(0);
-  
+
       toast({
         title: "Review submitted",
         description: "Thank you for your feedback!",
@@ -123,16 +123,15 @@ const Review = ({ shopId, userId }) => {
       });
     }
   };
-  
 
   return (
-    <Box bg="gray.800"  borderRadius="lg" mt={8} color="yellow.400" boxShadow="lg">
-      <Text fontSize="2xl" fontWeight="bold" mb={4}>
+    <Box bg="gray.800" borderRadius="lg" mt={8} color="yellow.400" boxShadow="lg" p={[4, 6]}>
+      <Text fontSize={['xl', '2xl']} fontWeight="bold" mb={4}>
         Customer Reviews
       </Text>
       <VStack spacing={4} align="stretch">
         <Box>
-          <Text fontSize="lg" fontWeight="medium" mb={2}>
+          <Text fontSize={['md', 'lg']} fontWeight="medium" mb={2}>
             Your Rating
           </Text>
           <StarRating
@@ -157,7 +156,7 @@ const Review = ({ shopId, userId }) => {
           bg="yellow.400"
           color="black"
           _hover={{ bg: "yellow.500" }}
-          width={"30%"}
+          width={['100%', '30%']} // Full width on mobile, 30% on desktop
         >
           Submit Review
         </Button>
@@ -192,7 +191,7 @@ const Review = ({ shopId, userId }) => {
                     {new Date(c.createdAt).toLocaleDateString()}
                   </Text>
                 </HStack>
-                <Text fontSize="md">{c.content}</Text>
+                <Text fontSize={['sm', 'md']}>{c.content}</Text>
                 {c.user && (
                   <Text fontSize="sm" color="gray.400" mt={1}>
                     By {c.user.name}

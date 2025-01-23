@@ -96,11 +96,11 @@ const OrderSummary = () => {
   const finalTotal = totalPrice + 100 - discountAmount; // Calculate total after discount
 
   return (
-    <div className="w-[20vw]">
+    <div className="w-full lg:w-[20vw] p-4 sm:p-6 md:p-8">
       <Flex justify="center" mt={8}>
         <Box
           w="100%"
-          p={8}
+          p={[4, 6, 8]} // Smaller padding on mobile, larger on desktop
           borderRadius="lg"
           backdropFilter="blur(12px)"
           bg="rgba(155, 155, 155, 0.2)"
@@ -111,7 +111,7 @@ const OrderSummary = () => {
           <Text
             color="yellow.600"
             fontWeight="bold"
-            fontSize="xl"
+            fontSize={["lg", "xl"]} // Smaller font on mobile, larger on desktop
             mb={4}
             textAlign="center"
           >
@@ -119,33 +119,33 @@ const OrderSummary = () => {
           </Text>
           <Stack spacing={4}>
             <Flex justify="space-between">
-              <Text color="white" fontSize="lg">
+              <Text color="white" fontSize={["md", "lg"]}>
                 Items Total:
               </Text>
-              <Text color="white" fontSize="lg">
+              <Text color="white" fontSize={["md", "lg"]}>
                 ₹ {totalPrice}
               </Text>
             </Flex>
             <Flex justify="space-between">
-              <Text color="white" fontSize="lg">
+              <Text color="white" fontSize={["md", "lg"]}>
                 Shipping:
               </Text>
-              <Text color="white" fontSize="lg">
+              <Text color="white" fontSize={["md", "lg"]}>
                 ₹ 100
               </Text>
             </Flex>
             <Flex justify="space-between">
-              <Text color="white" fontSize="lg">
+              <Text color="white" fontSize={["md", "lg"]}>
                 Discount:
               </Text>
-              <Text color="white" fontSize="lg">
+              <Text color="white" fontSize={["md", "lg"]}>
                 -₹ {discountAmount}
               </Text>
             </Flex>
 
             {/* Coupon Code Section */}
             <FormControl>
-              <FormLabel color="white" fontSize="lg">
+              <FormLabel color="white" fontSize={["md", "lg"]}>
                 Coupon Code
               </FormLabel>
               <Input
@@ -163,7 +163,7 @@ const OrderSummary = () => {
                 mt={4}
                 w="full"
                 colorScheme="yellow"
-                size="sm"
+                size={["sm", "md"]} // Smaller on mobile, medium on desktop
                 onClick={handleApplyCoupon}
                 _hover={{ transform: 'scale(1.05)' }}
               >
@@ -172,10 +172,10 @@ const OrderSummary = () => {
             </FormControl>
 
             <Flex justify="space-between" fontWeight="bold" mt={4}>
-              <Text color="white" fontSize="lg">
+              <Text color="white" fontSize={["md", "lg"]}>
                 Total:
               </Text>
-              <Text color="yellow.400" fontSize="xl">
+              <Text color="yellow.400" fontSize={["lg", "xl"]}>
                 ₹ {finalTotal}
               </Text>
             </Flex>
@@ -188,12 +188,14 @@ const OrderSummary = () => {
             }}
           />
 
-          <Text color="yellow.600" fontWeight="bold" fontSize="lg" mb={4}>
+          <Text color="yellow.600" fontWeight="bold" fontSize={["lg", "xl"]} mb={4}>
             SHIPPING DETAILS
           </Text>
           <Stack spacing={4}>
             <FormControl>
-              <FormLabel color="white">Name</FormLabel>
+              <FormLabel color="white" fontSize={["md", "lg"]}>
+                Name
+              </FormLabel>
               <Input
                 name="name"
                 placeholder="Enter your name"
@@ -201,7 +203,7 @@ const OrderSummary = () => {
                 onChange={(e) =>
                   setShippingDetails({ ...shippingDetails, name: e.target.value })
                 }
-                readOnly={session? true : false}
+                readOnly={session ? true : false}
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -209,7 +211,9 @@ const OrderSummary = () => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel color="white">Email</FormLabel>
+              <FormLabel color="white" fontSize={["md", "lg"]}>
+                Email
+              </FormLabel>
               <Input
                 name="email"
                 placeholder="Enter your email"
@@ -217,7 +221,7 @@ const OrderSummary = () => {
                 onChange={(e) =>
                   setShippingDetails({ ...shippingDetails, email: e.target.value })
                 }
-                readOnly={session? true : false}
+                readOnly={session ? true : false}
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
@@ -225,7 +229,9 @@ const OrderSummary = () => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel color="white">Phone</FormLabel>
+              <FormLabel color="white" fontSize={["md", "lg"]}>
+                Phone
+              </FormLabel>
               <Input
                 name="phone"
                 placeholder="Enter your phone number"
@@ -240,7 +246,9 @@ const OrderSummary = () => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel color="white">Address</FormLabel>
+              <FormLabel color="white" fontSize={["md", "lg"]}>
+                Address
+              </FormLabel>
               <Input
                 name="address"
                 placeholder="Enter your address"
@@ -255,7 +263,9 @@ const OrderSummary = () => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel color="white">City</FormLabel>
+              <FormLabel color="white" fontSize={["md", "lg"]}>
+                City
+              </FormLabel>
               <Input
                 name="city"
                 placeholder="Enter your city"
@@ -270,7 +280,9 @@ const OrderSummary = () => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel color="white">Postal Code</FormLabel>
+              <FormLabel color="white" fontSize={["md", "lg"]}>
+                Postal Code
+              </FormLabel>
               <Input
                 name="postalCode"
                 placeholder="Enter your postal code"
@@ -294,7 +306,7 @@ const OrderSummary = () => {
             mt={6}
             colorScheme="yellow"
             variant="solid"
-            size="lg"
+            size={["md", "lg"]} // Medium on mobile, large on desktop
             _hover={{ transform: 'scale(1.05)' }}
             onClick={() => handleCheckout()}
           >

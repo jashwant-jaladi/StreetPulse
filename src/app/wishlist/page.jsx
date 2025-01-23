@@ -42,10 +42,10 @@ const Wishlist = () => {
   if (loading) {
     return (
       <div className="bg-black">
-        <div className="bg-[url('/about-1.avif')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-5xl border-b-2 border-yellow-400">
+        <div className="bg-[url('/about-1.avif')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
           WISHLIST SECTION
         </div>
-        <p className="text-yellow-400 text-2xl pb-5 bg-black text-center mt-10">
+        <p className="text-yellow-400 text-xl sm:text-2xl pb-5 bg-black text-center mt-10">
           Loading your wishlist...
         </p>
       </div>
@@ -55,10 +55,10 @@ const Wishlist = () => {
   if (!wishlist || wishlist.length === 0) {
     return (
       <div className="bg-black">
-        <div className="bg-[url('/about-1.avif')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-5xl border-b-2 border-yellow-400">
+        <div className="bg-[url('/about-1.avif')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
           WISHLIST SECTION
         </div>
-        <p className="text-yellow-400 text-2xl pb-5 bg-black text-center mt-10">
+        <p className="text-yellow-400 text-xl sm:text-2xl pb-5 bg-black text-center mt-10">
           Your wishlist is empty 😭
         </p>
       </div>
@@ -67,12 +67,12 @@ const Wishlist = () => {
 
   return (
     <div>
-      <div className="bg-[url('/about-1.avif')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-5xl border-b-2 border-yellow-400">
+      <div className="bg-[url('/about-1.avif')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
         WISHLIST SECTION
       </div>
-      <div className="bg-black text-slate-300 p-14 pt-10 grid grid-cols-4 gap-14 place-items-center">
+      <div className="bg-black text-slate-300 p-4 sm:p-8 md:p-14 pt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-14 place-items-center">
         {wishlist.map((item) => (
-          <Box key={item.shopId} w="320px">
+          <Box key={item.shopId} w="full" maxW="320px">
             <VStack spacing={4}>
               <Item
                 id={item.id}
@@ -96,6 +96,7 @@ const Wishlist = () => {
                 borderRadius="md"
                 _hover={{ transform: "scale(1.05)" }}
                 boxShadow="md"
+                size={["sm", "md"]} // Smaller on mobile, medium on desktop
               >
                 View Details
               </Button>

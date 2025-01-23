@@ -5,10 +5,7 @@ import {
   Grid,
   GridItem,
   Text,
-  Box,
   Button,
-  Input,
-  Stack,
   IconButton,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
@@ -21,13 +18,10 @@ import "react-toastify/dist/ReactToastify.css";
 const CartItems = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
-  const [coupon, setCoupon] = useState("");
   const cartItems = useCartStore((state) => state.cart);
   const fetchCart = useCartStore((state) => state.fetchCart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
-  
- 
 
   useEffect(() => {
     if (userId) {
@@ -35,11 +29,9 @@ const CartItems = () => {
     }
   }, [userId, fetchCart, cartItems]);
 
-
-
   const handleRemoveFromCart = async (shopId, size, color) => {
     try {
-      await removeFromCart(userId, shopId, size, color);s
+      await removeFromCart(userId, shopId, size, color);
       toast.success("Item removed from cart successfully!");
     } catch (error) {
       toast.error("Failed to remove item from cart");
@@ -48,24 +40,22 @@ const CartItems = () => {
 
   const handleQuantityChange = async (shopId, size, color, newQuantity) => {
     try {
-      await updateQuantity(userId, shopId, size, color, newQuantity); // Call API to update the quantity
-      await fetchCart(userId); // Fetch the updated cart after the mutation
+      await updateQuantity(userId, shopId, size, color, newQuantity);
+      await fetchCart(userId);
       toast.success("Quantity updated successfully!");
     } catch (error) {
       toast.error("Failed to update quantity");
     }
   };
-  
-
 
   return (
-    <div className="w-[80vw] pl-10">
-      <Flex justify="start" mt={8} direction="row">
+    <div className="w-full px-4 sm:px-6 md:px-10">
+      <Flex justify="start" mt={8} direction="column" overflowX="auto">
         <Grid
-          templateColumns="repeat(8, 1fr)"
-          gap={8}
-          w="90%"
-          p={8}
+          templateColumns="repeat(8, 1fr)" // Always 8 columns
+          gap={[2, 4, 6]} // Smaller gap on mobile
+          w="max-content" // Allow horizontal scrolling
+          p={[2, 4, 6]} // Smaller padding on mobile
           borderRadius="lg"
           backdropFilter="blur(12px)"
           bg="rgba(155, 155, 155, 0.2)"
@@ -84,11 +74,11 @@ const CartItems = () => {
             "TOTAL PRICE",
             "",
           ].map((header, index) => (
-            <GridItem key={index}>
+            <GridItem key={index} minW="120px"> {/* Minimum width for each column */}
               <Text
                 color="yellow.600"
                 fontWeight="bold"
-                fontSize="lg"
+                fontSize={["xs", "sm", "md"]} // Smaller font on mobile
                 textAlign="center"
                 transition="all 0.3s"
                 _hover={{ color: "yellow.500", transform: "scale(1.05)" }}
@@ -102,20 +92,23 @@ const CartItems = () => {
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
               <React.Fragment key={`${item.shopId}-${item.size}-${item.color}`}>
-                <GridItem display="flex" justifyContent="center" alignItems="center">
+                {/* Product Image */}
+                <GridItem minW="120px">
                   <Image
                     src={item.shop.image}
                     alt={item.shop.name}
-                    width={200}
-                    height={200}
+                    width={80} // Smaller image on mobile
+                    height={80}
                     className="rounded-lg shadow-lg transition-all ease-in-out transform hover:scale-105"
                   />
                 </GridItem>
-                <GridItem display="flex" justifyContent="center" alignItems="center">
+
+                {/* Product Name */}
+                <GridItem minW="120px">
                   <Text
                     color="white"
                     textAlign="center"
-                    fontSize="lg"
+                    fontSize={["xs", "sm", "md"]}
                     fontWeight="semibold"
                     transition="all 0.3s"
                     _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
@@ -123,11 +116,13 @@ const CartItems = () => {
                     {item.shop.name}
                   </Text>
                 </GridItem>
-                <GridItem display="flex" justifyContent="center" alignItems="center">
+
+                {/* Size */}
+                <GridItem minW="120px">
                   <Text
                     color="white"
                     textAlign="center"
-                    fontSize="lg"
+                    fontSize={["xs", "sm", "md"]}
                     fontWeight="bold"
                     transition="all 0.3s"
                     _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
@@ -135,11 +130,13 @@ const CartItems = () => {
                     {item.size}
                   </Text>
                 </GridItem>
-                <GridItem display="flex" justifyContent="center" alignItems="center">
+
+                {/* Color */}
+                <GridItem minW="120px">
                   <Text
                     color="white"
                     textAlign="center"
-                    fontSize="lg"
+                    fontSize={["xs", "sm", "md"]}
                     fontWeight="bold"
                     transition="all 0.3s"
                     _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
@@ -147,11 +144,13 @@ const CartItems = () => {
                     {item.color}
                   </Text>
                 </GridItem>
-                <GridItem display="flex" justifyContent="center" alignItems="center">
+
+                {/* Price */}
+                <GridItem minW="120px">
                   <Text
                     color="white"
                     textAlign="center"
-                    fontSize="lg"
+                    fontSize={["xs", "sm", "md"]}
                     fontWeight="bold"
                     transition="all 0.3s"
                     _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
@@ -159,12 +158,21 @@ const CartItems = () => {
                     ₹ {item.shop.prices}
                   </Text>
                 </GridItem>
-                <GridItem display="flex" justifyContent="center" alignItems="center">
-                  <Flex alignItems="center">
+
+                {/* Quantity */}
+                <GridItem minW="120px">
+                  <Flex alignItems="center" justifyContent="center">
                     <Button
-                      size="sm"
+                      size="xs"
                       colorScheme="yellow"
-                      onClick={() => handleQuantityChange(item.shopId, item.size, item.color, item.quantity - 1)}
+                      onClick={() =>
+                        handleQuantityChange(
+                          item.shopId,
+                          item.size,
+                          item.color,
+                          item.quantity - 1
+                        )
+                      }
                       disabled={item.quantity === 1}
                     >
                       -
@@ -172,27 +180,35 @@ const CartItems = () => {
                     <Text
                       color="white"
                       textAlign="center"
-                      fontSize="lg"
+                      fontSize={["xs", "sm", "md"]}
                       fontWeight="bold"
                       mx={2}
                     >
                       {item.quantity}
                     </Text>
                     <Button
-                      size="sm"
+                      size="xs"
                       colorScheme="yellow"
-                      onClick={() => handleQuantityChange(item.shopId, item.size, item.color, item.quantity + 1)}
+                      onClick={() =>
+                        handleQuantityChange(
+                          item.shopId,
+                          item.size,
+                          item.color,
+                          item.quantity + 1
+                        )
+                      }
                     >
                       +
                     </Button>
                   </Flex>
                 </GridItem>
 
-                <GridItem display="flex" justifyContent="center" alignItems="center">
+                {/* Total Price */}
+                <GridItem minW="120px">
                   <Text
                     color="white"
                     textAlign="center"
-                    fontSize="lg"
+                    fontSize={["xs", "sm", "md"]}
                     fontWeight="bold"
                     transition="all 0.3s"
                     _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
@@ -200,28 +216,32 @@ const CartItems = () => {
                     ₹ {item.shop.prices * item.quantity}
                   </Text>
                 </GridItem>
-                <GridItem display="flex" justifyContent="center" alignItems="center">
+
+                {/* Remove Button */}
+                <GridItem minW="120px">
                   <IconButton
                     icon={<CloseIcon />}
                     colorScheme="red"
-                    onClick={() => handleRemoveFromCart(item.shopId, item.size, item.color)}
+                    onClick={() =>
+                      handleRemoveFromCart(item.shopId, item.size, item.color)
+                    }
                     aria-label={`Remove ${item.name}`}
                     _hover={{ transform: "scale(1.1)" }}
+                    size="xs"
                   />
                 </GridItem>
               </React.Fragment>
             ))
           ) : (
             <GridItem colSpan={8} textAlign="center">
-              <Text color="white" fontSize="lg" fontWeight="bold">
+              <Text color="white" fontSize={["xs", "sm", "md"]} fontWeight="bold">
                 Your cart is empty.
               </Text>
             </GridItem>
           )}
         </Grid>
       </Flex>
-    
-      
+
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );

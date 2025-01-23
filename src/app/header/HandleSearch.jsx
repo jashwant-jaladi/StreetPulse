@@ -31,18 +31,19 @@ const HandleSearch = ({ onClose }) => {
       return;
     }
     router.push(`/searchProduct?query=${encodeURIComponent(query)}`);
-// Note the added forward slash at the beginning
     onClose(); // Close the modal
   };
 
   return (
-    <Modal isOpen={true} onClose={onClose}>
+    <Modal isOpen={true} onClose={onClose} size={['xs', 'sm', 'md']}>
       <ModalOverlay bg="rgba(0, 0, 0, 0.6)" />
       <ModalContent bg="gray.800" color="white">
-        <ModalHeader color="yellow.400">Search</ModalHeader>
-        <ModalCloseButton color="yellow.400" _hover={{ bg: "yellow.500" }} />
+        <ModalHeader color="yellow.400" fontSize={['xl', '2xl']}>
+          Search
+        </ModalHeader>
+        <ModalCloseButton color="yellow.400" _hover={{ bg: 'yellow.500' }} />
         <ModalBody>
-          <InputGroup size="lg">
+          <InputGroup size={['md', 'lg']}>
             <InputLeftElement
               pointerEvents="none"
               children={<SearchIcon color="yellow.400" />}
@@ -64,10 +65,20 @@ const HandleSearch = ({ onClose }) => {
         </ModalBody>
 
         <ModalFooter gap={4}>
-          <Button variant="ghost" color="yellow.400" onClick={onClose} _hover={{ bg: "yellow.500" }}>
+          <Button
+            variant="ghost"
+            color="yellow.400"
+            onClick={onClose}
+            _hover={{ bg: 'yellow.500' }}
+            size={['sm', 'md']}
+          >
             Cancel
           </Button>
-          <Button colorScheme="yellow" onClick={handleSearchSubmit}>
+          <Button
+            colorScheme="yellow"
+            onClick={handleSearchSubmit}
+            size={['sm', 'md']}
+          >
             Search
           </Button>
         </ModalFooter>

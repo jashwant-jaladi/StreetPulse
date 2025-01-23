@@ -18,10 +18,12 @@ const SearchPage = () => {
     }, [query]);
 
     return (
-        <div className="bg-black text-yellow-600 min-h-screen p-10">
-            <h1 className="text-3xl font-bold mb-6">Search Results for "{query}"</h1>
+        <div className="bg-black text-yellow-600 min-h-screen p-4 sm:p-6 md:p-8 lg:p-10">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
+                Search Results for "{query}"
+            </h1>
             {blogs.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {blogs.map((blog) => (
                         <div
                             key={blog.id}
@@ -32,7 +34,7 @@ const SearchPage = () => {
                                 alt={blog.title}
                                 className="rounded-lg mb-4 w-full h-40 object-cover"
                             />
-                            <h2 className="text-xl font-semibold mb-2">
+                            <h2 className="text-lg sm:text-xl font-semibold mb-2">
                                 <a
                                     href={`/blogs/${blog.id}`}
                                     className="text-yellow-600 hover:underline"
@@ -54,7 +56,7 @@ const SearchPage = () => {
                     ))}
                 </div>
             ) : (
-                <p>No results found.</p>
+                <p className="text-yellow-600">No results found.</p>
             )}
         </div>
     );

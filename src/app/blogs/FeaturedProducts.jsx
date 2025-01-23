@@ -13,6 +13,7 @@ const FeaturedProducts = () => {
 
   const { data: session } = useSession();
   const userId = session?.user?.id;
+
   useEffect(() => {
     if (shops.length === 0) {
       fetchShops();
@@ -23,7 +24,7 @@ const FeaturedProducts = () => {
 
   const isInWishlist = (shopId) => 
     wishlist?.some((item) => item.shopId === shopId);
- 
+
   const handleWishlistClick = (shopId) => {
     if (!userId) {
       alert("Please log in to add items to your wishlist.");
@@ -36,6 +37,7 @@ const FeaturedProducts = () => {
       addToWishlist(userId, shopId);
     }
   };
+
   const getRandomProducts = () => {
     const shuffledShops = shops.sort(() => Math.random() - 0.5);
     const randomShops = shuffledShops.slice(0, 15);
@@ -58,7 +60,9 @@ const FeaturedProducts = () => {
 
   return (
     <div className="w-full px-4 mt-8">
-      <h3 className="text-3xl font-bold mb-6 text-yellow-600">Featured Products</h3>
+      <h3 className="text-2xl sm:text-3xl font-bold mb-6 text-yellow-600 text-center sm:text-left">
+        Featured Products
+      </h3>
 
       <div className="w-full max-w-md mx-auto">
         {/* Featured Product */}
@@ -86,20 +90,20 @@ const FeaturedProducts = () => {
             colorScheme="yellow"
             variant="outline"
             borderRadius="full"
-            size="lg"
+            size={["md", "lg"]} // Smaller on mobile, larger on desktop
             className="hover:bg-yellow-600"
           >
-            <ChevronLeftIcon boxSize={6} />
+            <ChevronLeftIcon boxSize={[4, 6]} /> {/* Smaller on mobile, larger on desktop */}
           </Button>
           <Button
             onClick={handleNext}
             colorScheme="yellow"
             variant="outline"
             borderRadius="full"
-            size="lg"
+            size={["md", "lg"]} // Smaller on mobile, larger on desktop
             className="hover:bg-yellow-600"
           >
-            <ChevronRightIcon boxSize={6} />
+            <ChevronRightIcon boxSize={[4, 6]} /> {/* Smaller on mobile, larger on desktop */}
           </Button>
         </div>
       </div>

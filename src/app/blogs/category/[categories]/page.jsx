@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from 'react';
 import { Button } from '@chakra-ui/react';
 import Searchbar from '../../Searchbar';
@@ -34,15 +34,13 @@ const Category = ({ params }) => {
 
   return (
     <div className="bg-black text-yellow-600 pb-10">
-
       <h3 className="text-2xl font-bold p-5">
         {category ? `Blogs in "${category}" Category` : "All Blogs"}
       </h3>
 
-      <div className="flex flex-row justify-around gap-8 p-5">
-
+      <div className="flex flex-col lg:flex-row justify-around gap-8 p-5">
         {/* Left side: Blogs Section */}
-        <div className='w-1/2'>
+        <div className="w-full lg:w-1/2">
           {filteredBlogs.length > 0 ? (
             filteredBlogs.map((item) => (
               <div key={item.id} className="bg-black rounded-lg p-4 border-2 border-yellow-600 mb-6">
@@ -81,17 +79,16 @@ const Category = ({ params }) => {
           )}
         </div>
 
-     
-        <div className="w-[20%]">
-         
-          <Searchbar className="w-full" /> 
+        {/* Right side: Searchbar, Categories, and Tags */}
+        <div className="w-full lg:w-[20%]">
+          <Searchbar className="w-full" />
 
           <div className="mt-10">
             <BlogCategory />
-            <h3 className="text-3xl font-bold p-5 mt-10">Featured Products</h3>
-            <h3 className="text-3xl font-bold p-5 mt-10">Tags</h3>
+            <h3 className="text-2xl lg:text-3xl font-bold p-5 mt-10">Featured Products</h3>
+            <h3 className="text-2xl lg:text-3xl font-bold p-5 mt-10">Tags</h3>
 
-            <div className="grid grid-rows-4 grid-flow-col gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-4">
               <button className="border-2 border-yellow-700 rounded-3xl p-3">Men</button>
               <button className="border-2 border-yellow-700 rounded-3xl p-3">Women</button>
               <button className="border-2 border-yellow-700 rounded-3xl p-3">Fashion</button>

@@ -35,7 +35,10 @@ const Item = ({
   };
 
   return (
-    <div key={id} className="border-2 border-yellow-700 w-[320px] p-3 rounded-xl overflow-hidden">
+    <div
+      key={id}
+      className="border-2 border-yellow-700 w-full sm:w-[320px] p-3 rounded-xl overflow-hidden"
+    >
       {/* Product Image */}
       <div className="relative group hover:scale-105 transition-transform ease-linear duration-300 h-[33vh] flex justify-center items-center">
         <Image
@@ -57,10 +60,13 @@ const Item = ({
 
       {/* Product Name and Wishlist Button */}
       <div className="flex justify-between gap-4">
-        <div className="line-clamp-1 pt-3 mb-1 font-semibold text-md w-[270px] cursor-pointer text-gray-300">
+        <div className="line-clamp-1 pt-3 mb-1 font-semibold text-md w-[70%] sm:w-[270px] cursor-pointer text-gray-300">
           <Link href={`/shop/${id}`}>{name}</Link>
         </div>
-        <button className="pt-2 flex items-center" onClick={() => handleWishlistClick(id)}>
+        <button
+          className="pt-2 flex items-center"
+          onClick={() => handleWishlistClick(id)}
+        >
           <Image
             src={isInWishlist ? "/heart-clicked.png" : "/heart.svg"}
             alt="Wishlist"
@@ -84,8 +90,23 @@ const Item = ({
         <span className="text-green-500">{discount}% off</span>
       </div>
 
-
-      {isModalOpen && <ItemDescription onClose={handleCloseModal} description={description} id={id} name={name} price={price} image={image} rating={rating} noOfRatings={noOfRatings} preOffer={preOffer} discount={discount} isInWishlist={isInWishlist} handleWishlistClick={handleWishlistClick}   />}
+      {/* Modal for Item Description */}
+      {isModalOpen && (
+        <ItemDescription
+          onClose={handleCloseModal}
+          description={description}
+          id={id}
+          name={name}
+          price={price}
+          image={image}
+          rating={rating}
+          noOfRatings={noOfRatings}
+          preOffer={preOffer}
+          discount={discount}
+          isInWishlist={isInWishlist}
+          handleWishlistClick={handleWishlistClick}
+        />
+      )}
     </div>
   );
 };

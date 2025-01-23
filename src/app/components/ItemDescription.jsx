@@ -11,7 +11,8 @@ import {
   ModalCloseButton,
   Button,
   useToast,
-  Flex
+  Flex,
+  Text,
 } from '@chakra-ui/react';
 import Dropdown from './Dropdown';
 import QuantitySelector from './Quantity';
@@ -32,7 +33,7 @@ const ItemDescription = ({
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const toast = useToast(); 
+  const toast = useToast();
   const wishlist = useShopStore((state) => state.wishlist);
   const addToWishlist = useShopStore((state) => state.addToWishlist);
   const removeFromWishlist = useShopStore((state) => state.removeFromWishlist);
@@ -47,7 +48,6 @@ const ItemDescription = ({
   // Check if product is in the wishlist
   const isInWishlist = wishlist?.some((item) => item.shopId === id);
 
-
   const handleAddToCart = async () => {
     if (!selectedSize || !selectedColor) {
       toast({
@@ -60,7 +60,7 @@ const ItemDescription = ({
       });
       return;
     }
-  
+
     if (!session) {
       toast({
         title: 'Not Logged In',
@@ -72,14 +72,14 @@ const ItemDescription = ({
       });
       return;
     }
-  
+
     const product = {
-      shopId: id,  // Make sure this matches the database field name
+      shopId: id, // Make sure this matches the database field name
       quantity,
       size: selectedSize,
       color: selectedColor,
     };
-  
+
     try {
       await addToCart(userId, product);
       toast({
@@ -101,12 +101,11 @@ const ItemDescription = ({
       });
     }
   };
-  
 
   // Handle Wishlist click (Add/Remove)
   const handleWishlistClick = () => {
     if (isInWishlist) {
-      removeFromWishlist(userId,id); // Remove from wishlist if already in wishlist
+      removeFromWishlist(userId, id); // Remove from wishlist if already in wishlist
       toast({
         title: 'Removed from Wishlist',
         description: `${name} has been removed from your wishlist.`,
@@ -116,7 +115,7 @@ const ItemDescription = ({
         position: 'top',
       });
     } else {
-      addToWishlist(userId,id); // Add to wishlist if not already in wishlist
+      addToWishlist(userId, id); // Add to wishlist if not already in wishlist
       toast({
         title: 'Added to Wishlist',
         description: `${name} has been added to your wishlist.`,
@@ -129,19 +128,19 @@ const ItemDescription = ({
   };
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="lg">
+    <Modal isOpen={true} onClose={onClose} size={['full', 'lg']}>
       <ModalOverlay />
       <ModalContent
         bg="gray.800"
         color="yellow.400"
         borderRadius="lg"
-        p={5}
-        maxWidth="70vw"
-        maxHeight="80vh"
+        p={[4, 5]} // Smaller padding on mobile, larger on desktop
+        maxWidth={['100vw', '70vw']} // Full width on mobile, 70vw on desktop
+        maxHeight={['100vh', '80vh']} // Full height on mobile, 80vh on desktop
         overflowY="auto"
       >
         <ModalHeader
-          fontSize="5xl"
+          fontSize={['3xl', '5xl']} // Smaller font on mobile, larger on desktop
           fontWeight="bold"
           color="yellow.500"
           textAlign="center"
@@ -152,24 +151,38 @@ const ItemDescription = ({
 
         <ModalCloseButton color="yellow.400" />
         <ModalBody>
-          <div className="flex flex-col lg:flex-row items-center gap-16">
-            <div className="flex-shrink-0">
+          <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-16">
+            {/* Image Section */}
+            <div className="flex-shrink-0 w-full lg:w-auto">
               <Image
                 src={image}
                 alt="Product Image"
                 width={400}
                 height={400}
-                className="rounded-lg"
+                className="rounded-lg w-full lg:w-[400px]"
               />
             </div>
-            <div className="flex-grow">
-              <Flex justifyContent="space-between">
-              <h3 className="text-2xl font-semibold mb-2">{name}</h3>
-              <div>{rating} stars ({noOfRatings} ratings)</div>
-              </Flex>
-              <h5 className="text-xl mb-4">₹ {price}</h5>
-              <p className="mb-4">{description}</p>
 
+            {/* Details Section */}
+            <div className="flex-grow w-full lg:w-auto">
+              <Flex justifyContent="space-between" direction={['column', 'row']}>
+                <Text fontSize={['xl', '2xl']} fontWeight="semibold" mb={2}>
+                  {name}
+                </Text>
+                <Text fontSize={['md', 'lg']}>
+                  {rating} stars ({noOfRatings} ratings)
+                </Text>
+              </Flex>
+
+              <Text fontSize={['lg', 'xl']} mb={4}>
+                ₹ {price}
+              </Text>
+
+              <Text fontSize="md" mb={4}>
+                {description}
+              </Text>
+
+              {/* Size Dropdown */}
               <Dropdown
                 label="Size"
                 options={sizeOptions}
@@ -177,6 +190,7 @@ const ItemDescription = ({
                 onChange={(e) => setSelectedSize(e.target.value)}
               />
 
+              {/* Color Dropdown */}
               <Dropdown
                 label="Color"
                 options={colorOptions}
@@ -184,26 +198,33 @@ const ItemDescription = ({
                 onChange={(e) => setSelectedColor(e.target.value)}
               />
 
+              {/* Quantity Selector */}
               <div className="mt-4">
-                <p className="text-yellow-400 font-medium">Quantity:</p>
+                <Text color="yellow.400" fontWeight="medium">
+                  Quantity:
+                </Text>
                 <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
               </div>
 
+              {/* Wishlist Button */}
               <Button
                 onClick={handleWishlistClick}
                 bg={isInWishlist ? 'yellow.400' : 'gray.700'}
                 color="black"
                 _hover={{ bg: 'yellow.500' }}
                 mt={6}
+                width={['full', 'auto']} // Full width on mobile, auto width on desktop
               >
                 {isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
               </Button>
+
+              {/* Reviews */}
               <Review userId={userId} shopId={id} />
-              
             </div>
           </div>
         </ModalBody>
 
+        {/* Modal Footer */}
         <ModalFooter>
           <Button
             colorScheme="yellow"
@@ -220,7 +241,7 @@ const ItemDescription = ({
             borderColor="yellow.400"
             color="yellow.400"
             _hover={{ bg: 'yellow.500', color: 'black' }}
-            onClick={handleAddToCart} // Call the add-to-cart handler
+            onClick={handleAddToCart}
           >
             Add to Cart
           </Button>

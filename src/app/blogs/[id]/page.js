@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Comment from '../Comment';
 import Searchbar from '../Searchbar';
 import FeaturedProducts from '../FeaturedProducts';
+import BlogCategory from '../BlogCategory';
 
 
 
@@ -66,15 +67,7 @@ const BlogDetails = async ({ params }) => {
         <Searchbar/>
         <div className="grid place-content-center list-none mt-10 gap-4 text-xl">
           <h3 className="text-3xl font-bold p-5">Categories</h3>
-          <li>Fashion</li>
-          <hr />
-          <li>StreetStyle</li>
-          <hr />
-          <li>Beauty</li>
-          <hr />
-          <li>Life Style</li>
-          <hr />
-          <li>DIY & Crafts</li>
+       <BlogCategory/>
           <h3 className="text-3xl font-bold p-5 mt-10">Featured Products</h3>
           <FeaturedProducts/>
           <h3 className="text-3xl font-bold p-5 mt-10">Tags</h3>
