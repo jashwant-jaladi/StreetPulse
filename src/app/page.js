@@ -9,13 +9,13 @@ import Testimonials from "./homeComponents/Testimonials";
 import useShopStore from "@/zustand/shopStore";
 
 export default function Home() {
-  const shops = useShopStore((state) => state.shops); // Access shops from Zustand
+  const shops = useShopStore((state) => state.shops); 
 
   return (
     <>
       <Carousel />
       <CategoryGrid />
-      <StoreOverview shops={shops} /> {/* Pass shops as needed */}
+      <StoreOverview shops={shops} /> 
       <Blogdisplay />
       <Testimonials />
     </>

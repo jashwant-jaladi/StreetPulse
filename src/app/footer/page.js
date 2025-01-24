@@ -7,15 +7,15 @@ import Newsletter from "./Newsletter";
 const Footer = () => {
   // Example: Conditionally render sections if they have content
   const categories = [
-    { name: "Apparel", href: "/apparel" },
-    { name: "Bags", href: "/bags" },
-    { name: "Rugs", href: "/rugs" },
-    { name: "Skateboards", href: "/skateboards" },
-    { name: "Sneakers", href: "/sneakers" },
+    { name: "Apparel", href: "/categories/apparel" },
+    { name: "Bags", href: "/categories/bags" },
+    { name: "Rugs", href: "/categories/rugs" },
+    { name: "Skateboards", href: "/categories/skateboards" },
+    { name: "Sneakers", href: "/categories/sneakers" },
   ];
 
   const helpLinks = [
-    { name: "Track Orders", href: "#" },
+    { name: "Track Orders", href: "/not-found" },
     { name: "Contact Us", href: "/contact" },
     { name: "FAQs", href: "/faqs" },
   ];

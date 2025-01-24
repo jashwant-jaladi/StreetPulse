@@ -12,40 +12,36 @@ const Carousel = () => {
       title: "City Lights Panache 2024",
       context: "Winter Collection",
       buttonText: "Shop Now",
-      property: "top",
     },
     {
       image: "https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646758/StreetPulse/HomepageImages%20and%20headers/home2_c6wd70.jpg",
       title: "Footwear Fusion Line 2024",
       context: "New Season",
       buttonText: "Shop Now",
-      property: "center",
     },
     {
       image: "https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646762/StreetPulse/HomepageImages%20and%20headers/home3_chqy8i.jpg",
       title: "Chic Carry Companion 2024",
       context: "Latest Bag Collection",
       buttonText: "Shop Now",
-      property: "bottom",
     },
     {
       image: "https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646760/StreetPulse/HomepageImages%20and%20headers/sbs_i5vrlp.jpg",
       title: "Concrete Wave Series 2024",
       context: "Limited Edition Skateboards",
       buttonText: "Shop Now",
-      property: "center",
     },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const LeftClick = () => {
+  const handleLeftClick = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? CarouselImages.length - 1 : prevIndex - 1
     );
   };
 
-  const RightClick = () => {
+  const handleRightClick = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === CarouselImages.length - 1 ? 0 : prevIndex + 1
     );
@@ -56,18 +52,17 @@ const Carousel = () => {
   };
 
   return (
-    <div className="bg-black">
-      <div className="flex flex-row items-center">
+    <div className="bg-black pt-10">
+      <div className="flex items-center">
         {/* Left Arrow */}
         <ArrowLeftIcon
-          className="m-auto text-2xl sm:text-3xl cursor-pointer"
-          color="yellow.700"
-          onClick={LeftClick}
+          className="hidden ml-8 sm:block text-2xl sm:text-3xl cursor-pointer text-yellow-500 hover:text-white"
+          onClick={handleLeftClick}
         />
 
         {/* Carousel Container */}
-        <div className="max-w-[1400px] h-[300px] sm:h-[400px] md:h-[600px] w-[90%] sm:w-[75%] m-auto py-4 sm:py-8 px-4 relative">
-          <div className="w-full h-full rounded-2xl overflow-hidden relative border-4 border-yellow-700">
+        <div className="relative w-full max-w-[1400px] mx-auto h-[250px] sm:h-[400px] md:h-[600px] px-4">
+          <div className="w-full h-full relative border-4 border-yellow-600 rounded-lg overflow-hidden">
             <Image
               src={CarouselImages[currentIndex].image}
               alt={CarouselImages[currentIndex].title}
@@ -76,44 +71,41 @@ const Carousel = () => {
               priority={currentIndex === 0} // Preload the first image
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1400px"
             />
+
             {/* Overlay Text */}
-            <div className="glass text-white opacity-100 absolute top-[70%] left-[50%] bg-black rounded-2xl p-4 sm:p-7 translate-x-[-50%] translate-y-[-50%] w-[90%] sm:w-[80%] md:w-[50%]">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold transition-all ease-in">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 rounded-xl text-white p-4 sm:p-6 w-[90%] sm:w-[80%] md:w-[60%]">
+              <h3 className="text-lg sm:text-2xl md:text-4xl font-bold mb-2">
                 {CarouselImages[currentIndex].title}
               </h3>
-              <p className="text-sm sm:text-xl">
+              <p className="text-sm sm:text-lg md:text-xl mb-4">
                 {CarouselImages[currentIndex].context}
               </p>
-              <button className="text-sm sm:text-xl my-2 sm:my-3 p-1 rounded-lg border-2 border-white bg-black cursor-pointer hover:text-black hover:bg-white">
-                <Link href={"/shop"} target="_blank">
-                  {CarouselImages[currentIndex].buttonText}
-                </Link>
-              </button>
+              <Link
+                href="/shop"
+                className="block text-center bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-2 px-4 rounded-lg"
+              >
+                {CarouselImages[currentIndex].buttonText}
+              </Link>
             </div>
           </div>
         </div>
 
         {/* Right Arrow */}
         <ArrowRightIcon
-          className="m-auto text-2xl sm:text-3xl cursor-pointer"
-          color="yellow.700"
-          onClick={RightClick}
+          className="hidden mr-8 sm:block text-2xl sm:text-3xl cursor-pointer text-yellow-500 hover:text-white"
+          onClick={handleRightClick}
         />
       </div>
 
       {/* Dots Navigation */}
-      <div className="flex flex-row justify-center gap-2 sm:gap-3 py-4">
-        {CarouselImages.map((item, index) => (
-          <div
+      <div className="flex justify-center mt-4 space-x-2">
+        {CarouselImages.map((_, index) => (
+          <CircleIcon
             key={index}
-            onClick={() => goToSlide(index)}
+            color={index === currentIndex ? "white" : "yellow.500"}
             className="cursor-pointer"
-          >
-            <CircleIcon
-              color={index === currentIndex ? "white" : "yellow.600"}
-              className="hover:text-white"
-            />
-          </div>
+            onClick={() => goToSlide(index)}
+          />
         ))}
       </div>
     </div>

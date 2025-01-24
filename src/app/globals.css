@@ -37,38 +37,37 @@ border: 2px solid rgba(27, 26, 26, 1);
     transition-timing-function: ease-in;
     }
 
-    .testimonials-container {
-      perspective: 1000px;
-    }
+
     
-    .card {
-      width: 200px;
-      height: 200px;
-      transform-style: preserve-3d;
-      transition: transform 0.5s;
-    }
-    
-    .card-inner {
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.5s;
-    }
-    
-    .card:hover .card-inner {
-      transform: rotateY(180deg);
-    }
-    
-    .card-front,
-    .card-back {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      backface-visibility: hidden;
-    }
-    
-    .card-back {
-      transform: rotateY(180deg);
-    }
-    
+    /* Flip Card Styles */
+.flip-card {
+  perspective: 1000px;
+  width: 100%;
+  height: 300px; /* Adjust height as needed */
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
  
