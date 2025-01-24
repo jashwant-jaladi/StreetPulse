@@ -5,10 +5,21 @@ const About = () => {
   return (
     <>
       {/* Header Section */}
-      <div className="relative h-32 sm:h-40 bg-[url('https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737648399/StreetPulse/HomepageImages%20and%20headers/about_gpetn6.jpg')] bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="relative z-10">ABOUT US</div>
-      </div>
+      <div className="relative h-32 sm:h-40 text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
+      {/* Background Image */}
+      <Image
+        src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737648399/StreetPulse/HomepageImages%20and%20headers/about_gpetn6.jpg"
+        alt="About Us Background"
+        fill
+        style={{ objectFit: 'cover', objectPosition: 'right' }}
+        quality={75} // Adjust quality as needed
+        className="absolute inset-0 z-0"
+      />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/50 z-5"></div>
+      {/* Content */}
+      <div className="relative z-10">ABOUT US</div>
+    </div>
 
       {/* Main Content */}
       <div className="p-6 sm:p-10 md:p-20 bg-black text-yellow-700">

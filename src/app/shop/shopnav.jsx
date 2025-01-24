@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import HandleSearch from "../header/HandleSearch";
@@ -16,12 +17,18 @@ const Shopnav = ({ onFilterChange }) => {
   return (
     <div>
       {/* Header Section */}
-      <div className="relative h-32 sm:h-40 bg-[url('https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737648404/StreetPulse/HomepageImages%20and%20headers/contact_t6xcug.jpg')] bg-bottom bg-cover border-b-2 border-yellow-400">
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-3xl sm:text-4xl md:text-5xl text-center">
-          {currentCategory ? currentCategory.toUpperCase() : "SHOP"}
-        </div>
+      <div className="relative h-32 sm:h-40 text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
+      <Image
+        src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737648404/StreetPulse/HomepageImages%20and%20headers/contact_t6xcug.jpg"
+        alt={`${currentCategory || 'Shop'} Category Background`}
+        fill
+        className="object-cover border-b-2 border-yellow-400"
+        style={{ filter: 'brightness(50%)' }}
+      />
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-3xl sm:text-4xl md:text-5xl text-center">
+        {currentCategory ? currentCategory.toUpperCase() : "SHOP"}
       </div>
+    </div>
 
       {/* Navigation and Buttons */}
       <div className="flex flex-col sm:flex-row justify-between bg-black text-yellow-400 p-4 sm:p-8">

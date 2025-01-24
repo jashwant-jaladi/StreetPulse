@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import useShopStore from "@/zustand/shopStore";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Item from "../components/Item";
 import { Button, Box, VStack } from "@chakra-ui/react";
 import ItemDescription from "../components/ItemDescription";
@@ -44,9 +45,18 @@ const Wishlist = () => {
   if (loading) {
     return (
       <div className="bg-black">
-        <div className="bg-[url('https://res.cloudinary.com/dm7ntehzl/image/upload/v1737648401/StreetPulse/HomepageImages%20and%20headers/about-3_rdqxmh.avif')] h-40 bg-center bg-cover text-white font-bold grid place-content-center text-3xl sm:text-4xl md:text-5xl border-b-2 border-yellow-400">
-          WISHLIST SECTION
-        </div>
+           <div className="relative h-40 bg-center border-b-2 border-yellow-400">
+      <Image
+        src="https://res.cloudinary.com/dm7ntehzl/image/upload/v1737648401/StreetPulse/HomepageImages%20and%20headers/about-3_rdqxmh.avif"
+        alt="Wishlist Section Background"
+        fill
+        className="object-cover"
+        style={{ filter: 'brightness(50%)' }}
+      />
+      <div className="absolute inset-0 grid place-content-center text-white font-bold text-3xl sm:text-4xl md:text-5xl text-center">
+        WISHLIST SECTION
+      </div>
+    </div>
         <p className="text-yellow-400 text-xl sm:text-2xl pb-5 bg-black text-center mt-10">
           Loading your wishlist...
         </p>

@@ -65,12 +65,23 @@ const Contact = () => {
   return (
     <>
       {/* Header Section */}
-      <div className="relative h-32 sm:h-40 bg-[url('https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737648404/StreetPulse/HomepageImages%20and%20headers/contact_t6xcug.jpg')] bg-center bg-cover border-b-2 border-yellow-400">
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-3xl sm:text-4xl md:text-5xl text-center">
-          CONTACT
-        </div>
+      <div className="relative h-32 sm:h-40 border-b-2 border-yellow-400">
+      {/* Background Image */}
+      <Image
+        src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737648404/StreetPulse/HomepageImages%20and%20headers/contact_t6xcug.jpg"
+        alt="Contact Background"
+        fill // Replaces layout="fill"
+        style={{ objectFit: 'cover', objectPosition: 'center' }} // Ensures the image covers the container and is centered
+        quality={75} // Adjust quality as needed
+        className="absolute inset-0 z-0"
+      />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/50 z-5"></div>
+      {/* Content */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-3xl sm:text-4xl md:text-5xl text-center z-10">
+        CONTACT
       </div>
+    </div>
 
       {/* Main Content */}
       <div className="flex flex-col lg:flex-row bg-black">
