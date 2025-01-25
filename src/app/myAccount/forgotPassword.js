@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Modal,
   ModalOverlay,
@@ -10,9 +9,8 @@ import {
   ModalCloseButton,
   useDisclosure,
   Button,
+  useToast,
 } from "@chakra-ui/react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function ModalPassword() {
   const OverlayOne = () => (
@@ -24,6 +22,7 @@ function ModalPassword() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = React.useState("");
+  const toast = useToast(); // Initialize Chakra UI toast
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -38,16 +37,33 @@ function ModalPassword() {
       const data = await res.json();
 
       if (res.ok) {
-        toast.success(data.message);
+        toast({
+          title: "Success",
+          description: data.message,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
         setEmail("");
       } else {
-        toast.error(data.message);
+        toast({
+          title: "Error",
+          description: data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
         setEmail("");
       }
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred. Please try again.");
-      
+      toast({
+        title: "Error",
+        description: "An error occurred. Please try again.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -83,7 +99,6 @@ function ModalPassword() {
             <Button onClick={onClose}>Close</Button>
           </ModalFooter>
         </ModalContent>
-        <ToastContainer />
       </Modal>
     </>
   );

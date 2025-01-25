@@ -1,40 +1,49 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Item from "../components/Item";
 import useShopStore from "@/zustand/shopStore";
 import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";  
+import { useParams } from "next/navigation";
+import Loading from "../components/Loading";
 
 const ShopComponent = ({ selectedFilter }) => {
-  const { category } = useParams();  
+  const { category } = useParams();
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+
   const products = useShopStore((state) => state.shops);
-  const fetchShops = useShopStore((state) => state.fetchShops);
   const wishlist = useShopStore((state) => state.wishlist);
+
+  const fetchShops = useShopStore((state) => state.fetchShops);
   const fetchWishlist = useShopStore((state) => state.fetchWishlist);
   const addToWishlist = useShopStore((state) => state.addToWishlist);
   const removeFromWishlist = useShopStore((state) => state.removeFromWishlist);
 
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
+  // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const initializeData = async () => {
-      if (userId) {
-        try {
-          await fetchShops();
-          await fetchWishlist(userId); // Fetch wishlist on component load
-        } catch (error) {
-          console.error("Error initializing data:", error);
+      setLoading(true); // Start loading
+      try {
+        await fetchShops();
+        if (userId) {
+          await fetchWishlist(userId);
         }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
- 
 
     initializeData();
-  }, [userId, fetchShops, fetchWishlist]);
+  }, [fetchShops, fetchWishlist, userId]);
 
-  // Filter products by category and selected filter
-  const filteredProducts = React.useMemo(() => {
-    let filtered = products;
+  // Filter products based on selected filter and category
+  const filteredProducts = useMemo(() => {
+    if (!products) return [];
+
+    let filtered = [...products];
 
     if (selectedFilter) {
       switch (selectedFilter) {
@@ -56,15 +65,26 @@ const ShopComponent = ({ selectedFilter }) => {
     }
 
     return filtered;
-  }, [selectedFilter, category, products]);
+  }, [products, selectedFilter]);
 
-  // Guard against empty data
-  if (!filteredProducts || filteredProducts.length === 0) {
-    return <p className="text-white text-center mt-10">No products available.</p>;
-  }
+  // Check if a product is in the wishlist
+  const isInWishlist = useMemo(
+    () => new Set(wishlist.map((item) => item.shopId)),
+    [wishlist]
+  );
 
-  const isInWishlist = (shopId) =>
-    wishlist?.some((item) => item.shopId === shopId);
+  const handleWishlistClick = (shopId) => {
+    if (!userId) {
+      alert("Please log in to add items to your wishlist.");
+      return;
+    }
+
+    if (isInWishlist.has(shopId)) {
+      removeFromWishlist(userId, shopId);
+    } else {
+      addToWishlist(userId, shopId);
+    }
+  };
 
   const getRatingClass = (rating) => {
     if (!rating) return "bg-gray-500";
@@ -73,18 +93,17 @@ const ShopComponent = ({ selectedFilter }) => {
     return "bg-green-700";
   };
 
-  const handleWishlistClick = (shopId) => {
-    if (!userId) {
-      alert("Please log in to add items to your wishlist.");
-      return;
-    }
+  // Show a loading spinner while data is being fetched
+  if (loading) {
+    return (
+    <Loading />
+    );
+  }
 
-    if (isInWishlist(shopId)) {
-      removeFromWishlist(userId, shopId);
-    } else {
-      addToWishlist(userId, shopId);
-    }
-  };
+  // Guard against empty data
+  if (!filteredProducts.length) {
+    return <p className="text-white text-center mt-10">No products available.</p>;
+  }
 
   return (
     <div>
@@ -104,7 +123,7 @@ const ShopComponent = ({ selectedFilter }) => {
             rating={item.rating}
             ratingClass={getRatingClass(item.rating)}
             handleWishlistClick={handleWishlistClick}
-            isInWishlist={isInWishlist(item.id)}
+            isInWishlist={isInWishlist.has(item.id)}
           />
         ))}
       </div>

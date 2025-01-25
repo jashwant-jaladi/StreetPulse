@@ -1,13 +1,14 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useSearchParams, useRouter } from "next/navigation";
+import Loading from "../components/Loading";
 
 // Initialize Stripe with the public key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_CLIENT_KEY);
 
-const CheckoutForm = ({ clientSecret, finalTotal }) => {
+const CheckoutForm = ({  finalTotal }) => {
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter();
@@ -67,7 +68,7 @@ const CheckoutForm = ({ clientSecret, finalTotal }) => {
 
 const CheckoutPage = () => {
   const searchParams = useSearchParams();
-  const finalTotal = parseFloat(searchParams.get("finalTotal")); // Parse finalTotal from query params
+  const finalTotal = parseFloat(searchParams?.get("finalTotal")); // Parse finalTotal from query params
   const [clientSecret, setClientSecret] = useState(null);
 
   useEffect(() => {
@@ -116,4 +117,10 @@ const CheckoutPage = () => {
   );
 };
 
-export default CheckoutPage;
+const CheckoutPageWithSuspense = () => (
+  <Suspense fallback={<Loading />}>
+      <CheckoutPage />
+  </Suspense>
+);
+
+export default CheckoutPageWithSuspense;

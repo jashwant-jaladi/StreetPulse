@@ -30,13 +30,15 @@ const Newsletter = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" gap={4} p={4}>
+    <Box display="flex" flexDirection="column" alignItems="center" gap={4} >
+      
       <Input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Enter your email"
         size="md"
+        width={"100%"}
         variant="outline"
         borderColor="yellow.400"
         _placeholder={{ color: "yellow.400" }}

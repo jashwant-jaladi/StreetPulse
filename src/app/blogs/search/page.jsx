@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
+import Loading from "@/app/components/Loading";
 
 const SearchPage = () => {
     const searchParams = useSearchParams();
-    const query = searchParams.get("query"); // Retrieve the search query from the URL
+    const query = searchParams?.get("query"); // Retrieve the search query from the URL
     const [blogs, setBlogs] = useState([]);
 
     useEffect(() => {
@@ -20,7 +22,7 @@ const SearchPage = () => {
     return (
         <div className="bg-black text-yellow-600 min-h-screen p-4 sm:p-6 md:p-8 lg:p-10">
             <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
-                Search Results for "{query}"
+                Search Results for {query}
             </h1>
             {blogs.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -29,7 +31,7 @@ const SearchPage = () => {
                             key={blog.id}
                             className="bg-yellow-100 text-black p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
                         >
-                            <img
+                            <Image
                                 src={blog.image}
                                 alt={blog.title}
                                 className="rounded-lg mb-4 w-full h-40 object-cover"
@@ -62,4 +64,10 @@ const SearchPage = () => {
     );
 };
 
-export default SearchPage;
+const SearchPageWithSuspense = () => (
+    <Suspense fallback={<Loading />}>
+        <SearchPage />
+    </Suspense>
+);
+
+export default SearchPageWithSuspense;

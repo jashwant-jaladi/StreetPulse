@@ -1,30 +1,47 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ToastContainer, toast } from "react-toastify";
+import { useToast } from "@chakra-ui/react";
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
-
   const { id } = useParams();
-
+  const toast = useToast(); // Initialize Chakra UI toast
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match");
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       return;
     } else if (!newPassword || !confirmPassword) {
-      toast.error("Please fill all the fields");
+      toast({
+        title: "Error",
+        description: "Please fill all the fields",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       return;
     }
 
     if (newPassword.length < 6) {
-      toast.error("Password must be at least 6 characters long");
+      toast({
+        title: "Error",
+        description: "Password must be at least 6 characters long",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       return;
     }
 
@@ -38,24 +55,40 @@ const ResetPassword = () => {
       const data = await res.json();
 
       if (res.ok) {
-        toast.success(data.message);
+        toast({
+          title: "Success",
+          description: data.message,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
         setTimeout(() => {
           router.push("/myAccount");
         }, 2000);
       } else {
-        toast.error(data.message);
+        toast({
+          title: "Error",
+          description: data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       }
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong. Please try again.");
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
   return (
     <div className="flex flex-col items-center bg-black text-yellow-400 h-[50vh] justify-center">
-      <h1 className="text-2xl font-bold">
-        Hi, user! Reset Password
-      </h1>
+      <h1 className="text-2xl font-bold">Hi, user! Reset Password</h1>
       <form onSubmit={handleResetPassword} className="flex flex-col gap-4 mt-4">
         <input
           type="password"
@@ -78,7 +111,6 @@ const ResetPassword = () => {
           Reset Password
         </button>
       </form>
-      <ToastContainer />
     </div>
   );
 };

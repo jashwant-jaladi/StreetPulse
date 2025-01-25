@@ -2,8 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useToast } from "@chakra-ui/react";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +12,7 @@ const Contact = () => {
     opinion: "",
   });
   const [loading, setLoading] = useState(false);
+  const toast = useToast(); // Initialize Chakra UI toast
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,12 +21,24 @@ const Contact = () => {
 
   const validateForm = () => {
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.opinion) {
-      toast.error("All fields are required.", { theme: "dark" });
+      toast({
+        title: "Error",
+        description: "All fields are required.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return false;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      toast.error("Invalid email format.", { theme: "dark" });
+      toast({
+        title: "Error",
+        description: "Invalid email format.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return false;
     }
     return true;
@@ -49,14 +61,32 @@ const Contact = () => {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success(data.message, { theme: "dark" });
+        toast({
+          title: "Success",
+          description: data.message,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
         setFormData({ firstName: "", lastName: "", email: "", opinion: "" });
       } else {
-        toast.error(data.message, { theme: "dark" });
+        toast({
+          title: "Error",
+          description: data.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("Something went wrong. Please try again later.", { theme: "dark" });
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again later.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     } finally {
       setLoading(false);
     }
@@ -66,22 +96,23 @@ const Contact = () => {
     <>
       {/* Header Section */}
       <div className="relative h-32 sm:h-40 border-b-2 border-yellow-400">
-      {/* Background Image */}
-      <Image
-        src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737648404/StreetPulse/HomepageImages%20and%20headers/contact_t6xcug.jpg"
-        alt="Contact Background"
-        fill // Replaces layout="fill"
-        style={{ objectFit: 'cover', objectPosition: 'center' }} // Ensures the image covers the container and is centered
-        quality={75} // Adjust quality as needed
-        className="absolute inset-0 z-0"
-      />
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50 z-5"></div>
-      {/* Content */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-3xl sm:text-4xl md:text-5xl text-center z-10">
-        CONTACT
+        {/* Background Image */}
+        <Image
+          src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737648404/StreetPulse/HomepageImages%20and%20headers/contact_t6xcug.jpg"
+          alt="Contact Background"
+          fill
+          style={{ objectFit: "cover", objectPosition: "center" }}
+          quality={75}
+          className="absolute inset-0 z-0"
+          priority
+        />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/50 z-5"></div>
+        {/* Content */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-3xl sm:text-4xl md:text-5xl text-center z-10">
+          CONTACT
+        </div>
       </div>
-    </div>
 
       {/* Main Content */}
       <div className="flex flex-col lg:flex-row bg-black">
@@ -174,20 +205,6 @@ const Contact = () => {
           </div>
         </div>
       </div>
-
-      {/* Toast Notifications */}
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
     </>
   );
 };

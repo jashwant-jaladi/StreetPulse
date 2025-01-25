@@ -13,6 +13,7 @@ const CategoryGrid = () => {
             src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646760/StreetPulse/HomepageImages%20and%20headers/skateboardgrid2_teakbo.jpg"
             alt="Skateboards"
             fill
+            loading="lazy"
             className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
@@ -33,6 +34,7 @@ const CategoryGrid = () => {
             src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737647300/StreetPulse/HomepageImages%20and%20headers/apparelgrid_tt8rpr.jpg"
             alt="Apparels"
             fill
+            loading="lazy"
             className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
@@ -53,6 +55,7 @@ const CategoryGrid = () => {
             src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646755/StreetPulse/HomepageImages%20and%20headers/bags_xlxk91.jpg"
             alt="Vanity Bags"
             fill
+            loading="lazy"
             className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
@@ -73,6 +76,7 @@ const CategoryGrid = () => {
             src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737646760/StreetPulse/HomepageImages%20and%20headers/sneakersgrid2_ljnpsb.jpg"
             alt="Sneakers"
             fill
+            loading="lazy"
             className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
@@ -93,6 +97,7 @@ const CategoryGrid = () => {
             src="https://res.cloudinary.com/dm7ntehzl/image/upload/v1737646762/StreetPulse/HomepageImages%20and%20headers/rugs_ls9hnn.webp"
             alt="Rugs"
             fill
+            loading="lazy"
             className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />

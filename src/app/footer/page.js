@@ -1,10 +1,10 @@
 "use client";
-import React from "react";
+import React, { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Newsletter from "./Newsletter";
 
-const Footer = () => {
+const Footer = memo(() => {
   // Example: Conditionally render sections if they have content
   const categories = [
     { name: "Apparel", href: "/categories/apparel" },
@@ -84,7 +84,6 @@ const Footer = () => {
 
         {/* Newsletter */}
         <div className="list-none flex flex-col gap-3">
-          <li className="font-bold text-lg sm:text-xl mb-2">NEWSLETTER</li>
           <Newsletter />
         </div>
       </div>
@@ -102,6 +101,7 @@ const Footer = () => {
       </div>
     </div>
   );
-};
+});
+Footer.displayName = "Footer";
 
 export default Footer;

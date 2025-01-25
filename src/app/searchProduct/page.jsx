@@ -1,13 +1,14 @@
 "use client"
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Item from '../components/Item';
 import useShopStore from '@/zustand/shopStore';
 import { useSession } from 'next-auth/react';
+import Loading from '../components/Loading';
 
 const SearchPage = () => {
   const searchParams = useSearchParams();
-  const query = searchParams.get('query') || '';
+  const query = searchParams?.get('query') || '';
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const wishlist = useShopStore((state) => state.wishlist);
@@ -51,7 +52,7 @@ const SearchPage = () => {
   return (
     <div className="p-4 bg-black min-h-screen">
       <h1 className="text-3xl text-white font-bold my-4">
-        Search Results for "{query}"
+        Search Results for {query}
       </h1>
       {products.length === 0 ? (
         <p className="text-white">No products found.</p>
@@ -72,4 +73,10 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+const SearchPageWithSuspense = () => (
+  <Suspense fallback={<Loading />}>
+      <SearchPage />
+  </Suspense>
+);
+
+export default SearchPageWithSuspense;

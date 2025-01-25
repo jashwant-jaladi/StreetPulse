@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
@@ -9,7 +9,7 @@ import HandleSearch from "./HandleSearch";
 import useCartStore from "@/zustand/cartStore";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
-const Header = () => {
+const Header = memo(() => {
   const { data: session } = useSession();
   const [searchVisible, setSearchVisible] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -143,6 +143,8 @@ const Header = () => {
       {searchVisible && <HandleSearch onClose={toggleSearch} />}
     </header>
   );
-};
+});
+
+Header.displayName = "Header";
 
 export default Header;

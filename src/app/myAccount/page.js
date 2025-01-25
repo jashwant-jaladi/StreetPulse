@@ -1,9 +1,7 @@
 "use client";
 import { useState } from "react";
 import React from "react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Tabs, TabList, TabPanels, Tab, TabPanel, useToast } from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import ModalPassword from "./forgotPassword";
@@ -14,22 +12,20 @@ const MyAccount = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [loginEmail, setLoginEmail] = useState(""); // Updated: Use this for login email
-  const [loginPassword, setLoginPassword] = useState(""); // Updated: Use this for login password
-  
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const router = useRouter();
+  const toast = useToast(); // Initialize Chakra UI toast
 
   // Function to show error toast notifications
-  const showToast = (errorMessage) => {
-    toast.error(errorMessage, {
+  const showToast = (title, description, status) => {
+    toast({
+      title,
+      description,
+      status,
+      duration: 5000,
+      isClosable: true,
       position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
     });
   };
 
@@ -37,19 +33,19 @@ const MyAccount = () => {
   const handleGuestLogin = async () => {
     try {
       const res = await signIn("credentials", {
-        guest: true, 
+        guest: true,
         redirect: false,
       });
 
       if (res?.error) {
-        showToast("Failed to log in as a guest");
+        showToast("Error", "Failed to log in as a guest", "error");
       } else {
-        toast.success("Logged in as Guest!");
+        showToast("Success", "Logged in as Guest!", "success");
         router.replace("/"); // Redirect to home after guest login
       }
     } catch (error) {
       console.error("Error during guest login:", error);
-      showToast("An unexpected error occurred");
+      showToast("Error", "An unexpected error occurred", "error");
     }
   };
 
@@ -64,13 +60,14 @@ const MyAccount = () => {
       });
 
       if (res?.error) {
-        showToast("Invalid credentials");
+        showToast("Error", "Invalid credentials", "error");
         return;
       }
 
       router.replace("/");
     } catch (error) {
       console.error(error);
+      showToast("Error", "An unexpected error occurred", "error");
     }
   };
 
@@ -79,12 +76,12 @@ const MyAccount = () => {
     e.preventDefault();
 
     if (!name || !email || !password || !confirmPassword) {
-      showToast("Please fill all the fields");
+      showToast("Error", "Please fill all the fields", "error");
       return;
     }
 
     if (password !== confirmPassword) {
-      showToast("Passwords do not match");
+      showToast("Error", "Passwords do not match", "error");
       return;
     }
 
@@ -98,17 +95,17 @@ const MyAccount = () => {
       });
 
       if (res.ok) {
-        toast.success("Registration successful!");
+        showToast("Success", "Registration successful!", "success");
         setTimeout(() => {
           window.location.href = "/myAccount";
         }, 1000);
       } else {
         const errorData = await res.json();
-        showToast(errorData.message || "Registration failed");
+        showToast("Error", errorData.message || "Registration failed", "error");
       }
     } catch (error) {
       console.error("Error occurred while registering the user:", error);
-      showToast("An unexpected error occurred");
+      showToast("Error", "An unexpected error occurred", "error");
     }
   };
 
@@ -194,7 +191,6 @@ const MyAccount = () => {
           </TabPanels>
         </Tabs>
       </div>
-      <ToastContainer />
     </div>
   );
 };

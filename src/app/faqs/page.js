@@ -31,7 +31,7 @@ const Faq = async () => {
     <div>
       <div className="relative h-40 md:h-48 lg:h-56 w-full">
         <Image
-          src="https://res.cloudinary.com/dm7ntehzl/image/upload/f_auto,q_auto/v1737648404/StreetPulse/HomepageImages%20and%20headers/sussy_cnixrq.jpg"
+          src="https://res.cloudinary.com/dm7ntehzl/image/upload/w_1920,h_108,c_fill,f_auto,q_auto/v1737648404/StreetPulse/HomepageImages%20and%20headers/sussy_cnixrq.jpg"
           alt="FAQ Background"
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 75vw"

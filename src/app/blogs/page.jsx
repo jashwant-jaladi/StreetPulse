@@ -8,6 +8,7 @@ import Searchbar from './Searchbar';
 import BlogCategory from './BlogCategory';
 import FeaturedProducts from './FeaturedProducts';
 
+
 const ITEMS_PER_PAGE = 3;
 
 // Function to fetch blogs and implement server-side pagination

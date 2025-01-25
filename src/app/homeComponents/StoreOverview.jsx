@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Item from "../components/Item";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -8,20 +8,13 @@ import Slider from "react-slick";
 import useShopStore from "@/zustand/shopStore";
 import { useSession } from "next-auth/react";
 
-const StoreOverview = () => {
-  const products = useShopStore((state) => state.shops);
+// Custom hook to handle fetching and state initialization
+const useStoreData = (userId) => {
   const fetchShops = useShopStore((state) => state.fetchShops);
-  const wishlist = useShopStore((state) => state.wishlist);
   const fetchWishlist = useShopStore((state) => state.fetchWishlist);
-  const addToWishlist = useShopStore((state) => state.addToWishlist);
-  const removeFromWishlist = useShopStore((state) => state.removeFromWishlist);
+  const wishlist = useShopStore((state) => state.wishlist);
+  const products = useShopStore((state) => state.shops);
 
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
-  const [display, setDisplay] = useState([]);
-  const [activeSort, setActiveSort] = useState("");
-
-  // Fetch shops data on mount
   useEffect(() => {
     const initializeData = async () => {
       if (userId) {
@@ -29,7 +22,7 @@ const StoreOverview = () => {
           await fetchShops();
           await fetchWishlist(userId);
         } catch (error) {
-          console.error("Error initializing data:", error);
+          console.error("Error fetching data:", error);
         }
       }
     };
@@ -37,41 +30,51 @@ const StoreOverview = () => {
     initializeData();
   }, [userId, fetchShops, fetchWishlist]);
 
-  // Check if product is in the wishlist
-  const isInWishlist = (shopId) =>
-    wishlist?.some((item) => item.shopId === shopId);
+  return { products, wishlist };
+};
 
-  // Process shops data and group by category
-  useEffect(() => {
-    if (!products || products.length === 0) return;
+const StoreOverview = () => {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
 
-    const groupedByCategory = products.reduce((acc, item) => {
-      if (!acc[item.category]) {
-        acc[item.category] = [];
-      }
+  const { products, wishlist } = useStoreData(userId);
+
+  const [display, setDisplay] = useState([]);
+  const [activeSort, setActiveSort] = useState("");
+
+  const addToWishlist = useShopStore((state) => state.addToWishlist);
+  const removeFromWishlist = useShopStore((state) => state.removeFromWishlist);
+
+  // Group products by category
+  const groupedProducts = useMemo(() => {
+    if (!products) return {};
+    return products.reduce((acc, item) => {
+      if (!acc[item.category]) acc[item.category] = [];
       acc[item.category].push(item);
       return acc;
     }, {});
-
-    const limitedDisplay = Object.values(groupedByCategory).flatMap(
-      (categoryItems) => categoryItems.slice(0, 5)
-    );
-
-    setDisplay(limitedDisplay);
   }, [products]);
 
-  // Handle sorting based on different criteria
+  // Initial display setup (limited by categories)
+  useEffect(() => {
+    if (!groupedProducts) return;
+    const limitedDisplay = Object.values(groupedProducts).flatMap((categoryItems) =>
+      categoryItems.slice(0, 5)
+    );
+    setDisplay(limitedDisplay);
+  }, [groupedProducts]);
+
+  // Sorting logic
   const handleSort = (sortingOption) => {
     if (!products) return;
 
     let sortedData = [];
-
     switch (sortingOption) {
       case "Best Seller":
-        sortedData = products.filter((item) => item.bestSeller === true);
+        sortedData = products.filter((item) => item.bestSeller);
         break;
       case "Newest":
-        sortedData = products.filter((item) => item.newest === true);
+        sortedData = products.filter((item) => item.newest);
         break;
       case "Discount":
         sortedData = [...products].sort((a, b) => b.discount - a.discount);
@@ -81,52 +84,28 @@ const StoreOverview = () => {
         break;
       default:
         sortedData = products;
-        break;
     }
 
     setDisplay(sortedData.slice(0, 8));
     setActiveSort(sortingOption);
   };
 
-  // Slick carousel settings with responsive breakpoints
-  const settings = {
-    dots: true,
+  // Carousel settings as a reusable utility
+  const sliderSettings = useMemo(() => ({
+    dots: false,
     infinite: false,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 3,
+    slidesToScroll: 4,
     responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 2,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
+      { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+      { breakpoint: 769, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+      { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
     ],
-  };
+  }), []);
 
-  // Handle adding/removing items to wishlist
-  const getRatingClass = (rating) => {
-    if (!rating) return "bg-gray-500";
-    if (rating <= 3) return "bg-red-600";
-    if (rating <= 4) return "bg-yellow-600";
-    return "bg-green-700";
-  };
+  // Wishlist handling
+  const isInWishlist = (shopId) => wishlist?.some((item) => item.shopId === shopId);
 
   const handleWishlistClick = (shopId) => {
     if (!userId) {
@@ -168,29 +147,36 @@ const StoreOverview = () => {
       </div>
 
       {/* Carousel */}
-      <div className="bg-black text-slate-300 pb-10">
-        <Slider {...settings} className="w-[90vw] sm:w-[80vw] mx-auto mt-10 px-4">
-          {display.map((item) => (
-            <div key={item.id} className="px-2"> {/* Add padding between items */}
-              <Item
-                id={item.id}
-                name={item.name}
-                price={item.prices}
-                image={item.image}
-                category={item.category}
-                noOfRatings={item.noOfRatings}
-                preOffer={item.preOffer}
-                discount={item.discount}
-                rating={item.rating}
-                ratingClass={getRatingClass(item.rating)}
-                handleWishlistClick={handleWishlistClick}
-                isInWishlist={isInWishlist(item.id)}
-                description={item.description}
-              />
-            </div>
-          ))}
-        </Slider>
+      <div className="slider-container w-[90vw] sm:w-[80vw] mx-auto mt-10">
+  <Slider {...sliderSettings}>
+    {display.map((item) => (
+      <div key={item.id} className="px-2">
+        <Item
+          id={item.id}
+          name={item.name}
+          price={item.prices}
+          image={item.image}
+          category={item.category}
+          noOfRatings={item.noOfRatings}
+          preOffer={item.preOffer}
+          discount={item.discount}
+          rating={item.rating}
+          ratingClass={
+            item.rating <= 3
+              ? "bg-red-600"
+              : item.rating <= 4
+              ? "bg-yellow-600"
+              : "bg-green-700"
+          }
+          handleWishlistClick={handleWishlistClick}
+          isInWishlist={isInWishlist(item.id)}
+          description={item.description}
+        />
       </div>
+    ))}
+  </Slider>
+</div>
+
     </div>
   );
 };

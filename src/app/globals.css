@@ -4,17 +4,6 @@
 
 
 
-.glass
-{
-    
-background: rgba(27, 26, 26, 0.21);
-border-radius: 16px;
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(5.2px);
--webkit-backdrop-filter: blur(5.2px);
-border: 2px solid rgba(27, 26, 26, 1);
-}
-
 
 .slick-slide {
 	padding: 0 12px;
@@ -29,7 +18,7 @@ border: 2px solid rgba(27, 26, 26, 1);
  transition-timing-function: ease-out;
  }
     
-    .slick-slide.slick-active {
+ .slick-slide.slick-active {
     opacity:1;
     transition-delay: 0.3s;
     transition-duration: 0.2s;
@@ -37,6 +26,38 @@ border: 2px solid rgba(27, 26, 26, 1);
     transition-timing-function: ease-in;
     }
 
+/* Ensure the parent container is relatively positioned */
+.slider-container {
+  position: relative;
+  padding: 0 20px; /* Add padding to keep arrows inside */
+}
+
+/* Adjust arrow positions */
+.slick-prev,
+.slick-next {
+  z-index: 10; /* Ensure arrows are visible above content */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: Background for better visibility */
+  border-radius: 50%;
+}
+
+.slick-prev {
+  left: 10px; /* Adjust the left arrow position */
+}
+
+.slick-next {
+  right: 10px; /* Adjust the right arrow position */
+}
+
+/* Optional: Style arrows */
+.slick-prev:before,
+.slick-next:before {
+  font-size: 20px;
+  color: yellow; /* Arrow color */
+}
 
     
     /* Flip Card Styles */

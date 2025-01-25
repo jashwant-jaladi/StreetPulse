@@ -44,10 +44,9 @@ const HandleSearch = ({ onClose }) => {
         <ModalCloseButton color="yellow.400" _hover={{ bg: 'yellow.500' }} />
         <ModalBody>
           <InputGroup size={['md', 'lg']}>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<SearchIcon color="yellow.400" />}
-            />
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="yellow.400" />
+            </InputLeftElement>
             <Input
               value={query}
               onChange={handleSearchChange}
