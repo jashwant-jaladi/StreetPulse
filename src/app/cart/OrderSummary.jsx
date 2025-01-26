@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Flex,
   Box,
@@ -9,26 +9,26 @@ import {
   Input,
   FormControl,
   FormLabel,
-} from '@chakra-ui/react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import useCartStore from '@/zustand/cartStore';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+  useToast,
+} from "@chakra-ui/react";
+import useCartStore from "@/zustand/cartStore";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const OrderSummary = () => {
   const router = useRouter();
-  const [couponCode, setCouponCode] = useState('');
+  const toast = useToast();
+  const [couponCode, setCouponCode] = useState("");
   const { data: session } = useSession();
   const [discountApplied, setDiscountApplied] = useState(false);
   const [discountAmount, setDiscountAmount] = useState(0);
   const [shippingDetails, setShippingDetails] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    postalCode: '',
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    postalCode: "",
   });
 
   const totalPrice = useCartStore((state) => state.totalPrice(state));
@@ -38,8 +38,8 @@ const OrderSummary = () => {
     if (session) {
       setShippingDetails((prevDetails) => ({
         ...prevDetails,
-        name: session.user.name || '',
-        email: session.user.email || '',
+        name: session.user.name || "",
+        email: session.user.email || "",
       }));
     }
   }, [session]);
@@ -47,20 +47,35 @@ const OrderSummary = () => {
   const handleApplyCoupon = () => {
     let discount = 0;
 
-    if (couponCode === 'streetpulse5') {
+    if (couponCode === "streetpulse5") {
       discount = (totalPrice * 0.05).toFixed(2); // 5% discount
       setDiscountApplied(true);
       setDiscountAmount(discount);
-      toast.success('5% discount applied!');
-    } else if (couponCode === 'streetpulse10') {
+      toast({
+        title: "5% discount applied!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else if (couponCode === "streetpulse10") {
       discount = (totalPrice * 0.1).toFixed(2); // 10% discount
       setDiscountApplied(true);
       setDiscountAmount(discount);
-      toast.success('10% discount applied!');
+      toast({
+        title: "10% discount applied!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } else {
       setDiscountApplied(false);
       setDiscountAmount(0);
-      toast.error('Invalid coupon code!');
+      toast({
+        title: "Invalid coupon code!",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -69,13 +84,23 @@ const OrderSummary = () => {
 
     // Simple validation checks
     if (!name || !email || !phone || !address || !city || !postalCode) {
-      toast.error('All fields are required!');
+      toast({
+        title: "All fields are required!",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return false;
     }
 
     // Postal code validation: check if it's a valid number
     if (!/^\d{6}$/.test(postalCode)) {
-      toast.error('Please enter a valid 6-digit postal code!');
+      toast({
+        title: "Please enter a valid 6-digit postal code!",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return false;
     }
 
@@ -84,11 +109,14 @@ const OrderSummary = () => {
 
   const handleCheckout = () => {
     if (handleShippingDetailsValidation()) {
-      toast.success('Proceeding to payment...');
+      toast({
+        title: "Proceeding to payment...",
+        status: "success",
+        duration: 1000,
+        isClosable: true,
+      });
       setTimeout(() => {
-        router.push(
-          `/checkout?finalTotal=${encodeURIComponent(finalTotal)}`
-        );
+        router.push(`/checkout?finalTotal=${encodeURIComponent(finalTotal)}`);
       }, 1000);
     }
   };
@@ -96,22 +124,22 @@ const OrderSummary = () => {
   const finalTotal = totalPrice + 100 - discountAmount; // Calculate total after discount
 
   return (
-    <div className="w-full lg:w-[20vw] p-4 sm:p-6 md:p-8">
+    <Box w="full" p={{ base: 4, md: 6, lg: 8 }}>
       <Flex justify="center" mt={8}>
         <Box
           w="100%"
-          p={[4, 6, 8]} // Smaller padding on mobile, larger on desktop
-          borderRadius="lg"
+          p={{ base: 4, md: 6, lg: 8 }}
+          borderRadius="xl"
           backdropFilter="blur(12px)"
           bg="rgba(155, 155, 155, 0.2)"
-          boxShadow="0 4px 12px rgba(0, 0, 0, 0.2)"
+          boxShadow="0 4px 12px rgba(0, 0, 0, 0.3)"
           border="1px solid rgba(255, 255, 255, 0.3)"
-          alignItems="center"
         >
+          {/* Order Summary Section */}
           <Text
-            color="yellow.600"
+            color="yellow.400"
             fontWeight="bold"
-            fontSize={["lg", "xl"]} // Smaller font on mobile, larger on desktop
+            fontSize={{ base: "xl", md: "2xl" }}
             mb={4}
             textAlign="center"
           >
@@ -119,33 +147,33 @@ const OrderSummary = () => {
           </Text>
           <Stack spacing={4}>
             <Flex justify="space-between">
-              <Text color="white" fontSize={["md", "lg"]}>
+              <Text color="white" fontSize={{ base: "md", md: "lg" }}>
                 Items Total:
               </Text>
-              <Text color="white" fontSize={["md", "lg"]}>
+              <Text color="white" fontSize={{ base: "md", md: "lg" }}>
                 ₹ {totalPrice}
               </Text>
             </Flex>
             <Flex justify="space-between">
-              <Text color="white" fontSize={["md", "lg"]}>
+              <Text color="white" fontSize={{ base: "md", md: "lg" }}>
                 Shipping:
               </Text>
-              <Text color="white" fontSize={["md", "lg"]}>
+              <Text color="white" fontSize={{ base: "md", md: "lg" }}>
                 ₹ 100
               </Text>
             </Flex>
             <Flex justify="space-between">
-              <Text color="white" fontSize={["md", "lg"]}>
+              <Text color="white" fontSize={{ base: "md", md: "lg" }}>
                 Discount:
               </Text>
-              <Text color="white" fontSize={["md", "lg"]}>
+              <Text color="white" fontSize={{ base: "md", md: "lg" }}>
                 -₹ {discountAmount}
               </Text>
             </Flex>
 
             {/* Coupon Code Section */}
             <FormControl>
-              <FormLabel color="white" fontSize={["md", "lg"]}>
+              <FormLabel color="white" fontSize={{ base: "md", md: "lg" }}>
                 Coupon Code
               </FormLabel>
               <Input
@@ -156,44 +184,51 @@ const OrderSummary = () => {
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
-                _focus={{ borderColor: 'yellow.400' }}
+                _focus={{ borderColor: "yellow.400" }}
                 mt={2}
               />
               <Button
                 mt={4}
                 w="full"
                 colorScheme="yellow"
-                size={["sm", "md"]} // Smaller on mobile, medium on desktop
+                size={{ base: "sm", md: "md" }}
                 onClick={handleApplyCoupon}
-                _hover={{ transform: 'scale(1.05)' }}
+                _hover={{ transform: "scale(1.05)" }}
               >
                 Apply Coupon
               </Button>
             </FormControl>
 
             <Flex justify="space-between" fontWeight="bold" mt={4}>
-              <Text color="white" fontSize={["md", "lg"]}>
+              <Text color="white" fontSize={{ base: "md", md: "lg" }}>
                 Total:
               </Text>
-              <Text color="yellow.400" fontSize={["lg", "xl"]}>
+              <Text color="yellow.400" fontSize={{ base: "lg", md: "xl" }}>
                 ₹ {finalTotal}
               </Text>
             </Flex>
           </Stack>
 
-          <hr
-            style={{
-              margin: '1.5rem 0',
-              borderColor: 'rgba(255, 255, 255, 0.3)',
-            }}
+          {/* Divider */}
+          <Box
+            borderBottom="1px solid"
+            borderColor="rgba(255, 255, 255, 0.3)"
+            my={6}
           />
 
-          <Text color="yellow.600" fontWeight="bold" fontSize={["lg", "xl"]} mb={4}>
+          {/* Shipping Details Section */}
+          <Text
+            color="yellow.400"
+            fontWeight="bold"
+            fontSize={{ base: "xl", md: "2xl" }}
+            mb={4}
+            textAlign="center"
+          >
             SHIPPING DETAILS
           </Text>
           <Stack spacing={4}>
             <FormControl>
-              <FormLabel color="white" fontSize={["md", "lg"]}>
+              <FormLabel color="white" fontSize={{ base: "md", md: "lg" }}>
                 Name
               </FormLabel>
               <Input
@@ -203,15 +238,15 @@ const OrderSummary = () => {
                 onChange={(e) =>
                   setShippingDetails({ ...shippingDetails, name: e.target.value })
                 }
-                readOnly={session ? true : false}
+                readOnly={!!session}
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
-                _focus={{ borderColor: 'yellow.400' }}
+                _focus={{ borderColor: "yellow.400" }}
               />
             </FormControl>
             <FormControl>
-              <FormLabel color="white" fontSize={["md", "lg"]}>
+              <FormLabel color="white" fontSize={{ base: "md", md: "lg" }}>
                 Email
               </FormLabel>
               <Input
@@ -221,15 +256,15 @@ const OrderSummary = () => {
                 onChange={(e) =>
                   setShippingDetails({ ...shippingDetails, email: e.target.value })
                 }
-                readOnly={session ? true : false}
+                readOnly={!!session}
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
-                _focus={{ borderColor: 'yellow.400' }}
+                _focus={{ borderColor: "yellow.400" }}
               />
             </FormControl>
             <FormControl>
-              <FormLabel color="white" fontSize={["md", "lg"]}>
+              <FormLabel color="white" fontSize={{ base: "md", md: "lg" }}>
                 Phone
               </FormLabel>
               <Input
@@ -242,11 +277,11 @@ const OrderSummary = () => {
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
-                _focus={{ borderColor: 'yellow.400' }}
+                _focus={{ borderColor: "yellow.400" }}
               />
             </FormControl>
             <FormControl>
-              <FormLabel color="white" fontSize={["md", "lg"]}>
+              <FormLabel color="white" fontSize={{ base: "md", md: "lg" }}>
                 Address
               </FormLabel>
               <Input
@@ -259,11 +294,11 @@ const OrderSummary = () => {
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
-                _focus={{ borderColor: 'yellow.400' }}
+                _focus={{ borderColor: "yellow.400" }}
               />
             </FormControl>
             <FormControl>
-              <FormLabel color="white" fontSize={["md", "lg"]}>
+              <FormLabel color="white" fontSize={{ base: "md", md: "lg" }}>
                 City
               </FormLabel>
               <Input
@@ -276,11 +311,11 @@ const OrderSummary = () => {
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
-                _focus={{ borderColor: 'yellow.400' }}
+                _focus={{ borderColor: "yellow.400" }}
               />
             </FormControl>
             <FormControl>
-              <FormLabel color="white" fontSize={["md", "lg"]}>
+              <FormLabel color="white" fontSize={{ base: "md", md: "lg" }}>
                 Postal Code
               </FormLabel>
               <Input
@@ -296,27 +331,25 @@ const OrderSummary = () => {
                 bg="gray.800"
                 color="white"
                 borderRadius="md"
-                _focus={{ borderColor: 'yellow.400' }}
+                _focus={{ borderColor: "yellow.400" }}
               />
             </FormControl>
           </Stack>
 
+          {/* Proceed to Payment Button */}
           <Button
             w="full"
             mt={6}
             colorScheme="yellow"
-            variant="solid"
-            size={["md", "lg"]} // Medium on mobile, large on desktop
-            _hover={{ transform: 'scale(1.05)' }}
-            onClick={() => handleCheckout()}
+            size={{ base: "md", md: "lg" }}
+            _hover={{ transform: "scale(1.05)" }}
+            onClick={handleCheckout}
           >
             Proceed to Payment
           </Button>
         </Box>
       </Flex>
-
-      <ToastContainer />
-    </div>
+    </Box>
   );
 };
 

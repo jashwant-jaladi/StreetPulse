@@ -3,6 +3,8 @@ import prisma from "@/libs/db";
 import { NextResponse } from "next/server";
 
 
+
+
 export async function POST(request) {
   try {
     const { userId, shopId, rating, content } = await request.json();
@@ -11,41 +13,46 @@ export async function POST(request) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
 
-
+    // Check if the review exists
     const existingReview = await prisma.review.findUnique({
       where: { userId_shopId: { userId, shopId } },
     });
 
+    // Add or update the review
     const newReview = existingReview
-    ? await prisma.review.update({
-        where: { id: existingReview.id },
-        data: { rating, content, updatedAt: new Date() },
-        include: { user: { select: { name: true } } }, // Include user details
-      })
-    : await prisma.review.create({
-        data: { userId, shopId, rating, content },
-        include: { user: { select: { name: true } } }, // Include user details
-      });
-  
-  return NextResponse.json(newReview);
-  
+      ? await prisma.review.update({
+          where: { id: existingReview.id },
+          data: { rating, content, updatedAt: new Date() },
+          include: { user: { select: { name: true } } },
+        })
+      : await prisma.review.create({
+          data: { userId, shopId, rating, content },
+          include: { user: { select: { name: true } } },
+        });
 
-  
+    // Recalculate the shop's average rating
     const reviews = await prisma.review.findMany({ where: { shopId } });
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
     const newAverageRating = totalRating / reviews.length;
 
+    // Update the shop with the new rating and number of ratings
     await prisma.shop.update({
       where: { id: shopId },
       data: { rating: newAverageRating, noOfRatings: reviews.length },
     });
 
-    return NextResponse.json({ message: "Review added/updated successfully" });
+    // Return the new review and updated shop rating
+    return NextResponse.json({
+      message: "Review added/updated successfully",
+      review: newReview,
+      shopRating: newAverageRating,
+    });
   } catch (error) {
     console.error("Error adding review:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+
 
 
 export async function GET(request) {

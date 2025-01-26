@@ -1,5 +1,5 @@
 "use client";
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Flex,
   Grid,
@@ -11,7 +11,7 @@ import {
   Stack,
   Box,
   useBreakpointValue,
-} from "@chakra-ui/react"; // Import useBreakpointValue
+} from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import Image from "next/image";
 import useCartStore from "@/zustand/cartStore";
@@ -28,13 +28,11 @@ const CartItems = () => {
   const isLoading = useCartStore((state) => state.isLoading);
 
   // Responsive layout adjustments
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useBreakpointValue({ base: true, lg: false });
 
   useEffect(() => {
     if (userId) {
-      fetchCart(userId).then(() => {
-        console.log("Cart fetched successfully");
-      });
+      fetchCart(userId);
     }
   }, [userId, fetchCart]);
 
@@ -56,9 +54,6 @@ const CartItems = () => {
       });
     }
   };
-  if (isLoading) {
-    return <Text color="white">Loading cart items...</Text>;
-  }
 
   const handleQuantityChange = async (shopId, size, color, newQuantity) => {
     try {
@@ -90,39 +85,43 @@ const CartItems = () => {
     }
   };
 
+  if (isLoading) {
+    return <Text color="white">Loading cart items...</Text>;
+  }
+
   return (
-    <div className="w-full px-4 sm:px-6 md:px-10">
+    <Box w="full" px={{ base: 4, md: 6, lg: 8 }}>
       <Flex justify="start" mt={8} direction="column" overflowX="auto">
         {isMobile ? (
           // Mobile Layout: Stacked Cards
-          <Stack spacing={4}>
+          <Stack spacing={6}>
             {cartItems.length > 0 ? (
               cartItems.map((item) => (
                 <Box
                   key={`${item.shopId}-${item.size}-${item.color}`}
                   p={4}
-                  borderRadius="lg"
+                  borderRadius="xl"
                   backdropFilter="blur(12px)"
                   bg="rgba(155, 155, 155, 0.2)"
-                  boxShadow="0 4px 12px rgba(0, 0, 0, 0.2)"
+                  boxShadow="0 4px 12px rgba(0, 0, 0, 0.3)"
                   border="1px solid rgba(255, 255, 255, 0.3)"
                 >
                   <Flex align="center" justify="space-between">
                     <Image
                       src={item.shop?.image}
                       alt={item.shop?.name}
-                      width={60}
-                      height={60}
+                      width={100}
+                      height={100}
                       className="rounded-lg shadow-lg"
                     />
                     <Box flex={1} ml={4}>
-                      <Text fontSize="sm" fontWeight="bold" color="white">
+                      <Text fontSize="md" fontWeight="bold" color="white">
                         {item.shop?.name}
                       </Text>
-                      <Text fontSize="xs" color="white">
+                      <Text fontSize="sm" color="rgba(255, 255, 255, 0.8)">
                         Size: {item?.size}, Color: {item?.color}
                       </Text>
-                      <Text fontSize="sm" color="white">
+                      <Text fontSize="md" fontWeight="bold" color="white">
                         ₹ {item.shop?.prices}
                       </Text>
                     </Box>
@@ -133,17 +132,19 @@ const CartItems = () => {
                         handleRemoveFromCart(item.shopId, item.size, item.color)
                       }
                       aria-label={`Remove ${item.name}`}
-                      size="xs"
+                      size="sm"
+                      variant="ghost"
                     />
                   </Flex>
-                  <Flex align="center" justify="space-between" mt={2}>
-                    <Text fontSize="sm" color="white">
+                  <Flex align="center" justify="space-between" mt={4}>
+                    <Text fontSize="sm" color="rgba(255, 255, 255, 0.8)">
                       Quantity:
                     </Text>
                     <Flex align="center">
                       <Button
-                        size="xs"
+                        size="sm"
                         colorScheme="yellow"
+                        variant="outline"
                         onClick={() =>
                           handleQuantityChange(
                             item.shopId,
@@ -156,12 +157,13 @@ const CartItems = () => {
                       >
                         -
                       </Button>
-                      <Text mx={2} color="white" fontSize="sm">
+                      <Text mx={3} color="white" fontSize="md" fontWeight="bold">
                         {item.quantity}
                       </Text>
                       <Button
-                        size="xs"
+                        size="sm"
                         colorScheme="yellow"
+                        variant="outline"
                         onClick={() =>
                           handleQuantityChange(
                             item.shopId,
@@ -175,13 +177,13 @@ const CartItems = () => {
                       </Button>
                     </Flex>
                   </Flex>
-                  <Text mt={2} fontSize="sm" color="white" textAlign="right">
+                  <Text mt={4} fontSize="md" fontWeight="bold" color="white" textAlign="right">
                     Total: ₹ {item.shop?.prices * item?.quantity}
                   </Text>
                 </Box>
               ))
             ) : (
-              <Text color="white" fontSize="sm" fontWeight="bold" textAlign="center">
+              <Text color="white" fontSize="md" fontWeight="bold" textAlign="center" py={8}>
                 Your cart is empty.
               </Text>
             )}
@@ -190,10 +192,10 @@ const CartItems = () => {
           // Desktop Layout: Grid Table
           <Grid
             templateColumns="repeat(8, 1fr)"
-            gap={[2, 4, 6]}
-            w="max-content"
-            p={[2, 4, 6]}
-            borderRadius="lg"
+            gap={{ base: 2, md: 4, lg: 6 }}
+            w="full"
+            p={{ base: 2, md: 4, lg: 6 }}
+            borderRadius="xl"
             backdropFilter="blur(12px)"
             bg="rgba(155, 155, 155, 0.2)"
             boxShadow="0 4px 12px rgba(0, 0, 0, 0.2)"
@@ -215,7 +217,7 @@ const CartItems = () => {
                 <Text
                   color="yellow.600"
                   fontWeight="bold"
-                  fontSize={["xs", "sm", "md"]}
+                  fontSize={{ base: "xs", md: "sm", lg: "md" }}
                   textAlign="center"
                   transition="all 0.3s"
                   _hover={{ color: "yellow.500", transform: "scale(1.05)" }}
@@ -234,8 +236,8 @@ const CartItems = () => {
                     <Image
                       src={item.shop.image}
                       alt={item.shop.name}
-                      width={80}
-                      height={80}
+                      width={150}
+                      height={150}
                       className="rounded-lg shadow-lg transition-all ease-in-out transform hover:scale-105"
                     />
                   </GridItem>
@@ -245,7 +247,7 @@ const CartItems = () => {
                     <Text
                       color="white"
                       textAlign="center"
-                      fontSize={["xs", "sm", "md"]}
+                      fontSize={{ base: "xs", md: "sm", lg: "md" }}
                       fontWeight="semibold"
                       transition="all 0.3s"
                       _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
@@ -259,7 +261,7 @@ const CartItems = () => {
                     <Text
                       color="white"
                       textAlign="center"
-                      fontSize={["xs", "sm", "md"]}
+                      fontSize={{ base: "xs", md: "sm", lg: "md" }}
                       fontWeight="bold"
                       transition="all 0.3s"
                       _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
@@ -273,7 +275,7 @@ const CartItems = () => {
                     <Text
                       color="white"
                       textAlign="center"
-                      fontSize={["xs", "sm", "md"]}
+                      fontSize={{ base: "xs", md: "sm", lg: "md" }}
                       fontWeight="bold"
                       transition="all 0.3s"
                       _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
@@ -287,7 +289,7 @@ const CartItems = () => {
                     <Text
                       color="white"
                       textAlign="center"
-                      fontSize={["xs", "sm", "md"]}
+                      fontSize={{ base: "xs", md: "sm", lg: "md" }}
                       fontWeight="bold"
                       transition="all 0.3s"
                       _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
@@ -317,7 +319,7 @@ const CartItems = () => {
                       <Text
                         color="white"
                         textAlign="center"
-                        fontSize={["xs", "sm", "md"]}
+                        fontSize={{ base: "xs", md: "sm", lg: "md" }}
                         fontWeight="bold"
                         mx={2}
                       >
@@ -345,7 +347,7 @@ const CartItems = () => {
                     <Text
                       color="white"
                       textAlign="center"
-                      fontSize={["xs", "sm", "md"]}
+                      fontSize={{ base: "xs", md: "sm", lg: "md" }}
                       fontWeight="bold"
                       transition="all 0.3s"
                       _hover={{ color: "yellow.400", transform: "scale(1.05)" }}
@@ -371,7 +373,7 @@ const CartItems = () => {
               ))
             ) : (
               <GridItem colSpan={8} textAlign="center">
-                <Text color="white" fontSize={["xs", "sm", "md"]} fontWeight="bold">
+                <Text color="white" fontSize={{ base: "xs", md: "sm", lg: "md" }} fontWeight="bold">
                   Your cart is empty.
                 </Text>
               </GridItem>
@@ -379,7 +381,7 @@ const CartItems = () => {
           </Grid>
         )}
       </Flex>
-    </div>
+    </Box>
   );
 };
 
