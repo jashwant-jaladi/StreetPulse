@@ -2,15 +2,17 @@ import { create } from 'zustand';
 
 const useCartStore = create((set, get) => ({
   cart: [],
+  isLoading: false,
 
-  // Fetch the cart items from the backend
   fetchCart: async (userId) => {
+    set({ isLoading: true });
     try {
       const response = await fetch(`/api/cart?userId=${userId}`);
       const data = await response.json();
-      set({ cart: data });
+      set({ cart: data, isLoading: false });
     } catch (error) {
       console.error("Error fetching cart:", error);
+      set({ isLoading: false });
     }
   },
 
@@ -136,7 +138,7 @@ const useCartStore = create((set, get) => ({
 
   totalPrice: () => {
     const cart = get().cart;
-    return cart.reduce((total, item) => total + item.shop.prices * item.quantity, 0);
+    return cart.reduce((total, item) => total + item.shop?.prices * item?.quantity, 0);
   },
 }));
 

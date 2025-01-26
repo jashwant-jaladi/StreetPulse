@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import {
   Flex,
   Grid,
@@ -25,15 +25,18 @@ const CartItems = () => {
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const toast = useToast();
+  const isLoading = useCartStore((state) => state.isLoading);
 
   // Responsive layout adjustments
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   useEffect(() => {
     if (userId) {
-      fetchCart(userId);
+      fetchCart(userId).then(() => {
+        console.log("Cart fetched successfully");
+      });
     }
-  }, [userId, fetchCart, cartItems]);
+  }, [userId, fetchCart]);
 
   const handleRemoveFromCart = async (shopId, size, color) => {
     try {
@@ -53,6 +56,9 @@ const CartItems = () => {
       });
     }
   };
+  if (isLoading) {
+    return <Text color="white">Loading cart items...</Text>;
+  }
 
   const handleQuantityChange = async (shopId, size, color, newQuantity) => {
     try {
@@ -103,21 +109,21 @@ const CartItems = () => {
                 >
                   <Flex align="center" justify="space-between">
                     <Image
-                      src={item.shop.image}
-                      alt={item.shop.name}
+                      src={item.shop?.image}
+                      alt={item.shop?.name}
                       width={60}
                       height={60}
                       className="rounded-lg shadow-lg"
                     />
                     <Box flex={1} ml={4}>
                       <Text fontSize="sm" fontWeight="bold" color="white">
-                        {item.shop.name}
+                        {item.shop?.name}
                       </Text>
                       <Text fontSize="xs" color="white">
-                        Size: {item.size}, Color: {item.color}
+                        Size: {item?.size}, Color: {item?.color}
                       </Text>
                       <Text fontSize="sm" color="white">
-                        ₹ {item.shop.prices}
+                        ₹ {item.shop?.prices}
                       </Text>
                     </Box>
                     <IconButton
@@ -170,7 +176,7 @@ const CartItems = () => {
                     </Flex>
                   </Flex>
                   <Text mt={2} fontSize="sm" color="white" textAlign="right">
-                    Total: ₹ {item.shop.prices * item.quantity}
+                    Total: ₹ {item.shop?.prices * item?.quantity}
                   </Text>
                 </Box>
               ))
