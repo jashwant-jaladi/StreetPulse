@@ -64,7 +64,7 @@ const FeaturedProducts = () => {
         Featured Products
       </h3>
 
-      <div className="w-full max-w-md mx-auto">
+      <div className="w-full max-w-md mx-auto flex flex-col items-center">
         {/* Featured Product */}
         {featuredProducts.length > 0 && (
           <Item

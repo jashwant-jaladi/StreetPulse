@@ -102,7 +102,7 @@ const Blog = async ({ searchParams }) => {
           <div className="mt-10">
             <BlogCategory />
             <FeaturedProducts />
-            <h3 className="text-2xl sm:text-3xl font-bold mt-10 mb-5">Tags</h3>
+            <h3 className="text-2xl sm:text-3xl font-bold mt-10 mb-5 pl-4">Tags</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-4">
               <button className="border-2 border-yellow-700 rounded-3xl p-2 sm:p-3 text-sm sm:text-base">Men</button>
               <button className="border-2 border-yellow-700 rounded-3xl p-2 sm:p-3 text-sm sm:text-base">Women</button>

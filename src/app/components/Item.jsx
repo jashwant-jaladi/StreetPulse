@@ -54,12 +54,16 @@ const Item = ({
 
       {/* Product Info */}
       <div className="flex justify-between items-start mt-3">
-        <div className="line-clamp-1 text-lg font-semibold text-gray-200 cursor-pointer">
+        {/* Product Name */}
+        <div className="line-clamp-1 text-lg font-semibold text-gray-200 cursor-pointer flex-1 overflow-hidden">
           <Link href={`/shop/${id}`}>{name}</Link>
         </div>
 
         {/* Wishlist Button */}
-        <button onClick={() => handleWishlistClick(id)}>
+        <button
+          onClick={() => handleWishlistClick(id)}
+          className="flex-shrink-0 min-w-[24px]"
+        >
           <Image
             src={isInWishlist ? "/heart-clicked.png" : "/heart.svg"}
             alt="Wishlist"

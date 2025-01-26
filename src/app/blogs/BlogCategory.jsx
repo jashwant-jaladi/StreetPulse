@@ -7,7 +7,7 @@ const BlogCategory = () => {
   
   return (
     <div className='flex flex-col gap-4'>
-      <h3 className="text-3xl font-bold p-5 text-yellow-400">Categories</h3>
+      <h3 className="text-3xl font-bold p-5 text-yellow-600">Categories</h3>
       <div className="flex flex-col gap-3">
         <Link href="/blogs/category/Fashion">
           <Button 

@@ -66,11 +66,11 @@ const BlogDetails = async ({ params }) => {
       <div className="w-1/2">
         <Searchbar/>
         <div className="grid place-content-center list-none mt-10 gap-4 text-xl">
-          <h3 className="text-3xl font-bold p-5">Categories</h3>
+       
        <BlogCategory/>
-          <h3 className="text-3xl font-bold p-5 mt-10">Featured Products</h3>
+         
           <FeaturedProducts/>
-          <h3 className="text-3xl font-bold p-5 mt-10">Tags</h3>
+          <h3 className="text-3xl font-bold p-5 mt-10 text-yellow-600">Tags</h3>
           <div className="grid grid-rows-4 grid-flow-col gap-4 text-sm">
             <button className="border-2 border-yellow-700 rounded-3xl p-2">Men</button>
             <button className="border-2 border-yellow-700 rounded-3xl p-2">Women</button>

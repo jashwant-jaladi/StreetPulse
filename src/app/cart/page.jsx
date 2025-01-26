@@ -33,7 +33,7 @@ const Cart = () => {
         align="start"
       >
         {/* Cart Items Section */}
-        <Box flex={1} w="100%">
+        <Box flex={1} w="80%">
           <CartItems />
         </Box>
 
