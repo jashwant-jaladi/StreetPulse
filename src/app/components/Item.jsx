@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+
 import { StarIcon } from "@chakra-ui/icons";
 import ItemDescription from "./ItemDescription";
 
@@ -16,6 +16,7 @@ const Item = ({
   discount,
   handleWishlistClick,
   isInWishlist,
+  disableViewButton,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -44,19 +45,20 @@ const Item = ({
         />
 
         {/* View Product Button */}
-        <button
-          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 text-white font-semibold text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          onClick={toggleModal}
+       {!disableViewButton && <button
+          className={`absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 text-white font-semibold text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${disableViewButton ? "cursor-not-allowed opacity-50" : ""}`}
+          onClick={ toggleModal} 
+          
         >
           View Product
-        </button>
+        </button>}
       </div>
 
       {/* Product Info */}
       <div className="flex justify-between items-start mt-3">
         {/* Product Name */}
         <div className="line-clamp-1 text-lg font-semibold text-gray-200 cursor-pointer flex-1 overflow-hidden">
-          <Link href={`/shop/${id}`}>{name}</Link>
+          {name}
         </div>
 
         {/* Wishlist Button */}

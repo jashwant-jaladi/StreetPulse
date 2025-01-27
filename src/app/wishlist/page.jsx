@@ -85,6 +85,7 @@ const Wishlist = () => {
                     removeFromWishlist(userId, item.shopId)
                   }
                   isInWishlist={true}
+                  disableViewButton={true}
                 />
                 <Button
                   onClick={() => handleOpenModal(item)}
