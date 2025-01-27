@@ -79,6 +79,8 @@ const ItemDescription = ({
       color: selectedColor,
     };
 
+   
+
     try {
       await addToCart(userId, product);
       toast({
@@ -92,7 +94,7 @@ const ItemDescription = ({
     } catch (error) {
       toast({
         title: 'Error',
-        description: error.message || 'Failed to add item to cart.',
+        description: 'Item already in cart please update the quantity in cart page.',
         status: 'error',
         duration: 3000,
         isClosable: true,
