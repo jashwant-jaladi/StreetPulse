@@ -74,6 +74,15 @@ const useShopStore = create(
           throw error;
         }
       },
+      updateShopRating: (shopId, newRating, noOfRatings) => {
+        set((state) => ({
+          shops: state.shops.map((shop) =>
+            shop.id === shopId
+              ? { ...shop, rating: newRating, noOfRatings }
+              : shop
+          ),
+        }));
+      },
 
       // Remove an item from the wishlist via the API
       removeFromWishlist: async (userId, shopId) => {

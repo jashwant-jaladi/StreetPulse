@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 
+
 const Review = ({ shopId, userId }) => {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState('');
@@ -20,6 +21,8 @@ const Review = ({ shopId, userId }) => {
   const [hoveredRating, setHoveredRating] = useState(0);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+ 
+
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -72,40 +75,41 @@ const Review = ({ shopId, userId }) => {
       });
       return;
     }
-
+  
     try {
       const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ shopId, userId, rating, content: comment }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to submit review');
       }
-
-      const newReview = await response.json();
-
-      // Update local state
+  
+      const { review } = await response.json();
+  
+      // Update local state with the new or updated review
       setComments((prevComments) => {
         const existingIndex = prevComments.findIndex(
           (c) => c.userId === userId && c.shopId === shopId
         );
-
+  
         if (existingIndex !== -1) {
-          // Replace existing review
+          // Replace the existing review
           const updatedComments = [...prevComments];
-          updatedComments[existingIndex] = newReview;
+          updatedComments[existingIndex] = review;
           return updatedComments;
         }
-
-        // Add new review
-        return [...prevComments, newReview];
+  
+        // Add the new review
+        return [...prevComments, review];
       });
-
+  
+      // Reset the input fields
       setComment('');
       setRating(0);
-
+  
       toast({
         title: "Review submitted",
         description: "Thank you for your feedback!",
@@ -123,6 +127,7 @@ const Review = ({ shopId, userId }) => {
       });
     }
   };
+  
 
   return (
     <Box bg="gray.800" borderRadius="lg" mt={8} color="yellow.400" boxShadow="lg" p={[4, 6]}>

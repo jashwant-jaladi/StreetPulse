@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Review from './Review';
 import {
@@ -44,6 +44,7 @@ const ItemDescription = ({
 
   const sizeOptions = ['Small', 'Medium', 'Large', 'XL'];
   const colorOptions = ['Black', 'Yellow', 'Red', 'Blue'];
+
 
   // Check if product is in the wishlist
   const isInWishlist = wishlist?.some((item) => item.shopId === id);

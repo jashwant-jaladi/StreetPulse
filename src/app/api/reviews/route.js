@@ -13,46 +13,58 @@ export async function POST(request) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
 
-    // Check if the review exists
-    const existingReview = await prisma.review.findUnique({
-      where: { userId_shopId: { userId, shopId } },
+    // Use a transaction to ensure data consistency
+    const result = await prisma.$transaction(async (prisma) => {
+      // Check if the review exists
+      const existingReview = await prisma.review.findUnique({
+        where: { userId_shopId: { userId, shopId } },
+      });
+
+      // Add or update the review
+      const newReview = existingReview
+        ? await prisma.review.update({
+            where: { id: existingReview.id },
+            data: { rating, content, updatedAt: new Date() },
+            include: { 
+              user: { select: { name: true } },
+              shop: { select: { rating: true, noOfRatings: true } }
+            },
+          })
+        : await prisma.review.create({
+            data: { userId, shopId, rating, content },
+            include: { 
+              user: { select: { name: true } },
+              shop: { select: { rating: true, noOfRatings: true } }
+            },
+          });
+
+      // Recalculate the shop's average rating
+      const reviews = await prisma.review.findMany({ where: { shopId } });
+      const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+      const newAverageRating = totalRating / reviews.length;
+
+      // Update the shop with the new rating and number of ratings
+      const updatedShop = await prisma.shop.update({
+        where: { id: shopId },
+        data: { rating: newAverageRating, noOfRatings: reviews.length },
+      });
+
+      return {
+        review: newReview,
+        shopRating: newAverageRating,
+        noOfRatings: reviews.length
+      };
     });
 
-    // Add or update the review
-    const newReview = existingReview
-      ? await prisma.review.update({
-          where: { id: existingReview.id },
-          data: { rating, content, updatedAt: new Date() },
-          include: { user: { select: { name: true } } },
-        })
-      : await prisma.review.create({
-          data: { userId, shopId, rating, content },
-          include: { user: { select: { name: true } } },
-        });
-
-    // Recalculate the shop's average rating
-    const reviews = await prisma.review.findMany({ where: { shopId } });
-    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-    const newAverageRating = totalRating / reviews.length;
-
-    // Update the shop with the new rating and number of ratings
-    await prisma.shop.update({
-      where: { id: shopId },
-      data: { rating: newAverageRating, noOfRatings: reviews.length },
-    });
-
-    // Return the new review and updated shop rating
     return NextResponse.json({
       message: "Review added/updated successfully",
-      review: newReview,
-      shopRating: newAverageRating,
+      ...result
     });
   } catch (error) {
     console.error("Error adding review:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-
 
 
 export async function GET(request) {
