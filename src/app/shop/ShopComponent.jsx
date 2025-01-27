@@ -2,11 +2,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import Item from "../components/Item";
 import useShopStore from "@/zustand/shopStore";
 import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
+
 import Loading from "../components/Loading";
 
 const ShopComponent = ({ selectedFilter }) => {
-  const { category } = useParams();
+  
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
@@ -107,7 +107,7 @@ const ShopComponent = ({ selectedFilter }) => {
 
   return (
     <div>
-      <div className="bg-black text-slate-300 p-14 pt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-14 place-items-center">
+      <div className="bg-black text-slate-300 p-14 pt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-14 place-items-center">
         {filteredProducts.map((item) => (
           <Item
             key={item.id}

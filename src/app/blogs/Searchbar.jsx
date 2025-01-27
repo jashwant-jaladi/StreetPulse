@@ -26,7 +26,7 @@ const Searchbar = () => {
         <Box
             as="form" // Chakra UI form wrapper for accessibility
             onSubmit={handleSubmit}
-            
+            width={"100%"}
             className="flex flex-col items-center justify-center mt-20"
             p={6}
             borderRadius="lg"
@@ -47,7 +47,7 @@ const Searchbar = () => {
                 _hover={{ borderColor: "yellow.500" }}
                 className="transition-all duration-300 ease-in-out"
                 mb={5}
-                w={{ base: "100%", md: "60%", lg: "40%" }}
+                w={{ base: "80%", md: "80%", lg: "80%" }}
             />
             <Button
                 size="lg"

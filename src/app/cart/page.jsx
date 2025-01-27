@@ -28,9 +28,9 @@ const Cart = () => {
       {/* Main Content */}
       <Flex
         p={[4, 6, 8, 10]} // Adjusted padding for all breakpoints
-        direction={{ base: "column", md: "column", lg: "row" }} // Stack on mobile, row on iPad and larger
+        direction={{ base: "column", md: "column", lg: "column", xl: "row" }} // Stack on mobile, row on iPad and larger
         gap={{ base: 6, md: 8, lg: 10 }} // Adjusted gap for different breakpoints
-        align={{ base: "center", md: "center", lg: "stretch" }} // Stack on mobile, center on iPad and larger
+        align={{ base: "center", md: "center", lg: "center", xl: "flex-start" }} // Stack on mobile, center on iPad and larger
         
        
         mx="auto" // Center the content
@@ -38,15 +38,16 @@ const Cart = () => {
         {/* Cart Items Section */}
         <Box
           flex="1"
-          w={{ base: "100%", md: "100%", lg: "75%" }} // Adjusted width for iPad and larger
+          w={{ base: "100%", md: "100%", lg: "100%" }} // Adjusted width for iPad and larger
         >
           <CartItems />
         </Box>
 
         {/* Order Summary Section */}
         <Box
-          w={{ base: "100%", md: "80%", lg: "35%" }} // Adjusted width for iPad and larger
-          mt={{ base: 6, md: 0 }} // Add top margin only on mobile
+          w={{ base: "100%", md: "80%", lg: "80%", xl: "40%" }} // Adjusted width for iPad and larger
+          mt={{ base: 0, md: 0 }} // Add top margin only on mobile
+          
         >
           <OrderSummary />
         </Box>

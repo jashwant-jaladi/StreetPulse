@@ -28,7 +28,7 @@ const CartItems = () => {
   const isLoading = useCartStore((state) => state.isLoading);
 
   // Responsive layout adjustments
-  const isMobile = useBreakpointValue({ base: true, lg: false });
+  const isMobile = useBreakpointValue({ base: true, xl: false });
 
   useEffect(() => {
     if (userId) {

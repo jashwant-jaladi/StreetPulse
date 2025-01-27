@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"; // Import useSession
 import { Box, Heading, Textarea, Button, Flex, Text, Alert, AlertIcon, useToast } from "@chakra-ui/react";
 import Image from "next/image";
+import { data } from "autoprefixer";
+import { comment } from "postcss";
 
 const Comment = ({ blogId }) => {
   const { data: session, status } = useSession();
@@ -21,6 +23,7 @@ const Comment = ({ blogId }) => {
           throw new Error("Failed to fetch comments");
         }
         const data = await response.json();
+        console.log(data)
         setComments(data.comments);
       } catch (err) {
         console.error(err);
@@ -110,7 +113,7 @@ const Comment = ({ blogId }) => {
       setLoading(false);
     }
   };
-
+ 
   return (
     <Box p={4}>
       {/* Comments Section */}
@@ -148,7 +151,7 @@ const Comment = ({ blogId }) => {
                 <Text fontWeight="bold" fontSize="lg" color="yellow.400">
                   {comment.user.name}
                 </Text>
-                <Button
+                {isAuthenticated && comment.userId === session.user.id  && <Button
                   width="30px"
                   height="30px"
                   bg="yellow.600"
@@ -162,7 +165,7 @@ const Comment = ({ blogId }) => {
                   onClick={handleDelete.bind(this, comment.id)}
                 >
                   <Image src="/icons8-delete.svg" alt="Delete" width={16} height={16} />
-                </Button>
+                </Button>}
               </Flex>
               <Text fontSize="md" color="whitesmoke" mt={2} mb={4}>
                 {comment.content}

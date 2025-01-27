@@ -6,10 +6,8 @@ import Searchbar from '../Searchbar';
 import FeaturedProducts from '../FeaturedProducts';
 import BlogCategory from '../BlogCategory';
 
-
-
 const BlogDetails = async ({ params }) => {
-  const {id} = params
+  const { id } = params;
   if (!id) {
     return (
       <div className="bg-black text-yellow-400 h-screen flex items-center justify-center">
@@ -31,54 +29,51 @@ const BlogDetails = async ({ params }) => {
   }
 
   return (
-    <div className="flex flex-row bg-black text-yellow-400">
+    <div className="flex flex-col lg:flex-row bg-black text-yellow-400">
       {/* Blog Content */}
-      <div className="bg-black text-yellow-600 p-10 pb-20">
-        <div className="w-[50vw] ml-20">
+      <div className="lg:w-3/5 p-5 lg:p-10">
+        <div className="pt-10">
           {/* Blog Image */}
-          <div className="pt-20">
-            <div className="border-2 border-yellow-600 rounded-lg overflow-hidden cursor-pointer grow shrink aspect-[2/1]">
-              <Image
-                src={post.image}
-                alt={post.title}
-                width={800}
-                height={500}
-                className="w-full h-full object-center object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg"
-              />
-            </div>
+          <div className="border-2 border-yellow-600 rounded-lg overflow-hidden">
+            <Image
+              src={post.image}
+              alt={post.title}
+              width={800}
+              height={500}
+              className="w-full h-auto object-center object-cover transition-transform ease-linear duration-300 hover:scale-110 rounded-lg"
+            />
           </div>
-
-          {/* Blog Details */}
-          <div className="w-[700px]">
-            <p className="pt-5 pl-3 text-gray-500">
-              By {post.name} on {new Date(post.date).toLocaleDateString()}
-            </p>
-            <h2 className="pt-5 pl-3 text-2xl font-bold">{post.title}</h2>
-            <p className="pt-5 pl-3 text-white w-[100vh]">{post.content}</p>
-          </div>
-
-          <Comment blogId={post.id}/>
-      
         </div>
+
+        {/* Blog Details */}
+        <div className="mt-5">
+          <p className="text-gray-500">
+            By {post.name} on {new Date(post.date).toLocaleDateString()}
+          </p>
+          <h2 className="text-2xl font-bold mt-3">{post.title}</h2>
+          <p className="text-white mt-3">{post.content}</p>
+        </div>
+
+        {/* Comments Section */}
+        <Comment blogId={post.id} />
       </div>
 
       {/* Sidebar */}
-      <div className="w-1/2">
-        <Searchbar/>
-        <div className="grid place-content-center list-none mt-10 gap-4 text-xl">
-       
-       <BlogCategory/>
-         
-          <FeaturedProducts/>
-          <h3 className="text-3xl font-bold p-5 mt-10 text-yellow-600">Tags</h3>
-          <div className="grid grid-rows-4 grid-flow-col gap-4 text-sm">
-            <button className="border-2 border-yellow-700 rounded-3xl p-2">Men</button>
-            <button className="border-2 border-yellow-700 rounded-3xl p-2">Women</button>
-            <button className="border-2 border-yellow-700 rounded-3xl p-2">Fashion</button>
-            <button className="border-2 border-yellow-700 rounded-3xl p-2">LifeStyle</button>
-            <button className="border-2 border-yellow-700 rounded-3xl p-2">Denim</button>
-            <button className="border-2 border-yellow-700 rounded-3xl p-2">StreetStyle</button>
-            <button className="border-2 border-yellow-700 rounded-3xl p-2">Crafts</button>
+      <div className="lg:w-2/5 p-5">
+        <Searchbar />
+        <div className="mt-10">
+          <BlogCategory />
+          <FeaturedProducts />
+          <h3 className="text-2xl font-bold mt-10 text-yellow-600">Tags</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-5">
+            {['Men', 'Women', 'Fashion', 'LifeStyle', 'Denim', 'StreetStyle', 'Crafts'].map((tag) => (
+              <button
+                key={tag}
+                className="border-2 border-yellow-700 rounded-3xl p-2 text-sm"
+              >
+                {tag}
+              </button>
+            ))}
           </div>
         </div>
       </div>

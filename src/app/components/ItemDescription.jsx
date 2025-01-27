@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Review from './Review';
 import {
@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import Dropdown from './Dropdown';
 import QuantitySelector from './Quantity';
-import useShopStore from '@/zustand/shopStore'; // Make sure you have the store imported
+import useShopStore from '@/zustand/shopStore';
 import { useSession } from 'next-auth/react';
 import useCartStore from '@/zustand/cartStore';
 
@@ -45,8 +45,6 @@ const ItemDescription = ({
   const sizeOptions = ['Small', 'Medium', 'Large', 'XL'];
   const colorOptions = ['Black', 'Yellow', 'Red', 'Blue'];
 
-
-  // Check if product is in the wishlist
   const isInWishlist = wishlist?.some((item) => item.shopId === id);
 
   const handleAddToCart = async () => {
@@ -75,7 +73,7 @@ const ItemDescription = ({
     }
 
     const product = {
-      shopId: id, // Make sure this matches the database field name
+      shopId: id,
       quantity,
       size: selectedSize,
       color: selectedColor,
@@ -103,10 +101,9 @@ const ItemDescription = ({
     }
   };
 
-  // Handle Wishlist click (Add/Remove)
   const handleWishlistClick = () => {
     if (isInWishlist) {
-      removeFromWishlist(userId, id); // Remove from wishlist if already in wishlist
+      removeFromWishlist(userId, id);
       toast({
         title: 'Removed from Wishlist',
         description: `${name} has been removed from your wishlist.`,
@@ -116,7 +113,7 @@ const ItemDescription = ({
         position: 'top',
       });
     } else {
-      addToWishlist(userId, id); // Add to wishlist if not already in wishlist
+      addToWishlist(userId, id);
       toast({
         title: 'Added to Wishlist',
         description: `${name} has been added to your wishlist.`,
@@ -135,13 +132,13 @@ const ItemDescription = ({
         bg="gray.800"
         color="yellow.400"
         borderRadius="lg"
-        p={[4, 5]} // Smaller padding on mobile, larger on desktop
-        maxWidth={['100vw', '70vw']} // Full width on mobile, 70vw on desktop
-        maxHeight={['100vh', '80vh']} // Full height on mobile, 80vh on desktop
+        p={[4, 5]}
+        maxWidth={['100vw', '70vw']}
+        maxHeight={['100vh', '80vh']}
         overflowY="auto"
       >
         <ModalHeader
-          fontSize={['3xl', '5xl']} // Smaller font on mobile, larger on desktop
+          fontSize={['3xl', '5xl']}
           fontWeight="bold"
           color="yellow.500"
           textAlign="center"
@@ -152,80 +149,71 @@ const ItemDescription = ({
 
         <ModalCloseButton color="yellow.400" />
         <ModalBody>
-          <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-16">
+          <div className="flex flex-col 2xl:flex-row items-center gap-6">
             {/* Image Section */}
-            <div className="flex-shrink-0 w-full lg:w-auto">
+            <div className="w-full 2xl:w-[400px]">
               <Image
                 src={image}
                 alt="Product Image"
                 width={400}
                 height={400}
-                className="rounded-lg w-full lg:w-[400px]"
+                className="rounded-lg w-full object-cover"
               />
             </div>
 
             {/* Details Section */}
-            <div className="flex-grow w-full lg:w-auto">
-              <Flex justifyContent="space-between" direction={['column', 'row']}>
-                <Text fontSize={['xl', '2xl']} fontWeight="semibold" mb={2}>
-                  {name}
-                </Text>
-                <Text fontSize={['md', 'lg']}>
-                  {rating} stars ({noOfRatings} ratings)
-                </Text>
+            <div className="w-full">
+              <Flex direction="column" gap={4}>
+                <Flex direction="column" gap={2}>
+                  <Text fontSize={['xl', '2xl']} fontWeight="semibold">
+                    {name}
+                  </Text>
+                  <Text fontSize={['md', 'lg']}>
+                    {rating} stars ({noOfRatings} ratings)
+                  </Text>
+                </Flex>
+
+                <Text fontSize={['lg', 'xl']}>₹ {price}</Text>
+
+                <Text fontSize="md">{description}</Text>
+
+                <Dropdown
+                  label="Size"
+                  options={sizeOptions}
+                  value={selectedSize}
+                  onChange={(e) => setSelectedSize(e.target.value)}
+                />
+
+                <Dropdown
+                  label="Color"
+                  options={colorOptions}
+                  value={selectedColor}
+                  onChange={(e) => setSelectedColor(e.target.value)}
+                />
+
+                <div>
+                  <Text color="yellow.400" fontWeight="medium" mb={2}>
+                    Quantity:
+                  </Text>
+                  <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
+                </div>
+
+                <Button
+                  onClick={handleWishlistClick}
+                  bg={isInWishlist ? 'yellow.400' : 'gray.700'}
+                  color="black"
+                  _hover={{ bg: 'yellow.500' }}
+                  width="full"
+                >
+                  {isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
+                </Button>
+
+                <Review userId={userId} shopId={id} />
               </Flex>
-
-              <Text fontSize={['lg', 'xl']} mb={4}>
-                ₹ {price}
-              </Text>
-
-              <Text fontSize="md" mb={4}>
-                {description}
-              </Text>
-
-              {/* Size Dropdown */}
-              <Dropdown
-                label="Size"
-                options={sizeOptions}
-                value={selectedSize}
-                onChange={(e) => setSelectedSize(e.target.value)}
-              />
-
-              {/* Color Dropdown */}
-              <Dropdown
-                label="Color"
-                options={colorOptions}
-                value={selectedColor}
-                onChange={(e) => setSelectedColor(e.target.value)}
-              />
-
-              {/* Quantity Selector */}
-              <div className="mt-4">
-                <Text color="yellow.400" fontWeight="medium">
-                  Quantity:
-                </Text>
-                <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
-              </div>
-
-              {/* Wishlist Button */}
-              <Button
-                onClick={handleWishlistClick}
-                bg={isInWishlist ? 'yellow.400' : 'gray.700'}
-                color="black"
-                _hover={{ bg: 'yellow.500' }}
-                mt={6}
-                width={['full', 'auto']} // Full width on mobile, auto width on desktop
-              >
-                {isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
-              </Button>
-
-              {/* Reviews */}
-              <Review userId={userId} shopId={id} />
             </div>
           </div>
         </ModalBody>
 
-        {/* Modal Footer */}
         <ModalFooter>
           <Button
             colorScheme="yellow"
