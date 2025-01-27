@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { Button } from '@chakra-ui/react';
+
 import Searchbar from '../../Searchbar';
 import BlogCategory from '../../BlogCategory';
 import Link from 'next/link';

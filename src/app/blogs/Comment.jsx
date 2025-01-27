@@ -3,8 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"; // Import useSession
 import { Box, Heading, Textarea, Button, Flex, Text, Alert, AlertIcon, useToast } from "@chakra-ui/react";
 import Image from "next/image";
-import { data } from "autoprefixer";
-import { comment } from "postcss";
+
 
 const Comment = ({ blogId }) => {
   const { data: session, status } = useSession();
