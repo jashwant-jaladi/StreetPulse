@@ -12,7 +12,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
-
+import useShopStore from '@/zustand/shopStore'; // Import Zustand store
 
 const Review = ({ shopId, userId }) => {
   const [comments, setComments] = useState([]);
@@ -20,10 +20,13 @@ const Review = ({ shopId, userId }) => {
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const toast = useToast();
- 
 
+  // Zustand store functions
+  const updateShopRating = useShopStore((state) => state.updateShopRating);
 
+  // Fetch reviews on component mount
   useEffect(() => {
     const fetchReviews = async () => {
       setLoading(true);
@@ -47,13 +50,14 @@ const Review = ({ shopId, userId }) => {
     fetchReviews();
   }, [shopId, toast]);
 
+  // Star rating component
   const StarRating = ({ value, onChange, onHover, hoveredValue }) => (
     <HStack spacing={1}>
       {[1, 2, 3, 4, 5].map((star) => (
         <Icon
           key={star}
           as={StarIcon}
-          boxSize={6} // Keep star size consistent
+          boxSize={6}
           cursor="pointer"
           color={(hoveredValue || value) >= star ? "yellow.400" : "gray.600"}
           onClick={() => onChange(star)}
@@ -64,6 +68,7 @@ const Review = ({ shopId, userId }) => {
     </HStack>
   );
 
+  // Handle review submission
   const handleSubmit = async () => {
     if (!comment.trim() || rating === 0) {
       toast({
@@ -75,41 +80,46 @@ const Review = ({ shopId, userId }) => {
       });
       return;
     }
-  
+
+    setSubmitting(true);
+
     try {
       const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ shopId, userId, rating, content: comment }),
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to submit review');
       }
-  
-      const { review } = await response.json();
-  
+
+      const { review, shop } = await response.json();
+
+      // Update Zustand store with the new shop rating
+      updateShopRating(shopId, shop.rating, shop.noOfRatings);
+
       // Update local state with the new or updated review
       setComments((prevComments) => {
         const existingIndex = prevComments.findIndex(
           (c) => c.userId === userId && c.shopId === shopId
         );
-  
+
         if (existingIndex !== -1) {
           // Replace the existing review
           const updatedComments = [...prevComments];
           updatedComments[existingIndex] = review;
           return updatedComments;
         }
-  
+
         // Add the new review
         return [...prevComments, review];
       });
-  
+
       // Reset the input fields
       setComment('');
       setRating(0);
-  
+
       toast({
         title: "Review submitted",
         description: "Thank you for your feedback!",
@@ -125,9 +135,10 @@ const Review = ({ shopId, userId }) => {
         duration: 3000,
         isClosable: true,
       });
+    } finally {
+      setSubmitting(false);
     }
   };
-  
 
   return (
     <Box bg="gray.800" borderRadius="lg" mt={8} color="yellow.400" boxShadow="lg" p={[4, 6]}>
@@ -161,7 +172,9 @@ const Review = ({ shopId, userId }) => {
           bg="yellow.400"
           color="black"
           _hover={{ bg: "yellow.500" }}
-          width={['100%', '30%']} // Full width on mobile, 30% on desktop
+          width={['100%', '30%']}
+          isLoading={submitting}
+          loadingText="Submitting..."
         >
           Submit Review
         </Button>

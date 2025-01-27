@@ -51,8 +51,7 @@ export async function POST(request) {
 
       return {
         review: newReview,
-        shopRating: newAverageRating,
-        noOfRatings: reviews.length
+        shop: updatedShop,
       };
     });
 

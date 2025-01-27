@@ -23,6 +23,15 @@ const useShopStore = create(
           console.error("Error fetching shops:", error);
         }
       },
+      updateShopRating: (shopId, newRating, noOfRatings) => {
+        set((state) => ({
+          shops: state.shops.map((shop) =>
+            shop.id === shopId
+              ? { ...shop, rating: newRating, noOfRatings }
+              : shop
+          ),
+        }));
+      },
 
       // Fetch wishlist from the server
       fetchWishlist: async (userId) => {
