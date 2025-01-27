@@ -132,9 +132,30 @@ const useCartStore = create((set, get) => ({
       console.error("Error updating quantity:", error);
     }
   },
-  resetCart: () => {
-    set({ cart: [] });
+  setCart: (newCart) => set({ cart: newCart }),
+  
+  resetCart: async (userId) => {
+    try {
+      const response = await fetch('/api/reset', {
+        method: 'DELETE',
+        headers: { 
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to reset cart in backend');
+      }
+
+      // Clear the cart in the frontend state
+      set({ cart: [] });
+    } catch (error) {
+      console.error('Error resetting cart:', error);
+      throw error;
+    }
   },
+ 
 
   totalPrice: () => {
     const cart = get().cart;

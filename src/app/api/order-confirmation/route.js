@@ -37,9 +37,13 @@ export async function POST(request) {
             from: process.env.EMAIL,
             to: email,
             subject: "Order Confirmation",
-            Text: "Thank you for your purchase! We are excited to let you know that your order has been successfully placed. Our team is now preparing your items for shipment. You will receive an email notification once your order is on its way. If you have any questions or need further assistance, feel free to contact our customer support team. We appreciate your business and look forward to serving you again!"
-
+            text: "Thank you for your purchase! We are excited to let you know that your order has been successfully placed.",
+            html: `<p>Thank you for your purchase! We are excited to let you know that your order has been successfully placed.</p>
+                   <p>Our team is now preparing your items for shipment. You will receive an email notification once your order is on its way.</p>
+                   <p>If you have any questions or need further assistance, feel free to contact our customer support team.</p>
+                   <p>We appreciate your business and look forward to serving you again!</p>`
         };
+        ;
 
         // Send the email
         await transporter.sendMail(mailOptions);
