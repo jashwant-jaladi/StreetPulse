@@ -73,14 +73,19 @@ const Header = memo(() => {
       <div className="border-b-2 border-yellow-400">
         <div className="flex items-center justify-between p-3 sm:px-6">
           {/* Logo */}
-          <Image
-            src="/street-pulse-logo.png"
-            alt="logo"
-            width={200}
-            height={200}
-            className="w-28 sm:w-36"
-            priority
-          />
+          <Link href="/">
+            
+              <Image
+                src="/street-pulse-logo.png"
+                alt="logo"
+                width={200}
+                height={200}
+                className="w-28 sm:w-36"
+                priority
+              />
+           
+          </Link>
+         
 
           {/* Mobile Menu Toggle */}
           <button
