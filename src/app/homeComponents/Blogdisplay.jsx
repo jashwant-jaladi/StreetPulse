@@ -27,10 +27,10 @@ const Blogdisplay = () => {
 
   return (
     <>
-      <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold pt-5 text-center bg-black text-yellow-500">
+      <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold pt-20 text-center bg-black text-yellow-500">
         Our Blogs
       </h3>
-      <div className="bg-black flex flex-col sm:flex-row flex-wrap justify-center gap-6 p-6 sm:p-10 md:p-20">
+      <div className="bg-black flex flex-col sm:flex-row flex-wrap justify-center gap-6  sm:p-10 md:p-10">
         {blogs.map((item) => (
           <div key={item.id} className="w-full sm:w-[45%] lg:w-[30%]">
             <div className="pt-10 sm:pt-16">

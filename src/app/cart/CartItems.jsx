@@ -57,25 +57,51 @@ const CartItems = () => {
 
   const handleQuantityChange = async (shopId, size, color, newQuantity) => {
     try {
-      if (newQuantity === 0) {
-        await removeFromCart(userId, shopId, size, color);
-        toast({
-          title: "Item removed from cart successfully!",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      } else {
-        await updateQuantity(userId, shopId, size, color, newQuantity);
-        toast({
-          title: "Quantity updated successfully!",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
+      // Optimistically update the UI
+      const itemIndex = cartItems.findIndex(
+        item => item.shopId === shopId && item.size === size && item.color === color
+      );
+      
+      if (itemIndex !== -1) {
+        // Create a copy of the cart for optimistic update
+        const updatedCart = [...cartItems];
+        
+        if (newQuantity === 0) {
+          // Remove the item optimistically
+          updatedCart.splice(itemIndex, 1);
+          useCartStore.setState({ cart: updatedCart });
+          
+          // Then perform the actual server update
+          await removeFromCart(userId, shopId, size, color);
+          toast({
+            title: "Item removed from cart successfully!",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else {
+          // Update quantity optimistically
+          updatedCart[itemIndex] = {
+            ...updatedCart[itemIndex],
+            quantity: newQuantity
+          };
+          useCartStore.setState({ cart: updatedCart });
+          
+          // Then perform the actual server update
+          await updateQuantity(userId, shopId, size, color, newQuantity);
+          toast({
+            title: "Quantity updated successfully!",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+        
+        // No need to call fetchCart here, as we've already updated the UI
       }
-      await fetchCart(userId); // Refresh the cart after any change
     } catch (error) {
+      // If there's an error, revert optimistic update by re-fetching
+      await fetchCart(userId);
       toast({
         title: "Failed to update quantity",
         status: "error",
