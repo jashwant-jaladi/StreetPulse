@@ -112,7 +112,12 @@ const CartItems = () => {
   };
 
   if (isLoading) {
-    return <Text color="white">Loading cart items...</Text>;
+    return (
+      <Flex justify="center" align="center" height="100vh">
+        <Text color="white">Loading cart items...</Text>
+      </Flex>
+    );
+    
   }
 
   return (

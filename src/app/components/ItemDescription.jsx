@@ -33,6 +33,8 @@ const ItemDescription = ({
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isUpdatingWishlist, setIsUpdatingWishlist] = useState(false);
   const toast = useToast();
   const wishlist = useShopStore((state) => state.wishlist);
   const addToWishlist = useShopStore((state) => state.addToWishlist);
@@ -79,7 +81,7 @@ const ItemDescription = ({
       color: selectedColor,
     };
 
-   
+    setIsAddingToCart(true);
 
     try {
       await addToCart(userId, product);
@@ -100,30 +102,59 @@ const ItemDescription = ({
         isClosable: true,
         position: 'top',
       });
+    } finally {
+      setIsAddingToCart(false);
     }
   };
 
-  const handleWishlistClick = () => {
-    if (isInWishlist) {
-      removeFromWishlist(userId, id);
+  const handleWishlistClick = async () => {
+    if (!session) {
       toast({
-        title: 'Removed from Wishlist',
-        description: `${name} has been removed from your wishlist.`,
-        status: 'info',
+        title: 'Not Logged In',
+        description: 'You need to be logged in to manage your wishlist.',
+        status: 'error',
         duration: 3000,
         isClosable: true,
         position: 'top',
       });
-    } else {
-      addToWishlist(userId, id);
+      return;
+    }
+
+    setIsUpdatingWishlist(true);
+    
+    try {
+      if (isInWishlist) {
+        await removeFromWishlist(userId, id);
+        toast({
+          title: 'Removed from Wishlist',
+          description: `${name} has been removed from your wishlist.`,
+          status: 'info',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+        });
+      } else {
+        await addToWishlist(userId, id);
+        toast({
+          title: 'Added to Wishlist',
+          description: `${name} has been added to your wishlist.`,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+        });
+      }
+    } catch (error) {
       toast({
-        title: 'Added to Wishlist',
-        description: `${name} has been added to your wishlist.`,
-        status: 'success',
+        title: 'Error',
+        description: 'Failed to update wishlist. Please try again.',
+        status: 'error',
         duration: 3000,
         isClosable: true,
         position: 'top',
       });
+    } finally {
+      setIsUpdatingWishlist(false);
     }
   };
 
@@ -206,6 +237,9 @@ const ItemDescription = ({
                   color="black"
                   _hover={{ bg: 'yellow.500' }}
                   width="full"
+                  isLoading={isUpdatingWishlist}
+                  loadingText={isInWishlist ? "Removing..." : "Adding..."}
+                  isDisabled={isAddingToCart}
                 >
                   {isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
                 </Button>
@@ -233,6 +267,9 @@ const ItemDescription = ({
             color="yellow.400"
             _hover={{ bg: 'yellow.500', color: 'black' }}
             onClick={handleAddToCart}
+            isLoading={isAddingToCart}
+            loadingText="Adding..."
+            isDisabled={isUpdatingWishlist}
           >
             Add to Cart
           </Button>

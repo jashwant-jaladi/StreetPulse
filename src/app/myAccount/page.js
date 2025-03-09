@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import React from "react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel, useToast } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel, useToast, Spinner } from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import ModalPassword from "./forgotPassword";
@@ -14,8 +14,14 @@ const MyAccount = () => {
   const [error, setError] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  
+  // Separate loading states for different actions
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
+  const [isGuestLoading, setIsGuestLoading] = useState(false);
+  const [isRegisterLoading, setIsRegisterLoading] = useState(false);
+  
   const router = useRouter();
-  const toast = useToast(); // Initialize Chakra UI toast
+  const toast = useToast();
 
   // Function to show error toast notifications
   const showToast = (title, description, status) => {
@@ -32,6 +38,7 @@ const MyAccount = () => {
   // Handle Guest Login
   const handleGuestLogin = async () => {
     try {
+      setIsGuestLoading(true);
       const res = await signIn("credentials", {
         guest: true,
         redirect: false,
@@ -39,6 +46,7 @@ const MyAccount = () => {
 
       if (res?.error) {
         showToast("Error", "Failed to log in as a guest", "error");
+        setIsGuestLoading(false);
       } else {
         showToast("Success", "Logged in as Guest!", "success");
         router.replace("/"); // Redirect to home after guest login
@@ -46,6 +54,7 @@ const MyAccount = () => {
     } catch (error) {
       console.error("Error during guest login:", error);
       showToast("Error", "An unexpected error occurred", "error");
+      setIsGuestLoading(false);
     }
   };
 
@@ -53,6 +62,7 @@ const MyAccount = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsLoginLoading(true);
       const res = await signIn("credentials", {
         email: loginEmail,
         password: loginPassword,
@@ -61,6 +71,7 @@ const MyAccount = () => {
 
       if (res?.error) {
         showToast("Error", "Invalid credentials", "error");
+        setIsLoginLoading(false);
         return;
       }
 
@@ -68,6 +79,7 @@ const MyAccount = () => {
     } catch (error) {
       console.error(error);
       showToast("Error", "An unexpected error occurred", "error");
+      setIsLoginLoading(false);
     }
   };
 
@@ -86,6 +98,7 @@ const MyAccount = () => {
     }
 
     try {
+      setIsRegisterLoading(true);
       const res = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -102,10 +115,12 @@ const MyAccount = () => {
       } else {
         const errorData = await res.json();
         showToast("Error", errorData.message || "Registration failed", "error");
+        setIsRegisterLoading(false);
       }
     } catch (error) {
       console.error("Error occurred while registering the user:", error);
       showToast("Error", "An unexpected error occurred", "error");
+      setIsRegisterLoading(false);
     }
   };
 
@@ -130,23 +145,31 @@ const MyAccount = () => {
                   placeholder="Email"
                   className="p-2 border-2 border-yellow-400 bg-black text-yellow-400 rounded-lg"
                   onChange={(e) => setLoginEmail(e.target.value)}
+                  disabled={isLoginLoading}
                 />
                 <input
                   type="password"
                   placeholder="Password"
                   className="p-2 border-2 border-yellow-400 rounded-lg bg-black"
                   onChange={(e) => setLoginPassword(e.target.value)}
+                  disabled={isLoginLoading}
                 />
                 <ModalPassword />
-                <button className="m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black text-white hover:bg-yellow-700">
-                  Submit
+                <button 
+                  className="m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black text-white hover:bg-yellow-700 flex items-center justify-center"
+                  disabled={isLoginLoading}
+                >
+                  {isLoginLoading ? <Spinner size="sm" color="yellow.400" mr="2" /> : null}
+                  {isLoginLoading ? "Processing..." : "Submit"}
                 </button>
               </form>
               <button
                 onClick={handleGuestLogin}
-                className="mt-5 m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black text-white hover:bg-yellow-700"
+                className="mt-5 m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black text-white hover:bg-yellow-700 flex items-center justify-center"
+                disabled={isGuestLoading}
               >
-                Continue as Guest
+                {isGuestLoading ? <Spinner size="sm" color="yellow.400" mr="2" /> : null}
+                {isGuestLoading ? "Processing..." : "Continue as Guest"}
               </button>
             </TabPanel>
 
@@ -159,6 +182,7 @@ const MyAccount = () => {
                   name="name"
                   onChange={(e) => setName(e.target.value)}
                   className="p-2 border-2 border-yellow-400 rounded-lg bg-black"
+                  disabled={isRegisterLoading}
                 />
                 <input
                   type="email"
@@ -166,6 +190,7 @@ const MyAccount = () => {
                   name="email"
                   onChange={(e) => setEmail(e.target.value)}
                   className="p-2 border-2 border-yellow-400 rounded-lg bg-black"
+                  disabled={isRegisterLoading}
                 />
                 <input
                   type="password"
@@ -173,6 +198,7 @@ const MyAccount = () => {
                   name="password"
                   onChange={(e) => setPassword(e.target.value)}
                   className="p-2 border-2 border-yellow-400 rounded-lg bg-black"
+                  disabled={isRegisterLoading}
                 />
                 <input
                   type="password"
@@ -182,9 +208,14 @@ const MyAccount = () => {
                   className={`p-2 border-2 border-yellow-400 rounded-lg bg-black ${
                     password !== confirmPassword ? "border-red-500" : ""
                   }`}
+                  disabled={isRegisterLoading}
                 />
-                <button className="m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black text-white hover:bg-yellow-700">
-                  Register
+                <button 
+                  className="m-auto w-auto px-5 py-3 border-2 border-yellow-500 font-bold rounded-full bg-black text-white hover:bg-yellow-700 flex items-center justify-center"
+                  disabled={isRegisterLoading}
+                >
+                  {isRegisterLoading ? <Spinner size="sm" color="yellow.400" mr="2" /> : null}
+                  {isRegisterLoading ? "Processing..." : "Register"}
                 </button>
               </form>
             </TabPanel>
