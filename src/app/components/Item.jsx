@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Image from "next/image";
-
 import { StarIcon } from "@chakra-ui/icons";
 import ItemDescription from "./ItemDescription";
 
@@ -19,6 +18,7 @@ const Item = ({
   disableViewButton,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWishlistLoading, setIsWishlistLoading] = useState(false);
 
   const getRatingClass = (rating) => {
     if (!rating) return "bg-gray-500";
@@ -28,6 +28,15 @@ const Item = ({
   };
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+  const handleWishlist = async (productId) => {
+    setIsWishlistLoading(true);
+    try {
+      await handleWishlistClick(productId);
+    } finally {
+      setIsWishlistLoading(false);
+    }
+  };
 
   return (
     <div
@@ -45,10 +54,9 @@ const Item = ({
         />
 
         {/* View Product Button */}
-       {!disableViewButton && <button
+        {!disableViewButton && <button
           className={`absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 text-white font-semibold text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${disableViewButton ? "cursor-not-allowed opacity-50" : ""}`}
-          onClick={ toggleModal} 
-          
+          onClick={toggleModal}
         >
           View Product
         </button>}
@@ -63,16 +71,21 @@ const Item = ({
 
         {/* Wishlist Button */}
         <button
-          onClick={() => handleWishlistClick(id)}
-          className="flex-shrink-0 min-w-[24px]"
+          onClick={() => handleWishlist(id)}
+          className="flex-shrink-0 min-w-[24px] relative"
+          disabled={isWishlistLoading}
         >
-          <Image
-            src={isInWishlist ? "/heart-clicked.png" : "/heart.svg"}
-            alt="Wishlist"
-            width={24}
-            height={24}
-            className="transition-transform hover:scale-110"
-          />
+          {isWishlistLoading ? (
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-solid border-white border-t-transparent"></div>
+          ) : (
+            <Image
+              src={isInWishlist ? "/heart-clicked.png" : "/heart.svg"}
+              alt="Wishlist"
+              width={24}
+              height={24}
+              className="transition-transform hover:scale-110"
+            />
+          )}
         </button>
       </div>
 
@@ -112,7 +125,7 @@ const Item = ({
           preOffer={preOffer}
           discount={discount}
           isInWishlist={isInWishlist}
-          handleWishlistClick={handleWishlistClick}
+          handleWishlistClick={handleWishlist}
         />
       )}
     </div>
