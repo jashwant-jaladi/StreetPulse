@@ -41,7 +41,8 @@ export async function POST(request) {
       // Recalculate the shop's average rating
       const reviews = await prisma.review.findMany({ where: { shopId } });
       const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-      const newAverageRating = totalRating / reviews.length;
+      const newAverageRating = parseFloat((totalRating / reviews.length).toFixed(2));
+
 
       // Update the shop with the new rating and number of ratings
       const updatedShop = await prisma.shop.update({
