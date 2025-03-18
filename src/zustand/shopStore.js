@@ -13,7 +13,14 @@ const useShopStore = create(
       // Fetch shops from API
       fetchShops: async () => {
         try {
-          const response = await fetch("/api/shops");
+          const response = await fetch("/api/shops", {
+            cache: 'no-store', // Disable caching
+            headers: {
+              'Cache-Control': 'no-cache, no-store, must-revalidate',
+              'Pragma': 'no-cache',
+              'Expires': '0',
+            },
+          });
           if (!response.ok) {
             throw new Error("Failed to fetch shops");
           }
@@ -23,14 +30,16 @@ const useShopStore = create(
           console.error("Error fetching shops:", error);
         }
       },
-      updateShopRating: (shopId, newRating, noOfRatings) => {
-        set((state) => ({
-          shops: state.shops.map((shop) =>
-            shop.id === shopId
-              ? { ...shop, rating: newRating, noOfRatings }
-              : shop
-          ),
-        }));
+
+      // Update shop rating and refresh shop data
+      updateShopRating: async (shopId, newRating, noOfRatings) => {
+        try {
+          // Fetch fresh shop data
+          await get().fetchShops();
+        } catch (error) {
+          console.error('Error updating shop rating:', error);
+          throw error;
+        }
       },
 
       // Fetch wishlist from the server
@@ -82,15 +91,6 @@ const useShopStore = create(
           console.error("Error adding product to wishlist:", error);
           throw error;
         }
-      },
-      updateShopRating: (shopId, newRating, noOfRatings) => {
-        set((state) => ({
-          shops: state.shops.map((shop) =>
-            shop.id === shopId
-              ? { ...shop, rating: newRating, noOfRatings }
-              : shop
-          ),
-        }));
       },
 
       // Remove an item from the wishlist via the API

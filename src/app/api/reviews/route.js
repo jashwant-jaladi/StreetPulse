@@ -1,9 +1,8 @@
-
 import prisma from "@/libs/db";
 import { NextResponse } from "next/server";
 
-
-
+export const dynamic = 'force-dynamic'; // Force dynamic rendering
+export const revalidate = 0; // Disable caching
 
 export async function POST(request) {
   try {
@@ -38,16 +37,23 @@ export async function POST(request) {
             },
           });
 
-      // Recalculate the shop's average rating
-      const reviews = await prisma.review.findMany({ where: { shopId } });
+      // Get all reviews for this shop
+      const reviews = await prisma.review.findMany({ 
+        where: { shopId },
+        select: { rating: true }
+      });
+
+      // Calculate new average rating
       const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
       const newAverageRating = parseFloat((totalRating / reviews.length).toFixed(2));
-
 
       // Update the shop with the new rating and number of ratings
       const updatedShop = await prisma.shop.update({
         where: { id: shopId },
-        data: { rating: newAverageRating, noOfRatings: reviews.length },
+        data: { 
+          rating: newAverageRating, 
+          noOfRatings: reviews.length 
+        },
       });
 
       return {
@@ -59,13 +65,18 @@ export async function POST(request) {
     return NextResponse.json({
       message: "Review added/updated successfully",
       ...result
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     });
   } catch (error) {
     console.error("Error adding review:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-
 
 export async function GET(request) {
   try {
@@ -78,10 +89,19 @@ export async function GET(request) {
 
     const reviews = await prisma.review.findMany({
       where: { shopId: parseInt(shopId, 10) },
-      include: { user: { select: { name: true } } }, 
+      include: { user: { select: { name: true } } },
+      orderBy: {
+        createdAt: 'desc'
+      }
     });
 
-    return NextResponse.json(reviews);
+    return NextResponse.json(reviews, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
+    });
   } catch (error) {
     console.error("Error fetching reviews:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
