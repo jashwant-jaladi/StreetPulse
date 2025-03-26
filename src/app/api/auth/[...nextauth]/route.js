@@ -21,20 +21,24 @@ const handler = NextAuth({
       async authorize(credentials) {
         // Handle guest user login
         if (credentials?.guest) {
-          const guestUser = await prisma.user.create({
-            data: {
-              name: "Guest",
-              email: `guest_${Date.now()}@example.com`,
-              guest: true,
-              password: "guest",
-            },
+          let guestUser = await prisma.user.findFirst({
+            where: { guest: true },
+            select: { id: true, name: true, email: true, guest: true }, // Select only necessary fields
           });
 
-          return {
-            id: guestUser.id,
-            name: guestUser.name,
-            email: guestUser.email,
-          };
+          if (!guestUser) {
+            guestUser = await prisma.user.create({
+              data: {
+                name: "Guest",
+                email: `guest_${Date.now()}@example.com`,
+                guest: true,
+                password: await bcrypt.hash("guest", 10), // Hash password for security
+              },
+              select: { id: true, name: true, email: true, guest: true },
+            });
+          }
+
+          return guestUser;
         }
 
         // Ensure email and password are provided
@@ -42,36 +46,31 @@ const handler = NextAuth({
           throw new Error("Email and password are required.");
         }
 
-        // Find user in the database by email
+        // Find user in the database by email (excluding password)
         const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
+          where: { email: credentials.email },
+          select: { id: true, name: true, email: true, password: true, guest: true },
         });
 
-        // If no user found or password mismatch, throw an error
         if (!user) {
           throw new Error("No user found with the provided email.");
         }
 
+        // Check password validity
         const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
 
         if (!isPasswordValid) {
           throw new Error("Invalid password.");
         }
 
-        // Return user data for the session and JWT
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-        };
+        // Return only necessary user data
+        return { id: user.id, name: user.name, email: user.email, guest: user.guest };
       },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: "jwt", // Use JWT for sessions
+    strategy: "jwt", // Use JWT for scalability
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -80,7 +79,7 @@ const handler = NextAuth({
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
-        token.guest = user.guest || false; 
+        token.guest = user.guest || false;
       }
       return token;
     },
@@ -90,7 +89,7 @@ const handler = NextAuth({
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
-        session.user.guest = token.guest; 
+        session.user.guest = token.guest;
       }
       return session;
     },
