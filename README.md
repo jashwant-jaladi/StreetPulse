@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# StreetPulse
 
-## Getting Started
+StreetPulse is a modern eCommerce platform built with Next.js, providing users with a seamless shopping experience. It includes features such as authentication, wishlist management, real-time reviews, and mock payments via Stripe.
 
-First, run the development server:
+## 🚀 Features
+- **Authentication** (NextAuth) & Reset Password
+- **Wishlist & Cart Management** (Add/Remove Products)
+- **Blog Section** (Add/Remove Comments)
+- **Product Reviews & Ratings** (Real-time Updates)
+- **Checkout with Stripe** (Mock Payments)
+- **Product Search & Filtering**
+- **Responsive Design**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌍 Live Demo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Check out the live version of StreetPulse here:
+🔗 **[StreetPulse Live](https://street-pulse.vercel.app/)**
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🛠 Tech Stack
+- **Frontend:** Next.js, MUI, Zustand
+- **Backend:** Next.js API Routes
+- **Authentication:** NextAuth
+- **Payments:** Stripe (Mock Payments)
+- **State Management:** Zustand
+- **Deployment:** Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 📦 Installation
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/yourusername/streetpulse.git
+   cd streetpulse
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Set up environment variables in a `.env.local` file:
+   ```sh
+   NEXTAUTH_SECRET=your_nextauth_secret
+   NEXTAUTH_URL=your_nextauth_url
+   DATABASE_URL=your_database_url
+   CLOUDINARY_NAME=your_cloudinary_name
+   CLOUDINARY_API_KEY=your_cloudinary_api_key
+   CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+   EMAIL_USER=your_email_user
+   EMAIL_PASS=your_email_password
+   STRIPE_SERVER_KEY=your_stripe_server_key
+   NEXT_PUBLIC_STRIPE_CLIENT_KEY=your_stripe_client_key
 
-## Learn More
+   ```
+4. Run the development server:
+   ```sh
+   npm run dev
+   ```
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+## 📸 Screenshots
+*(Add relevant screenshots of the app here)*
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Deployment
+The application is deployed on **Vercel**. To deploy your own version:
+1. Push your changes to GitHub.
+2. Connect your repository to Vercel.
+3. Set up environment variables on Vercel.
+4. Deploy and get a live link.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 📜 License
+This project is open-source and available under the MIT License.
 
-## Deploy on Vercel
+## 🙌 Contributing
+Feel free to contribute by opening an issue or submitting a pull request.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📞 Contact
+For any inquiries or feedback, reach out to me via [jasshwant.jvs@protonmail.com].
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
