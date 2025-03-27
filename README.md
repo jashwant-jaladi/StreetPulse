@@ -55,7 +55,11 @@ Check out the live version of StreetPulse here:
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📸 Screenshots
-*(Add relevant screenshots of the app here)*
+![Homepage](screenshots/homepage.png)
+
+![store overview](screenshots/store-overview.png)
+
+![product page](screenshots/Screenshotfrom2025-03-27 16-52-47.png)
 
 ## 🚀 Deployment
 The application is deployed on **Vercel**. To deploy your own version:
