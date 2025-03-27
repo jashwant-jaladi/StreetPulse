@@ -59,7 +59,13 @@ Check out the live version of StreetPulse here:
 
 ![store overview](screenshots/store-overview.png)
 
-![product page](screenshots/Screenshotfrom2025-03-27 16-52-47.png)
+![product page](screenshots/product.png)
+
+![shop page](screenshots/shop.png)
+
+![login page](screenshots/login.png)
+
+![blogpage](screenshots/blog.png)
 
 ## 🚀 Deployment
 The application is deployed on **Vercel**. To deploy your own version:
